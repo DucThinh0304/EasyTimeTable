@@ -1,0 +1,83 @@
+﻿<Window x:Class="EasyTimeTable.Views.LoginWindow.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyTimeTable.Views.LoginWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        DataContext="{StaticResource LoginVM}"
+        mc:Ignorable="d"
+        Name="Loginwindow"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        Title="LoginWindow" Height="480" Width="400"
+        WindowStyle="None">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseLeftButtonDown">
+            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownWindowCM}"
+                                   CommandParameter="{Binding ElementName=Loginwindow}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding SaveLoginWindowNameCM}"
+                                   CommandParameter="{Binding ElementName=Loginwindow}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Border BorderThickness="0.5"
+            BorderBrush="Black"
+            CornerRadius="10"
+            Background="white">
+
+        <StackPanel MaxWidth="400">
+            <!--Close_Minimize bar-->
+        <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Grid.Row="0">
+
+            <Button Click="Button_Click_1"
+                            ToolBar.OverflowMode="AsNeeded"
+                            Margin="0,0,5,0"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Foreground="Black"
+                            BorderBrush="Transparent"
+                            MouseEnter="Button_MouseEnter"
+                            MouseLeave="Button_MouseLeave">
+                <materialDesign:PackIcon Kind="WindowMinimize" />
+            </Button>
+
+            <Button Click="Button_Click"
+                            ToolBar.OverflowMode="AsNeeded"
+                            Background="Transparent"
+                            Foreground="Black"
+                            BorderBrush="Transparent"
+                            MouseEnter="Button_MouseEnter_1"
+                            MouseLeave="Button_MouseLeave_1"
+                            materialDesign:ButtonAssist.CornerRadius="0,10,0,0">
+                <materialDesign:PackIcon Kind="WindowClose"
+                                                 Padding="0" />
+            </Button>
+        </StackPanel>
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth2" Padding="0 0 0 5" Height="Auto" Width="396" Margin="-0 0 -0 0" >
+                <TextBlock 
+                TextAlignment="Center"
+                FontWeight="Bold"
+                Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                Text="Đăng nhập" />
+            </materialDesign:Card>
+            <Frame x:Name="frame" Margin="0 10"
+                           NavigationUIVisibility="Hidden">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LoadLoginPageCM}"
+                                                       CommandParameter="{Binding ElementName=frame}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Frame>
+
+        </StackPanel>
+    </Border>
+</Window>
