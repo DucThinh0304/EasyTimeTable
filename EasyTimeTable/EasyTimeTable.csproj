@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\LoginWindow\ETTlogo-large.png" />
+    <None Remove="Assets\ETTlogo-large.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Views\LoginWindow\ETTlogo-large.png" />
+    <Resource Include="Assets\ETTlogo-large.png" />
   </ItemGroup>
 
 </Project>

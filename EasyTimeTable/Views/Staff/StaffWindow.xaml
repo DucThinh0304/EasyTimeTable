@@ -1,0 +1,230 @@
+﻿<Window x:Class="EasyTimeTable.Views.Staff.StaffWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyTimeTable.Views.Staff"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+         Height="720" Width="1080"
+        ResizeMode="NoResize"
+        
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <!--#FF383737-->
+
+        <Grid Grid.Row="0">
+
+            <!--Frame-->
+            <Frame x:Name="MainFrame"
+                   Height="720"
+                   Width="1080"
+                   NavigationUIVisibility="Hidden"
+                   Panel.ZIndex="0"
+                   Margin="0,80,0,0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LoadStudentHomeCM}"
+                                               CommandParameter="{Binding ElementName=MainFrame}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Frame>
+            <Grid Grid.RowSpan="2"
+                  Background="Gray"
+                  Opacity="0.3"
+                  Visibility="Collapsed"
+                  x:Name="shadow">
+            </Grid>
+            <!--thanh cong cu-->
+            <materialDesign:ColorZone Mode="PrimaryLight"
+                                      Padding="16"
+                                      Height="60"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth3"/>
+            <DockPanel>
+                <StackPanel Orientation="Horizontal"
+                            Margin="-260,0,0,0">
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=SlideButton}"
+                                             Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                 From="0"
+                                                                 To="260"
+                                                                 Duration="0:0:0.2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                 From="260"
+                                                                 To="0"
+                                                                 Duration="0:0:0.2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <StackPanel.RenderTransform>
+                        <TranslateTransform />
+                    </StackPanel.RenderTransform>
+
+                    <materialDesign:Card Background="#835cc7"
+                          Width="260"
+                          Margin="0 ,0,0,0">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="Button"
+                                       BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+                                    <Style.Setters>
+                                        <Setter Property="Foreground"
+                                                Value="White" />
+                                    </Style.Setters>
+                                </Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Style.Setters>
+                                        <Setter Property="Foreground"
+                                                Value="White" />
+                                    </Style.Setters>
+                                </Style>
+                            </StackPanel.Resources>
+                            <materialDesign:Card Height="80" Background="#835cc7" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                                <StackPanel HorizontalAlignment="Center"
+                                            Orientation="Horizontal"
+                                            Height="60" 
+                                            Width="260">
+                                    <Image Source="/Assets/ETTlogo-large.png"
+                                           Width="60"
+                                           Margin="20,-5,5,0" />
+
+                                    <TextBlock TextWrapping="Wrap"
+                                               VerticalAlignment="Bottom"
+                                               TextAlignment="Center"
+                                               Text="EasyTime Table"
+                                               FontWeight="Bold"
+                                               Foreground="#e3e9fa"
+                                               FontSize="25"
+                                               Width="150"/>
+                                </StackPanel>
+                            </materialDesign:Card>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="22"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadStudentHomeCM}"
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Home"
+                                                         Height="30"
+                                                         Width="30"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="20"
+                                                   Margin="10,0,0,0">
+                                            Ngôi nhà chung
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="22"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadOpenCourseListCM}" 
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="FormatListBulleted"
+                                                         Height="30"
+                                                         Width="30"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="20"
+                                                   Margin="10,0,0,0">
+                                            Danh sách học phần
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="23"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadStudentTuitionCM}"
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Cash"
+                                                         Height="30"
+                                                         Width="20"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="22"
+                                                   Margin="10,0,0,0">
+                                            Thông tin học phí
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    <Grid Margin="40,0,0,0">
+                        <ToggleButton x:Name="SlideButton"
+                                      Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+                                      VerticalAlignment="Top"
+                                      Margin="0,10,0,0"
+                                      Checked="SlideButton_Checked"
+                                      Unchecked="SlideButton_Unchecked"
+                                      Loaded="SlideButton_Loaded"
+                                      Foreground="White"/>
+                    </Grid>
+                    <TextBlock VerticalAlignment="Top"
+                               FontSize="25"
+                               Margin="15,12.5,0,0"
+                               Text="{Binding SelectFuncName}"
+                               FontWeight="Bold"
+                               Foreground="White">
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="0,10,0,0">
+                    <materialDesign:PackIcon Kind="AccountSupervisorCircle"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Right"
+                                             Height="50"
+                                             Width="50"
+                                             Foreground="White" />
+                    <Label x:Name="CurrentUserName"
+                           Content=""
+                           VerticalAlignment="Center"
+                           FontSize="25"
+                           Foreground="White" />
+                    <materialDesign:PopupBox
+                        DockPanel.Dock="Right" 
+                                             Foreground="White"
+                                             PlacementMode="BottomAndAlignRightEdges">
+                    </materialDesign:PopupBox>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

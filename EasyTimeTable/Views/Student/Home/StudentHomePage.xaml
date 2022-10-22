@@ -1,0 +1,38 @@
+﻿<Page x:Class="EasyTimeTable.Views.Student.Home.StudentHomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Home"
+      mc:Ignorable="d" 
+       Background="White"
+      d:DesignHeight="450" d:DesignWidth="1080"
+      DataContext="{StaticResource StudentHomeVM}"
+      Title="StudentHomePage">
+    <WrapPanel MaxWidth="600" Margin="0 25 0 0">
+        <materialDesign:Card Width="280" Padding="4" VerticalAlignment="Top" Margin="10,10,10,10"  HorizontalAlignment="Center">
+            <StackPanel>
+                <StackPanel Margin="8">
+                    <materialDesign:PackIcon HorizontalAlignment="Center"
+											Kind="Cash" Width="30" Height="30"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Học phí: 7.000.000đ" Margin="0,12,0,0"/>
+                    <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(đã đóng học phí)" HorizontalAlignment="Center"/>
+                    <Button Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding ChangePage}"/>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+        <materialDesign:Card Width="280" Padding="4" VerticalAlignment="Top" Margin="10,10,10,10"  HorizontalAlignment="Center">
+            <StackPanel>
+                <StackPanel Margin="8">
+                    <materialDesign:PackIcon HorizontalAlignment="Center"
+											Kind="BookOpenVariant" Width="30" Height="30"/>
+                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Năm học: 2022-2023" Margin="0,12,0,0"/>
+                    <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(Số tín chỉ: 24)" HorizontalAlignment="Center"/>
+                    <Button Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding ChangePage}"/>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+
+    </WrapPanel>
+</Page>
