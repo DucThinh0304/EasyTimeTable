@@ -6,4 +6,5 @@
     <viewmodel:StudentViewModel x:Key="StudentVM" />
     <viewmodel:ForgotPassViewModel x:Key="ForgotPassVM" />
     <viewmodel:StudentHomeVM x:Key="StudentHomeVM" />
+    <viewmodel:StaffViewModel x:Key="StaffVM" />
 </ResourceDictionary>

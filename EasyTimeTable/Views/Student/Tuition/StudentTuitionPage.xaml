@@ -3,14 +3,38 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Tuition"
-       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       Background="White"
-      d:DesignHeight="450" d:DesignWidth="1080"
+      Height="720" Width="1080"
       Title="StudentTuitionPage">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <materialDesign:Card VerticalAlignment="Top" Grid.Column="0" Margin="40 20 20 20" MinHeight="520" materialDesign:ElevationAssist.Elevation="Dp12">
+            <StackPanel>
+                <TextBlock TextAlignment="Center" FontSize="25" FontWeight="Bold"
+                           materialDesign:ElevationAssist.Elevation="Dp12">
+                    Thông tin học phần
+                </TextBlock>
+                <TextBlock FontSize="20" Margin="20 0 0 0" >Số tín chỉ đăng kí: 24</TextBlock>
+                <ListView MinHeight="300" FontSize="20">
+                    Danh sách đăng kí môn học lại
+                </ListView>
+                
+            </StackPanel>
+        </materialDesign:Card>
+        <StackPanel Grid.Column="1" >
+            <TextBlock Margin="0 100 0 0"  FontSize="20">Tổng số tiền cần thanh toán: </TextBlock>
+            <TextBlock HorizontalAlignment="Right" FontSize="20">7.000.000 VND</TextBlock>
+            <Button Height="45" FontSize="25" Margin="20 200 20 0" materialDesign:ButtonAssist.CornerRadius="5">
+                Thanh toán
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

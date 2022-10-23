@@ -18,7 +18,7 @@
 											Kind="Cash" Width="30" Height="30"/>
                     <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Học phí: 7.000.000đ" Margin="0,12,0,0"/>
                     <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(đã đóng học phí)" HorizontalAlignment="Center"/>
-                    <Button Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding ChangePage}"/>
+                    <Button Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPage}"/>
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>
@@ -29,7 +29,7 @@
 											Kind="BookOpenVariant" Width="30" Height="30"/>
                     <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Năm học: 2022-2023" Margin="0,12,0,0"/>
                     <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(Số tín chỉ: 24)" HorizontalAlignment="Center"/>
-                    <Button Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding ChangePage}"/>
+                    <Button Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePage}"/>
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>

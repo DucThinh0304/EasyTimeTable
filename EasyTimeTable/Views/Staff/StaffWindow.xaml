@@ -7,9 +7,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        DataContext="{StaticResource StaffVM}"
          Height="720" Width="1080"
         ResizeMode="NoResize"
-        
         WindowStartupLocation="CenterScreen">
     <Grid>
         <!--#FF383737-->
@@ -25,7 +25,7 @@
                    Margin="0,80,0,0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
-                        <i:InvokeCommandAction Command="{Binding LoadStudentHomeCM}"
+                        <i:InvokeCommandAction Command="{Binding LoadStaffHomeCM}"
                                                CommandParameter="{Binding ElementName=MainFrame}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -62,7 +62,6 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-
                                                 <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
                                                                  From="260"
                                                                  To="0"
@@ -177,7 +176,28 @@
                                                          VerticalAlignment="Center" />
                                         <TextBlock FontSize="22"
                                                    Margin="10,0,0,0">
-                                            Thông tin học phí
+                                            Danh sách học phí
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="23"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadStudentTuitionCM}"
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="FormatListChecks"
+                                                         Height="30"
+                                                         Width="20"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="22"
+                                                   Margin="10,0,0,0">
+                                           Tình trạng học phí
                                         </TextBlock>
                                     </StackPanel>
                                 </Button>
@@ -197,7 +217,8 @@
                     <TextBlock VerticalAlignment="Top"
                                FontSize="25"
                                Margin="15,12.5,0,0"
-                               Text="{Binding SelectFuncName}"
+                               x:Name="FuncTitle"
+                               Loaded="selectFunc_Loaded"
                                FontWeight="Bold"
                                Foreground="White">
                     </TextBlock>

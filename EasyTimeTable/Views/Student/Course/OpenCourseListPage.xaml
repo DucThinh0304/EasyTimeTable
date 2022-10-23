@@ -9,6 +9,6 @@
       Title="OpenCourseListPage">
 
     <Grid>
-        
+        <TextBlock>abc</TextBlock>
     </Grid>
 </Page>

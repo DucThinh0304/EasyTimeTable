@@ -22,6 +22,7 @@ namespace EasyTimeTable.Views.Student
     {
 
         public static ToggleButton Slidebtn;
+        public static TextBlock funcTitle;
         public StudentMainWindow()
         {
             InitializeComponent();
@@ -45,6 +46,11 @@ namespace EasyTimeTable.Views.Student
         private void SlideButton_Loaded(object sender, RoutedEventArgs e)
         {
             Slidebtn = SlideButton;
+        }
+
+        private void FuncTitle_Loaded(object sender, RoutedEventArgs e)
+        {
+            funcTitle = FuncTitle;
         }
     }
 }

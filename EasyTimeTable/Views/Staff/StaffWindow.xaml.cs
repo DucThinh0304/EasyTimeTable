@@ -21,6 +21,8 @@ namespace EasyTimeTable.Views.Staff
     public partial class StaffWindow : Window
     {
         public static ToggleButton Slidebtn;
+        public static TextBlock funcTitle;
+
 
         private void MainFrame_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -44,6 +46,11 @@ namespace EasyTimeTable.Views.Staff
         public StaffWindow()
         {
             InitializeComponent();
+        }
+
+        private void selectFunc_Loaded(object sender, RoutedEventArgs e)
+        {
+            funcTitle = FuncTitle;
         }
     }
 }

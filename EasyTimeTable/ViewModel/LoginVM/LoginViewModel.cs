@@ -100,7 +100,7 @@ namespace EasyTimeTable.ViewModel
 
             FrameworkElement GetParentWindow(FrameworkElement p)
             {
-                FrameworkElement parent = p;
+                FrameworkElement? parent = p;
 
                 while (parent.Parent != null)
                 {
