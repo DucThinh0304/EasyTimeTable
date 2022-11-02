@@ -11,17 +11,17 @@ namespace EasyTimeTable.ViewModel
     public partial class StudentHomeVM
 
     {
-        public ICommand TuitionPage { get; set; }
-        public ICommand CoursePage { get; set; }
+        public ICommand TuitionPageCM { get; set; }
+        public ICommand CoursePageCM { get; set; }
         public StudentHomeVM()
         {
-            TuitionPage = new RelayCommand<object>((p) =>
+            TuitionPageCM = new RelayCommand<object>((p) =>
             {
                 StudentViewModel.MainFrame.Content = new StudentTuitionPage();
                 if (StudentMainWindow.funcTitle != null)
                     StudentMainWindow.funcTitle.Text = "Thông tin học phí";
             });
-            CoursePage = new RelayCommand<object>((p) =>
+            CoursePageCM = new RelayCommand<object>((p) =>
             {
                 StudentViewModel.MainFrame.Content = new OpenCourseListPage();
                 if (StudentMainWindow.funcTitle != null)

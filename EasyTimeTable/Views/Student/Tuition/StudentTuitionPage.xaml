@@ -7,11 +7,14 @@
       xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Tuition"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      Background="White"
-      Height="720" Width="1080"
+      DataContext="{StaticResource TuitionVM}"
+      Height="960" Width="1440"
       Title="StudentTuitionPage">
+    <Page.Background>
+        <ImageBrush ImageSource="/Assets/Background.jpg"/>
+    </Page.Background>
 
-    <Grid>
+    <Grid Margin="20 10 40 10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
@@ -22,11 +25,10 @@
                            materialDesign:ElevationAssist.Elevation="Dp12">
                     Thông tin học phần
                 </TextBlock>
-                <TextBlock FontSize="20" Margin="20 0 0 0" >Số tín chỉ đăng kí: 24</TextBlock>
+                <TextBlock FontSize="20" Margin="20 0 0 0" Text="{Binding SoTinChi}"></TextBlock>
                 <ListView MinHeight="300" FontSize="20">
                     Danh sách đăng kí môn học lại
                 </ListView>
-                
             </StackPanel>
         </materialDesign:Card>
         <StackPanel Grid.Column="1" >

@@ -73,14 +73,14 @@ namespace EasyTimeTable.ViewModel
 
             LoginCM = new RelayCommand<Label>((p) =>
             {
-                if (Password == "s" && Username == "s")
+                if (Password == "student" && Username == "student")
                 {
                     LoginWindow.Hide();
                     StudentMainWindow studentMainWindow = new StudentMainWindow();
                     studentMainWindow.Show();
                     LoginWindow.Close();
                 }
-                else if (Password == "a" && Username == "a")
+                else if (Password == "teacher" && Username == "teacher")
                 {
                     LoginWindow.Hide();
                     StaffWindow staffWindow = new StaffWindow();

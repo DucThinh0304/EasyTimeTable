@@ -20,10 +20,11 @@ namespace EasyTimeTable.Views.Staff
     /// </summary>
     public partial class StaffWindow : Window
     {
+        //Liên kết TogggleButton và Title với VM
         public static ToggleButton Slidebtn;
         public static TextBlock funcTitle;
 
-
+        // Control cho Window
         private void MainFrame_MouseDown(object sender, MouseButtonEventArgs e)
         {
             SlideButton.IsChecked = false;
@@ -43,6 +44,7 @@ namespace EasyTimeTable.Views.Staff
         {
             Slidebtn = SlideButton;
         }
+
         public StaffWindow()
         {
             InitializeComponent();

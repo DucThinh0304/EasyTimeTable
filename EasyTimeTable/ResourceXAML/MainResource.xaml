@@ -7,4 +7,8 @@
     <viewmodel:ForgotPassViewModel x:Key="ForgotPassVM" />
     <viewmodel:StudentHomeVM x:Key="StudentHomeVM" />
     <viewmodel:StaffViewModel x:Key="StaffVM" />
+    <viewmodel:StudentOpenCourseVM x:Key="StudentOpenCourseVM"/>
+    <viewmodel:SchedulerViewModel x:Key="SchedulerVM"/>
+    <viewmodel:TuitionViewModel x:Key="TuitionVM"/>
+
 </ResourceDictionary>

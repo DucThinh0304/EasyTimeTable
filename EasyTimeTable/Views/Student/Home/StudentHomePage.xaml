@@ -6,33 +6,54 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Home"
       mc:Ignorable="d" 
-       Background="White"
-      d:DesignHeight="450" d:DesignWidth="1080"
+      d:DesignHeight="960" d:DesignWidth="1440"
       DataContext="{StaticResource StudentHomeVM}"
       Title="StudentHomePage">
-    <WrapPanel MaxWidth="600" Margin="0 25 0 0">
-        <materialDesign:Card Width="280" Padding="4" VerticalAlignment="Top" Margin="10,10,10,10"  HorizontalAlignment="Center">
-            <StackPanel>
-                <StackPanel Margin="8">
-                    <materialDesign:PackIcon HorizontalAlignment="Center"
-											Kind="Cash" Width="30" Height="30"/>
-                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Học phí: 7.000.000đ" Margin="0,12,0,0"/>
-                    <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(đã đóng học phí)" HorizontalAlignment="Center"/>
-                    <Button Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPage}"/>
-                </StackPanel>
+    <Page.Background>
+        <ImageBrush ImageSource="/Assets/Background.jpg"/>
+    </Page.Background>
+    <StackPanel>
+        <materialDesign:Card MaxWidth="900" Margin="0,100,0,0" Background="#FFF9F9F9">
+        <WrapPanel Height="300" MaxWidth="880">
+            <materialDesign:Card Height="170" Width="170" Margin="15">
+                <Image Source="/Assets/ETT-logoflat.png" 
+                   Height="150"/>
+            </materialDesign:Card>
+                <StackPanel Width="650" Margin="15 65 15 65">
+                <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" 
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold">EasyTimeTable</TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}" 
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Margin="0,0,0,0" TextWrapping="Wrap">Phần mềm quản lý đăng kí học phần và tính học phí</TextBlock>
+                
             </StackPanel>
+        </WrapPanel>
         </materialDesign:Card>
-        <materialDesign:Card Width="280" Padding="4" VerticalAlignment="Top" Margin="10,10,10,10"  HorizontalAlignment="Center">
-            <StackPanel>
-                <StackPanel Margin="8">
-                    <materialDesign:PackIcon HorizontalAlignment="Center"
-											Kind="BookOpenVariant" Width="30" Height="30"/>
-                    <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Năm học: 2022-2023" Margin="0,12,0,0"/>
-                    <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(Số tín chỉ: 24)" HorizontalAlignment="Center"/>
-                    <Button Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePage}"/>
+        <WrapPanel MaxWidth="900" Margin="0 100 0 0">
+            <materialDesign:Card  Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
+                <StackPanel>
+                    <StackPanel Margin="8">
+                        <materialDesign:PackIcon HorizontalAlignment="Center" 
+											    Kind="Cash" Width="80" Height="80"/>
+                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Học phí: 7.000.000đ" Margin="0,12,0,0"/>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(đã đóng học phí)" HorizontalAlignment="Center"/>
+                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPageCM}"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </materialDesign:Card>
-
-    </WrapPanel>
+            </materialDesign:Card>
+            <materialDesign:Card Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
+                <StackPanel>
+                    <StackPanel Margin="8">
+                        <materialDesign:PackIcon HorizontalAlignment="Center"
+											    Kind="BookOpenVariant" Width="80" Height="80"/>
+                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Năm học: 2022-2023" Margin="0,12,0,0"/>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(Số tín chỉ: 24)" HorizontalAlignment="Center"/>
+                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}"/>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
+        </WrapPanel>
+    </StackPanel>
 </Page>

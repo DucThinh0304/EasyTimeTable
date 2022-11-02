@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Name="Main_Student"
         DataContext="{StaticResource StudentVM}"
-        Height="720" Width="1080"
+        Height="960" Width="1440"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
@@ -20,11 +20,11 @@
 
             <!--Frame-->
             <Frame x:Name="MainFrame"
-                   Height="720"
-                   Width="1080"
+                   Height="960"
+                   Width="1440"
                    NavigationUIVisibility="Hidden"
                    Panel.ZIndex="0"
-                   Margin="0,80,0,0">
+                   Margin="0,60,0,0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadStudentHomeCM}"
@@ -183,6 +183,27 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="23"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadSchedulerCM}"
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Calendar"
+                                                         Height="30"
+                                                         Width="20"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="22"
+                                                   Margin="10,0,0,0">
+                                            Thời gian biểu
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
                     </materialDesign:Card>
                     <Grid Margin="40,0,0,0">
@@ -225,6 +246,10 @@
                         DockPanel.Dock="Right" 
                                              Foreground="White"
                                              PlacementMode="BottomAndAlignRightEdges">
+                        <StackPanel>
+                            <Button Content="Đăng xuất" Command="{Binding SignoutCM}"
+                                    CommandParameter="{Binding ElementName=Main_Student}"></Button>
+                        </StackPanel>
                     </materialDesign:PopupBox>
                 </StackPanel>
             </DockPanel>

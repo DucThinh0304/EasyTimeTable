@@ -1,5 +1,4 @@
-﻿using EasyTimeTable.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasyTimeTable.Views.Student.Course
+namespace EasyTimeTable.Views.Student.Calendar
 {
     /// <summary>
-    /// Interaction logic for OpenCourseList.xaml
+    /// Interaction logic for SchedulerPage.xaml
     /// </summary>
-    public partial class OpenCourseListPage : Page
+    public partial class SchedulerPage : Page
     {
-        public OpenCourseListPage()
+        public SchedulerPage()
         {
             InitializeComponent();
         }
