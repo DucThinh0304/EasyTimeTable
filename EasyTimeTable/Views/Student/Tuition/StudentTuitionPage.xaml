@@ -26,8 +26,8 @@
                     Thông tin học phần
                 </TextBlock>
                 <TextBlock FontSize="20" Margin="20 0 0 0" Text="{Binding SoTinChi}"></TextBlock>
-                <ListView MinHeight="300" FontSize="20">
-                    Danh sách đăng kí môn học lại
+                <ListView MinHeight="300" FontSize="20" Margin="20 0 0 0" ItemsSource="{Binding CourseList}">
+                    Danh sách đăng kí môn học
                 </ListView>
             </StackPanel>
         </materialDesign:Card>

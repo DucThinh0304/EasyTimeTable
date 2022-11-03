@@ -3,12 +3,26 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
       xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Calendar"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xml:lang="vi-VN"
+      Height="960" Width="1440"
+      DataContext="{StaticResource SchedulerVM}"
       Title="SchedulerPage">
-
-    <Grid>
-        
+    <Page.Background>
+        <ImageBrush ImageSource="/Assets/Background.jpg"/>
+    </Page.Background>
+    <Grid Margin="20 20 40 160">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        <syncfusion:SfScheduler Grid.Row="1"
+            x:Name="Schedule" 
+            ItemsSource="{Binding scheduleAppointmentCollection}"
+            ViewType="Week" 
+            Language="vi-VN"
+            Background="Transparent"/>
     </Grid>
 </Page>

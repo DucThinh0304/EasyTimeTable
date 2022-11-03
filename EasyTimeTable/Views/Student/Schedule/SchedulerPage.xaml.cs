@@ -23,6 +23,7 @@ namespace EasyTimeTable.Views.Student.Calendar
         public SchedulerPage()
         {
             InitializeComponent();
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
         }
     }
 }

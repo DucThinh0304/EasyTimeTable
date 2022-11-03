@@ -16,20 +16,23 @@ namespace EasyTimeTable.ViewModel
     {
         [ObservableProperty]
         private string? soTinChi;
+
+
+
+        private int TC;
         
         public TuitionViewModel()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan", con);
+            var cmd = new SqlCommand("SELECT sum(sotclt) + sum(sotcth) from monhoc, sinhvienmonhoc where monhoc.mamon = sinhvienmonhoc.mamon AND masv = '20520782'", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                
+                TC = dr.GetInt32(0);
             }
             dr.Close();
-            SoTinChi = "Số tín chỉ đã đăng ký: " + "24";
+            SoTinChi = "Số tín chỉ đã đăng ký: " + TC;
         }
     }
 }
