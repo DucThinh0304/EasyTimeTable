@@ -25,5 +25,13 @@ namespace EasyTimeTable.Views.Student.Calendar
             InitializeComponent();
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
         }
+        private void Thang_Click(object sender, RoutedEventArgs e)
+        {
+            Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
+        }
+        private void Tuan_Click(object sender, RoutedEventArgs e)
+        {
+            Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
+        }
     }
 }

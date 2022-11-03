@@ -18,11 +18,24 @@
             <RowDefinition Height="3*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button HorizontalAlignment="Right" FontSize="20" Height="40" Width="100" Margin="20" Click="Thang_Click">Tháng</Button>
+            <Button HorizontalAlignment="Right" FontSize="20" Height="40" Width="100"  Margin="20" Click="Tuan_Click">Tuần</Button>
+        </StackPanel>
         <syncfusion:SfScheduler Grid.Row="1"
             x:Name="Schedule" 
             ItemsSource="{Binding scheduleAppointmentCollection}"
-            ViewType="Week" 
+            ViewType="Month" 
             Language="vi-VN"
-            Background="Transparent"/>
+            AppointmentEditFlag="None"
+            Background="Transparent">
+            <syncfusion:SfScheduler.DaysViewSettings>
+                <syncfusion:DaysViewSettings 
+                    TimeIntervalSize="100"
+            StartHour="7.5"
+            EndHour="17"/>
+            </syncfusion:SfScheduler.DaysViewSettings>
+        </syncfusion:SfScheduler>
+        
     </Grid>
 </Page>
