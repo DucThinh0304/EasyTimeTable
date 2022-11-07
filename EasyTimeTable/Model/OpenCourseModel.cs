@@ -8,6 +8,6 @@ namespace EasyTimeTable.Model
 {
     public class OpenCourseModel : CourseModel
     {
-        public bool isSignUp { get; set; }
+        public bool IsSignUp { get; set; }
     }
 }

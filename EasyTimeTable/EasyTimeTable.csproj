@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Background.jpg" />
+    <None Remove="Assets\BackgroundStaff.jpg" />
     <None Remove="Assets\ETT-logoflat.png" />
     <None Remove="Assets\ETTlogo-large.png" />
   </ItemGroup>
@@ -26,8 +27,14 @@
 
   <ItemGroup>
     <Resource Include="Assets\Background.jpg" />
+    <Resource Include="Assets\BackgroundStaff.jpg" />
     <Resource Include="Assets\ETT-logoflat.png" />
     <Resource Include="Assets\ETTlogo-large.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModel\StaffVM\CourseVM\" />
+    <Folder Include="Views\Staff\Course\" />
   </ItemGroup>
 
 </Project>

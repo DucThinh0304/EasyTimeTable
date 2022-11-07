@@ -1,24 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Model;
+using EasyTimeTable.Views.Student.Course;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Configuration;
-using Microsoft.VisualBasic;
 using System.ComponentModel;
-using System.Windows.Data;
-using MaterialDesignThemes.Wpf;
-using System.Collections;
-using System.Windows.Input;
-using System.Windows.Controls;
-using CommunityToolkit.Mvvm.Input;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Windows;
-using EasyTimeTable.Views.Student.Course;
-using System.Windows.Documents;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -36,10 +30,13 @@ namespace EasyTimeTable.ViewModel
         [ObservableProperty]
         private ComboBoxItem selectedCombobox;
 
+
+        public List<string> ComboboxRequestKhoa { get; set; }
         public ICommand RequestCM { get; set; }
-        public ICommand SelectCourse { get; set; }
+        public ICommand SelectCourseCM { get; set; }
         public ICommand RegionChangedCM { get; set; }
         public ICommand DatagridChangedSelectionCM { get; set; }
+        public ICommand SendRequestCM { get; set; }
 
         // Search Textbox
         private bool Filter(OpenCourseModel c)
@@ -52,20 +49,26 @@ namespace EasyTimeTable.ViewModel
 
         public StudentOpenCourseVM()
         {
+            ComboboxRequestKhoa = new List<string>();
             OpenCourse = new ObservableCollection<OpenCourseModel>();
             LoadDB(OpenCourse);
             FilteredOpenCourse.Filter = new Predicate<object>(o => Filter(o as OpenCourseModel));
-            SelectCourse = new RelayCommand<object>(p =>
+            SelectCourseCM = new RelayCommand<object>(p =>
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 if (ButtonContent == "Đăng kí môn học")
                 {
-                    foreach(OpenCourseModel c in SignUpCourse())
+                    foreach (OpenCourseModel c in SignUpCourse())
                     {
                         if (c.TenMon == SelectedCourse.TenMon)
                         {
                             MessageBox.Show("Bạn đã đăng kí môn " + c.TenMon + " rồi!!!");
+                            return;
+                        }
+                        if (Converter.Converter.Compare(c.TietHoc, SelectedCourse.TietHoc, c.Thu, SelectedCourse.Thu) == false)
+                        {
+                            MessageBox.Show("Môn này bị trùng lịch với môn " + c.TenMon + " rồi!!!");
                             return;
                         }
                     }
@@ -95,14 +98,16 @@ namespace EasyTimeTable.ViewModel
             // CM mở cửa sổ request
             RequestCM = new RelayCommand<object>((p) =>
             {
+                LoadDBRequest();
                 RequestCoursesWindow rcw = new RequestCoursesWindow();
                 rcw.ShowDialog();
             });
             // CM cho thay đổi combobox
-            RegionChangedCM = new RelayCommand<object>((p) => {
+            RegionChangedCM = new RelayCommand<object>((p) =>
+            {
                 RegionChanged();
             });
-            // CM cho thay đổi thứ datagrid chọn
+            // CM cho thay đổi button khi item khác được chọn
             DatagridChangedSelectionCM = new RelayCommand<object>((p) =>
             {
                 if (SelectedCourse == null)
@@ -111,22 +116,36 @@ namespace EasyTimeTable.ViewModel
                     ButtonEnable = false;
                     return;
                 }
-                if (SelectedCourse.isSignUp == false)
+                if (SelectedCourse.IsSignUp == false)
                 {
                     ButtonContent = "Đăng kí môn học";
                     ButtonEnable = true;
                     return;
                 }
-                if (SelectedCourse.isSignUp == true)
+                if (SelectedCourse.IsSignUp == true)
                 {
                     ButtonContent = "Hủy môn học";
                     ButtonEnable = true;
                     return;
                 }
-                
+            });
+            SendRequestCM = new RelayCommand<object>((p) =>
+            {
+                MessageBox.Show("Đã gửi");
             });
         }
 
+        public void LoadDBRequest()
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd1 = new SqlCommand("Select tenkhoa from khoa", con);
+            var dr1 = cmd1.ExecuteReader();
+            while (dr1.Read())
+            {
+                ComboboxRequestKhoa.Add(dr1.GetString(0));
+            }
+        }
         public void RegionChanged()
         {
             if (SelectedCombobox.Content.ToString() == "Tự động")
@@ -157,7 +176,7 @@ namespace EasyTimeTable.ViewModel
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = true,
+                    IsSignUp = true,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -183,7 +202,7 @@ namespace EasyTimeTable.ViewModel
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = false,
+                    IsSignUp = false,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -219,7 +238,7 @@ namespace EasyTimeTable.ViewModel
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = true,
+                    IsSignUp = true,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -243,7 +262,7 @@ namespace EasyTimeTable.ViewModel
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = false,
+                    IsSignUp = false,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -259,21 +278,21 @@ namespace EasyTimeTable.ViewModel
                 });
             }
         }
-        //Refesh môn Đã chọn
-        public void RefreshDBDaChon(ObservableCollection<OpenCourseModel> list)
+        // Refresh Chưa chọn
+        public void RefreshDBChuaChon(ObservableCollection<OpenCourseModel> list)
         {
             list.Clear();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-             var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso " +
-                "FROM HOCPHAN,GIAOVIEN,MONHOC where HOCPHAN.mamon= MONHOC.mamon " +
-                "AND HOCPHAN.magv=GIAOVIEN.Magv AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien)", con);
+            var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso " +
+               "FROM HOCPHAN,GIAOVIEN,MONHOC where HOCPHAN.mamon= MONHOC.mamon " +
+               "AND HOCPHAN.magv=GIAOVIEN.Magv AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien)", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = false,
+                    IsSignUp = false,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -290,8 +309,8 @@ namespace EasyTimeTable.ViewModel
             }
             dr.Close();
         }
-        // Refresh Chưa chọn
-        public void RefreshDBChuaChon(ObservableCollection<OpenCourseModel> list)
+        //Refesh môn Đã chọn
+        public void RefreshDBDaChon(ObservableCollection<OpenCourseModel> list)
         {
             list.Clear();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
@@ -303,7 +322,7 @@ namespace EasyTimeTable.ViewModel
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = true,
+                    IsSignUp = true,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -323,7 +342,7 @@ namespace EasyTimeTable.ViewModel
         // List để check những môn đã đăng kí
         public List<OpenCourseModel> SignUpCourse()
         {
-            List<OpenCourseModel>  list = new List<OpenCourseModel>();
+            List<OpenCourseModel> list = new List<OpenCourseModel>();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC where " +
@@ -333,7 +352,7 @@ namespace EasyTimeTable.ViewModel
             {
                 list.Add(new OpenCourseModel
                 {
-                    isSignUp = true,
+                    IsSignUp = true,
                     MaHocPhan = dr.GetString(0),
                     TenMon = dr.GetString(1),
                     TenGV = dr.GetString(2),
@@ -352,7 +371,7 @@ namespace EasyTimeTable.ViewModel
             return list;
         }
 
-        // Custom Danh sách
+        // Custom ObservableCollection
         public ObservableCollection<OpenCourseModel> OpenCourse { get; }
 
         private ICollectionView filteredOpenCourse;

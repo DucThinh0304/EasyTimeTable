@@ -3,7 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Tuition;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -13,6 +17,12 @@ namespace EasyTimeTable.ViewModel
     {
         public ICommand TuitionPageCM { get; set; }
         public ICommand CoursePageCM { get; set; }
+
+        [ObservableProperty]
+        private string tuitionCheck;
+
+        [ObservableProperty]
+        private Brush colorTuition;
         public StudentHomeVM()
         {
             TuitionPageCM = new RelayCommand<object>((p) =>
@@ -27,6 +37,18 @@ namespace EasyTimeTable.ViewModel
                 if (StudentMainWindow.funcTitle != null)
                     StudentMainWindow.funcTitle.Text = "Danh sách học phần";
             });
+            TuitionCheck = "(đã đóng học phí)";
+            ColorTuition = new SolidColorBrush(Colors.Black);
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL", con);
+            var dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                TuitionCheck = "(chưa đóng học phí)";
+                ColorTuition = new SolidColorBrush(Colors.Red);
+            }
         }
+
     }
 }

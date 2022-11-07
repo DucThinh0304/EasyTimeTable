@@ -10,27 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasyTimeTable.Views.Student.Course
+namespace EasyTimeTable.Views.Staff.Home
 {
     /// <summary>
-    /// Interaction logic for RequestCoursesWindow.xaml
+    /// Interaction logic for StaffHomePage.xaml
     /// </summary>
-    public partial class RequestCoursesWindow : Window
+    public partial class StaffHomePage : Page
     {
-        public RequestCoursesWindow()
+        public StaffHomePage()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-        private void Huy_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

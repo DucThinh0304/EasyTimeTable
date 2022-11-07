@@ -8,15 +8,13 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         DataContext="{StaticResource StaffVM}"
-         Height="720" Width="1080"
+         Height="960" Width="1440"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <!--#FF383737-->
 
         <Grid Grid.Row="0">
 
-            <!--Frame-->
             <Frame x:Name="MainFrame"
                    Height="720"
                    Width="1080"
@@ -36,7 +34,6 @@
                   Visibility="Collapsed"
                   x:Name="shadow">
             </Grid>
-            <!--thanh cong cu-->
             <materialDesign:ColorZone Mode="PrimaryLight"
                                       Padding="16"
                                       Height="60"

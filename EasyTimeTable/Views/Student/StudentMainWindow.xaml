@@ -14,11 +14,9 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid>
-        <!--#FF383737-->
 
         <Grid Grid.Row="0">
 
-            <!--Frame-->
             <Frame x:Name="MainFrame"
                    Height="960"
                    Width="1440"
@@ -38,7 +36,6 @@
                   Visibility="Collapsed"
                   x:Name="shadow">
             </Grid>
-            <!--thanh cong cu-->
             <materialDesign:ColorZone Mode="PrimaryDark"
                                       Padding="16"
                                       Height="60"

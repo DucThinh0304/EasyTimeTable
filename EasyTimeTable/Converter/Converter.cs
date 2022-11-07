@@ -21,34 +21,24 @@ namespace EasyTimeTable.Converter
             {
                 case 1:
                     return new TimeOnly(7, 30, 00);
-                    break;
                 case 2:
                     return new TimeOnly(8, 15, 00);
-                    break;
                 case 3:
                     return new TimeOnly(9, 00, 00);
-                    break;
                 case 4:
                     return new TimeOnly(10, 00, 00);
-                    break;
                 case 5:
                     return new TimeOnly(10, 45, 00);
-                    break;
                 case 6:
                     return new TimeOnly(13, 00, 00);
-                    break;
                 case 7:
                     return new TimeOnly(13, 45, 00);
-                    break;
                 case 8:
                     return new TimeOnly(14, 30, 00);
-                    break;
                 case 9:
                     return new TimeOnly(15, 30, 00);
-                    break;
                 case 0:
                     return new TimeOnly(16, 15, 00);
-                    break;
                 default:
                     return new TimeOnly(00, 00, 00);
             }
@@ -66,34 +56,24 @@ namespace EasyTimeTable.Converter
             {
                 case 1:
                     return new TimeOnly(8, 15, 00);
-                    break;
                 case 2:
                     return new TimeOnly(9, 00, 00);
-                    break;
                 case 3:
-                    return new TimeOnly(10, 00, 00);
-                    break;
+                    return new TimeOnly(9, 45, 00);
                 case 4:
                     return new TimeOnly(10, 45, 00);
-                    break;
                 case 5:
                     return new TimeOnly(11, 30, 00);
-                    break;
                 case 6:
                     return new TimeOnly(13, 45, 00);
-                    break;
                 case 7:
                     return new TimeOnly(14, 30, 00);
-                    break;
                 case 8:
                     return new TimeOnly(15, 30, 00);
-                    break;
                 case 9:
                     return new TimeOnly(16, 15, 00);
-                    break;
                 case 0:
                     return new TimeOnly(17, 00, 00);
-                    break;
                 default:
                     return new TimeOnly(00, 00, 00);
             }
