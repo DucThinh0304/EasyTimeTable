@@ -7,6 +7,9 @@ using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.Student.Home;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Staff;
+using EasyTimeTable.Views.Staff.Course;
+using MaterialDesignThemes.Wpf;
+using EasyTimeTable.Views.Student.Course;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -15,7 +18,7 @@ namespace EasyTimeTable.ViewModel
     {
         public ICommand LoadStaffHomeCM { get; set; }
         public ICommand LoadStaffTuitionCM { get; set; }
-        public ICommand LoadCourseListCM { get; set; }
+        public ICommand LoadOpenCourseListCM { get; set; }
 
         [ObservableProperty]
         public String selectFuncName;
@@ -37,6 +40,12 @@ namespace EasyTimeTable.ViewModel
                     StaffWindow.Slidebtn.IsChecked = false;
                 if (StaffWindow.funcTitle != null)
                     StaffWindow.funcTitle.Text = "Ngôi nhà chung";
+            });
+            LoadOpenCourseListCM = new RelayCommand<object>((p) =>
+            {
+                ManageCourses m = new ManageCourses();
+                m.Show();
+                ManageCourses.Window.Hide();
             });
         }
     }

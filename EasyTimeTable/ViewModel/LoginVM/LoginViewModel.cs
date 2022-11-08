@@ -80,7 +80,7 @@ namespace EasyTimeTable.ViewModel
                     studentMainWindow.Show();
                     LoginWindow.Close();
                 }
-                else if (Password == "teacher" && Username == "teacher")
+                else if (Password == "staff" && Username == "staff")
                 {
                     LoginWindow.Hide();
                     StaffWindow staffWindow = new StaffWindow();

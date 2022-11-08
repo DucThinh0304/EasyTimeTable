@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyTimeTable.Views.Staff.Course;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,11 @@ namespace EasyTimeTable.Views.Staff
         private void selectFunc_Loaded(object sender, RoutedEventArgs e)
         {
             funcTitle = FuncTitle;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ManageCourses.Window = this;
         }
     }
 }

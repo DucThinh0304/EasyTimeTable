@@ -32,9 +32,4 @@
     <Resource Include="Assets\ETTlogo-large.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModel\StaffVM\CourseVM\" />
-    <Folder Include="Views\Staff\Course\" />
-  </ItemGroup>
-
 </Project>

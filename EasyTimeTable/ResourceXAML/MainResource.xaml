@@ -10,5 +10,6 @@
     <viewmodel:SchedulerViewModel x:Key="SchedulerVM"/>
     <viewmodel:TuitionViewModel x:Key="TuitionVM"/>
     <viewmodel:StaffViewModel x:Key="StaffVM"/>
+    <viewmodel:ManageCoursesVM x:Key="ManageCoursesVM"/>
 
 </ResourceDictionary>

@@ -8,6 +8,7 @@ namespace EasyTimeTable.Model
 {
     public class CourseModel
     {
+        public int STT { get; set; }
         public string? MaHocPhan { get; set; }
         public string? TenMon { get; set; }
         public string? TenGV { get; set; }
