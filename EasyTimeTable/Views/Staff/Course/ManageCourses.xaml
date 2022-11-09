@@ -36,7 +36,7 @@
             <DataGrid x:Name="Grid" Height="600" FontSize="20" 
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
-                          Background="Transparent">
+                          Background="Transparent" SelectionChanged="Grid_SelectionChanged">
                 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="STT" Binding="{Binding STT}" IsReadOnly="True"/>
@@ -64,9 +64,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="buttonThem" Margin="75 20 75 20" Height="50" FontSize="25" Content="Thêm" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Click="buttonThem_Click"/>
-            <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Xóa" Command="{Binding RequestCM}" Grid.Column="1"/>
-            <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Sửa" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Grid.Column="2"/>
-            <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Xuất danh sách" Command="{Binding RequestCM}" Grid.Column="3"/>
+            <Button x:Name="buttonXoa" Margin="75 20 75 20" Height="50" FontSize="25" Content="Xóa" Command="{Binding RequestCM}" Grid.Column="1" IsEnabled="False" Click="buttonXoa_Click"/>
+            <Button x:Name="buttonSua" Margin="75 20 75 20" Height="50" FontSize="25" Content="Sửa" Command="{Binding SelectCourse}" Grid.Column="2" IsEnabled="False" Click="buttonSua_Click"/>
+            <Button x:Name="buttonXuat" Margin="75 20 75 20" Height="50" FontSize="25" Content="Xuất danh sách" Command="{Binding RequestCM}" Grid.Column="3" IsEnabled="False"/>
         </Grid>
     </StackPanel>
 </Window>

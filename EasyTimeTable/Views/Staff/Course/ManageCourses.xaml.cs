@@ -117,5 +117,54 @@ namespace EasyTimeTable.Views.Staff.Course
             add.view = this;
             add.Show();
         }
+
+        private void buttonXoa_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult t = MessageBox.Show("Bạn có chắc chắn muốn xóa học phần " + courses[Grid.SelectedIndex].MaHocPhan + "?","Cảnh báo xóa học phần", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (t == MessageBoxResult.Yes)
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("DELETE FROM lophocphansinhvien where mahocphan = '" + courses[Grid.SelectedIndex].MaHocPhan + "'", con);
+                cmd.ExecuteNonQuery();
+                cmd = new SqlCommand("DELETE FROM hocphanodotdk where mahocphan = '" + courses[Grid.SelectedIndex].MaHocPhan + "'", con);
+                cmd.ExecuteNonQuery();
+                cmd = new SqlCommand("DELETE FROM hocphan where mahocphan = '" + courses[Grid.SelectedIndex].MaHocPhan + "'", con);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Đã xóa học phần thành công");
+                LoadDB(list[comboDotDKHP.SelectedIndex].MaDot, list[comboDotDKHP.SelectedIndex].HocKi, list[comboDotDKHP.SelectedIndex].NamHoc);
+            }
+        }
+
+        private void Grid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            buttonXoa.IsEnabled = true;
+            buttonSua.IsEnabled = true;
+            buttonXuat.IsEnabled = true;
+        }
+
+        private void buttonSua_Click(object sender, RoutedEventArgs e)
+        {
+            EditCourse.HocPhan = courses[Grid.SelectedIndex];
+            EditCourse.TenMon = new MonHocModel();
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd1 = new SqlCommand("Select monhoc.mamon, tenmon, sotclt, sotcth from monhoc, hocphan where monhoc.mamon = hocphan.mamon and mahocphan = '" + EditCourse.HocPhan.MaHocPhan +"'", con);
+            var dr1 = cmd1.ExecuteReader();
+            while (dr1.Read())
+            {
+                EditCourse.TenMon.MaMon = dr1.GetString(0);
+                EditCourse.TenMon.TenMon = dr1.GetString(1);
+                EditCourse.TenMon.SoTCLT = dr1.GetInt32(2);
+                EditCourse.TenMon.SoTCTH = dr1.GetInt32(3);
+            }
+            dr1.Close();
+            con.Close();
+            EditCourse.MaMonHoc = EditCourse.TenMon.MaMon;
+            EditCourse.dotDKHP = list[comboDotDKHP.SelectedIndex];
+            EditCourse edit = new EditCourse();
+            edit.Show();
+            edit.view = this;
+        }
     }
 }
