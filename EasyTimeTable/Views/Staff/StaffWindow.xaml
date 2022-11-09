@@ -10,7 +10,7 @@
         DataContext="{StaticResource StaffVM}"
          Height="960" Width="1440"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" VerticalAlignment="Center">
     <Grid>
 
         <Grid Grid.Row="0">

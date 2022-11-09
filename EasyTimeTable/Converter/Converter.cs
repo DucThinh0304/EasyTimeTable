@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyTimeTable.Converter
 {
-    public class Converter
+    public partial class Converter
     {
         public static TimeOnly StartTime(string a)
         {

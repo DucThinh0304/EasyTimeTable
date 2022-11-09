@@ -69,12 +69,12 @@ namespace EasyTimeTable.Views.Staff.Course
             con.Close();
             comboDotDKHP.SelectedIndex = 0;
         }
-        private void LoadDB(int MaDot, int KiHoc, string NamHoc)
+        public void LoadDB(int MaDot, int KiHoc, string NamHoc)
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT hocphan.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso FROM HOCPHAN,GIAOVIEN, Monhoc, hocphanodotdk where HOCPHAN.mamon = MONHOC.mamon AND HOCPHAN.magv = GIAOVIEN.Magv and " +
-                "hocphanodotdk.mahocphan = hocphan.mahocphan and madot = " + Convert.ToString(MaDot) + " and kihoc = " + Convert.ToString(KiHoc) + " and namhoc = '" + NamHoc + "'" , con);
+                "hocphanodotdk.mahocphan = hocphan.mahocphan and sophong is not null and madot = " + Convert.ToString(MaDot) + " and kihoc = " + Convert.ToString(KiHoc) + " and namhoc = '" + NamHoc + "'" , con);
             var dr = cmd.ExecuteReader();
             int i = 0;
 
@@ -108,6 +108,14 @@ namespace EasyTimeTable.Views.Staff.Course
             
             LoadDB(list[comboDotDKHP.SelectedIndex].MaDot, list[comboDotDKHP.SelectedIndex].HocKi, list[comboDotDKHP.SelectedIndex].NamHoc);
 
+        }
+
+        private void buttonThem_Click(object sender, RoutedEventArgs e)
+        {
+            AddCourse.dotDKHP = list[comboDotDKHP.SelectedIndex];
+            AddCourse add = new AddCourse();
+            add.view = this;
+            add.Show();
         }
     }
 }

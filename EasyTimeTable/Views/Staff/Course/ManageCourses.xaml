@@ -8,8 +8,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         FontSize="20"
         mc:Ignorable="d" 
-        d:DesignHeight="960" d:DesignWidth="1440"
-        Title="Quản lý học phần" Closed="Window_Closed">
+        Height="960" Width="1440"
+        Title="Quản lý học phần" Closed="Window_Closed" VerticalAlignment="Center" VerticalContentAlignment="Center">
     <Window.Background>
         <ImageBrush ImageSource="/Assets/Background.jpg" />
     </Window.Background>
@@ -63,7 +63,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Thêm" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}"/>
+            <Button x:Name="buttonThem" Margin="75 20 75 20" Height="50" FontSize="25" Content="Thêm" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Click="buttonThem_Click"/>
             <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Xóa" Command="{Binding RequestCM}" Grid.Column="1"/>
             <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Sửa" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Grid.Column="2"/>
             <Button Margin="75 20 75 20" Height="50" FontSize="25" Content="Xuất danh sách" Command="{Binding RequestCM}" Grid.Column="3"/>

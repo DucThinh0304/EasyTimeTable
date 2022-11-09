@@ -16,8 +16,8 @@ namespace EasyTimeTable.Model
         public int Ki { get; set; }
         public string? SoPhong { get; set; }
         public string? Toa { get; set; }
-        public DateTime NgayBatDau { get; set; }
-        public DateTime NgayKetThuc { get; set; }
+        public DateTime? NgayBatDau { get; set; }
+        public DateTime? NgayKetThuc { get; set; }
         public string? TietHoc { get; set; }
         public int Thu { get; set; }
         public int SiSo { get; set; }
