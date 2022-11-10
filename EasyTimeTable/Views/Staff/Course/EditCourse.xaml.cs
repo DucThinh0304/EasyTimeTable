@@ -39,13 +39,13 @@ namespace EasyTimeTable.Views.Staff.Course
             foreach (var item in TenGV)
             {
                 comboGiaoVien.Items.Add(item.TenGV);
-            }    
+            }
             LoadTiet(TenMon.SoTCLT);
             textMonHoc.Text = HocPhan.MaHocPhan + "-" + HocPhan.TenMon;
             comboThu.Text = HocPhan.Thu.ToString();
             comboTiet.Text = HocPhan.TietHoc;
             comboGiaoVien.Text = HocPhan.TenGV;
-            comboPhong.Text = HocPhan.Toa+HocPhan.SoPhong;
+            comboPhong.Text = HocPhan.Toa + HocPhan.SoPhong;
             NgayBatDau.Text = HocPhan.NgayBatDau.Value.ToString("dd/MM/yyyy");
             NgayKetThuc.Text = HocPhan.NgayKetThuc.Value.ToString("dd/MM/yyyy");
             textSiSo.Text = HocPhan.SiSo.ToString();
@@ -53,25 +53,25 @@ namespace EasyTimeTable.Views.Staff.Course
             con.Open();
             var cmd = new SqlCommand("SELECT COUNT(*) FROM hocphan where mahocphan = '" + HocPhan.MaHocPhan + ".1'", con);
             var dr = cmd.ExecuteReader();
-            bool t=false;
+            bool t = false;
             while (dr.Read())
             {
-                t = (dr.GetInt32(0)!=0);
-            }    
-            if (t==true)
+                t = (dr.GetInt32(0) != 0);
+            }
+            if (t == true)
             {
                 HT1.IsChecked = true;
                 comboThu_TH.Text = HocPhanTH.Thu.ToString();
                 comboTiet_TH.Text = HocPhanTH.TietHoc;
                 comboPhong_TH.Text = HocPhan.Toa + HocPhanTH.SoPhong;
                 LoadPhongTH(HocPhanTH.Thu, HocPhanTH.TietHoc);
-            }    
-            else if (TenMon.SoTCTH>0)
+            }
+            else if (TenMon.SoTCTH > 0)
             {
                 HT1.Visibility = Visibility.Visible;
                 HT2.Visibility = Visibility.Visible;
                 HT2.IsChecked = true;
-            }    
+            }
 
         }
         private void LoadTenGiaoVien(string MaMon)
@@ -203,8 +203,7 @@ namespace EasyTimeTable.Views.Staff.Course
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             PhongHoc = new List<PhongHocModel>();
-            var cmd = new SqlCommand("SELECT sophong, toa, soluongtoida, laphongmay FROM PHONGHOC EXCEPT SELECT phonghoc.sophong, phonghoc.toa, soluongtoida, laphongmay FROM PHONGHOC, HOCPHAN WHERE" +
-                " PHONGHOC.sophong = HOCPHAN.sophong AND HOCPHAN.toa = PHONGHOC.toa and laphongmay=1 AND thu= " + Convert.ToString(Thu), con);
+            var cmd = new SqlCommand("SELECT sophong, toa, soluongtoida, laphongmay FROM PHONGHOC where laphongmay=0", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -217,22 +216,19 @@ namespace EasyTimeTable.Views.Staff.Course
                 });
             }
             dr.Close();
-            cmd = new SqlCommand("SELECT phonghoc.sophong, phonghoc.toa, soluongtoida, laphongmay, tiethoc FROM PHONGHOC, HOCPHAN WHERE" +
-                " PHONGHOC.sophong = HOCPHAN.sophong AND HOCPHAN.toa = PHONGHOC.toa AND laphongmay=1 and thu= " + Convert.ToString(Thu), con);
+            cmd = new SqlCommand("SELECT sophong, toa, soluongtoida, laphongmay from phonghoc where laphongmay=1", con);
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                string t = dr.GetString(4);
-                if (Converter.Converter.CommonChars(t, Tiet) == 0)
+
+                PhongThucHanh.Add(new PhongHocModel
                 {
-                    PhongThucHanh.Add(new PhongHocModel
-                    {
-                        SoPhong = dr.GetString(0),
-                        Toa = dr.GetString(1),
-                        SoLuongToiDa = dr.GetInt32(2),
-                        LaPhongmay = false
-                    });
-                }
+                    SoPhong = dr.GetString(0),
+                    Toa = dr.GetString(1),
+                    SoLuongToiDa = dr.GetInt32(2),
+                    LaPhongmay = false
+                });
+
             }
             dr.Close();
             con.Close();
@@ -350,12 +346,12 @@ namespace EasyTimeTable.Views.Staff.Course
                 "ngayketthuc = '" + course.NgayKetThuc.Value.ToString("dd/MM/yyyy") + "'," +
                 "tiethoc = '" + course.TietHoc + "'," +
                 "thu = " + course.Thu + "," +
-                "siso = " + course.SiSo +" " +
-                "WHERE mahocphan = '" + course.MaHocPhan +"'", con);
+                "siso = " + course.SiSo + " " +
+                "WHERE mahocphan = '" + course.MaHocPhan + "'", con);
             try
             {
                 cmd.ExecuteNonQuery();
-                
+
                 if (HT1.IsChecked == true && TenMon.SoTCTH > 0)
                 {
                     cmd = new SqlCommand("UPDATE hocphan SET magv = '" + course.TenGV + "'," +
@@ -375,8 +371,8 @@ namespace EasyTimeTable.Views.Staff.Course
                         "ngayketthuc = '" + course.NgayKetThuc.Value.ToString("dd/MM/yyyy") + "'," +
                         "tiethoc = '" + comboTiet_TH.Text + "'," +
                         "thu = " + comboThu_TH.Text + "," +
-                        "siso = " + course.SiSo/2 + " " +
-                        "WHERE mahocphan = '" + course.MaHocPhan+".2'", con);
+                        "siso = " + course.SiSo / 2 + " " +
+                        "WHERE mahocphan = '" + course.MaHocPhan + ".2'", con);
                     cmd.ExecuteNonQuery();
 
                 }
@@ -403,8 +399,8 @@ namespace EasyTimeTable.Views.Staff.Course
             nam = Convert.ToInt32(dotDKHP.NamHoc.Remove(0, 5));
             thu = Convert.ToInt32(comboThu.Text);
             siSo = Convert.ToInt32(textSiSo.Text);
-            ngayBatDau = NgayBatDau.SelectedDate;
-            ngayKetThuc = NgayKetThuc.SelectedDate;
+            ngayBatDau = NgayBatDau.DateTime;
+            ngayKetThuc = NgayKetThuc.DateTime;
             CourseModel model = new CourseModel();
             maHocPhan = HocPhan.MaHocPhan;
             model.MaHocPhan = maHocPhan;

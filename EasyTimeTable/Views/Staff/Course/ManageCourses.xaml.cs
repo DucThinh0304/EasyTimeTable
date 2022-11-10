@@ -24,7 +24,7 @@ namespace EasyTimeTable.Views.Staff.Course
     /// </summary>
     public partial class ManageCourses : Window
     {
-        public static List <Model.DotDKHP> list;
+        public static List<Model.DotDKHP> list;
         public static List<CourseModel> courses;
         public static StaffWindow Window { get; set; }
         public ManageCourses()
@@ -46,7 +46,7 @@ namespace EasyTimeTable.Views.Staff.Course
                 }
                 return parent;
             }
-            
+
         }
         public void LoadDotDKHP()
         {
@@ -74,7 +74,7 @@ namespace EasyTimeTable.Views.Staff.Course
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT hocphan.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso FROM HOCPHAN,GIAOVIEN, Monhoc, hocphanodotdk where HOCPHAN.mamon = MONHOC.mamon AND HOCPHAN.magv = GIAOVIEN.Magv and " +
-                "hocphanodotdk.mahocphan = hocphan.mahocphan and sophong is not null and madot = " + Convert.ToString(MaDot) + " and kihoc = " + Convert.ToString(KiHoc) + " and namhoc = '" + NamHoc + "'" , con);
+                "hocphanodotdk.mahocphan = hocphan.mahocphan and sophong is not null and madot = " + Convert.ToString(MaDot) + " and kihoc = " + Convert.ToString(KiHoc) + " and namhoc = '" + NamHoc + "'", con);
             var dr = cmd.ExecuteReader();
             int i = 0;
 
@@ -105,7 +105,7 @@ namespace EasyTimeTable.Views.Staff.Course
 
         private void comboDotDKHP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             LoadDB(list[comboDotDKHP.SelectedIndex].MaDot, list[comboDotDKHP.SelectedIndex].HocKi, list[comboDotDKHP.SelectedIndex].NamHoc);
 
         }
@@ -120,7 +120,7 @@ namespace EasyTimeTable.Views.Staff.Course
 
         private void buttonXoa_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult t = MessageBox.Show("Bạn có chắc chắn muốn xóa học phần " + courses[Grid.SelectedIndex].MaHocPhan + "?","Cảnh báo xóa học phần", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult t = MessageBox.Show("Bạn có chắc chắn muốn xóa học phần " + courses[Grid.SelectedIndex].MaHocPhan + "?", "Cảnh báo xóa học phần", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (t == MessageBoxResult.Yes)
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
@@ -149,7 +149,7 @@ namespace EasyTimeTable.Views.Staff.Course
             EditCourse.TenMon = new MonHocModel();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd1 = new SqlCommand("Select monhoc.mamon, tenmon, sotclt, sotcth from monhoc, hocphan where monhoc.mamon = hocphan.mamon and mahocphan = '" + EditCourse.HocPhan.MaHocPhan +"'", con);
+            var cmd1 = new SqlCommand("Select monhoc.mamon, tenmon, sotclt, sotcth from monhoc, hocphan where monhoc.mamon = hocphan.mamon and mahocphan = '" + EditCourse.HocPhan.MaHocPhan + "'", con);
             var dr1 = cmd1.ExecuteReader();
             while (dr1.Read())
             {
@@ -165,6 +165,15 @@ namespace EasyTimeTable.Views.Staff.Course
             EditCourse edit = new EditCourse();
             edit.Show();
             edit.view = this;
+        }
+
+        private void buttonXuat_Click(object sender, RoutedEventArgs e)
+        {
+            PrintListStudentCourse.HocPhanChon = courses[Grid.SelectedIndex].MaHocPhan;
+            PrintListStudentCourse print = new PrintListStudentCourse();
+            print.Show();
+            PrintListStudentCourse.view = this;
+            this.Hide();
         }
     }
 }

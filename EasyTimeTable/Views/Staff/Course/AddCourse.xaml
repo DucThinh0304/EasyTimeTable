@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Course"
+        xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Course" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="AddCourse" Height="550" Width="900">
     <Grid>
@@ -11,8 +11,8 @@
         <ComboBox x:Name="comboGiaoVien" HorizontalAlignment="Left" Margin="206,119,0,0" VerticalAlignment="Top" Width="559" FontSize="20">
         </ComboBox>
         <ComboBox x:Name="comboPhong" HorizontalAlignment="Left" Margin="645,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top"/>
-        <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="584,244,0,0" VerticalAlignment="Top" FontSize="20" Width="181"/>
-        <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,244,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20"/>
+        <syncfusion:DateTimeEdit x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,249,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31" CultureInfo="vi-VN"/>
+        <syncfusion:DateTimeEdit x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,249,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31" CultureInfo="vi-VN"/>
         <TextBlock HorizontalAlignment="Left" Margin="58,59,0,0" TextWrapping="Wrap" Text="Môn học" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Left" Margin="58,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Giáo viên"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="562,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Phòng"/></TextBlock>

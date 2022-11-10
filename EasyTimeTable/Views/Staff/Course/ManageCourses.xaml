@@ -37,23 +37,23 @@
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           Background="Transparent" SelectionChanged="Grid_SelectionChanged">
-                
+
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="STT" Binding="{Binding STT}" IsReadOnly="True"/>
 
                     <DataGridTextColumn Header="Mã học phần" Binding="{Binding MaHocPhan}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Năm" Binding="{Binding Nam}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Kì" Binding="{Binding Ki}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Số phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tòa" Binding="{Binding Toa}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Ngày kết thúc" Binding="{Binding NgayKetThuc, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tiết học" Binding="{Binding TietHoc}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Thứ" Binding="{Binding Thu}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
-            </DataGrid.Columns>
+                    <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Năm" Binding="{Binding Nam}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Kì" Binding="{Binding Ki}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Số phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Tòa" Binding="{Binding Toa}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Ngày kết thúc" Binding="{Binding NgayKetThuc, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Tiết học" Binding="{Binding TietHoc}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Thứ" Binding="{Binding Thu}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
+                </DataGrid.Columns>
             </DataGrid>
         </materialDesign:Card>
         <Grid>
@@ -66,7 +66,7 @@
             <Button x:Name="buttonThem" Margin="75 20 75 20" Height="50" FontSize="25" Content="Thêm" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Click="buttonThem_Click"/>
             <Button x:Name="buttonXoa" Margin="75 20 75 20" Height="50" FontSize="25" Content="Xóa" Command="{Binding RequestCM}" Grid.Column="1" IsEnabled="False" Click="buttonXoa_Click"/>
             <Button x:Name="buttonSua" Margin="75 20 75 20" Height="50" FontSize="25" Content="Sửa" Command="{Binding SelectCourse}" Grid.Column="2" IsEnabled="False" Click="buttonSua_Click"/>
-            <Button x:Name="buttonXuat" Margin="75 20 75 20" Height="50" FontSize="25" Content="Xuất danh sách" Command="{Binding RequestCM}" Grid.Column="3" IsEnabled="False"/>
+            <Button x:Name="buttonXuat" Margin="75 20 75 20" Height="50" FontSize="25" Content="Xuất danh sách" Command="{Binding RequestCM}" Grid.Column="3" IsEnabled="False" Click="buttonXuat_Click"/>
         </Grid>
     </StackPanel>
 </Window>

@@ -55,7 +55,7 @@ namespace EasyTimeTable.Views.Staff.Course
                     SoTCLT = dr.GetInt32(2),
                     SoTCTH = dr.GetInt32(3)
                 });
-                
+
             }
             dr.Close();
             con.Close();
@@ -65,7 +65,7 @@ namespace EasyTimeTable.Views.Staff.Course
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             TenGV = new List<GiaoVienModel>();
-            var cmd = new SqlCommand("SELECT giangday.magv, tengv FROM GIAOVIEN, GIANGDAY WHERE mamon = '" + MaMon +"' AND GIAOVIEN.magv = GIANGDAY.magv", con);
+            var cmd = new SqlCommand("SELECT giangday.magv, tengv FROM GIAOVIEN, GIANGDAY WHERE mamon = '" + MaMon + "' AND GIAOVIEN.magv = GIANGDAY.magv", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -78,7 +78,7 @@ namespace EasyTimeTable.Views.Staff.Course
             }
             dr.Close();
             con.Close();
-        }    
+        }
         private void LoadTiet(int SoTCLT)
         {
             Tiet = new List<string>();
@@ -142,7 +142,7 @@ namespace EasyTimeTable.Views.Staff.Course
                     break;
                 default:
                     break;
-            }    
+            }
         }
         private void LoadPhong(int Thu, string Tiet)
         {
@@ -160,7 +160,7 @@ namespace EasyTimeTable.Views.Staff.Course
                     Toa = dr.GetString(1),
                     SoLuongToiDa = dr.GetInt32(2),
                     LaPhongmay = false
-                }) ;
+                });
             }
             dr.Close();
             cmd = new SqlCommand("SELECT phonghoc.sophong, phonghoc.toa, soluongtoida, laphongmay, tiethoc FROM PHONGHOC, HOCPHAN WHERE" +
@@ -178,8 +178,8 @@ namespace EasyTimeTable.Views.Staff.Course
                         SoLuongToiDa = dr.GetInt32(2),
                         LaPhongmay = false
                     });
-                }    
-            }    
+                }
+            }
             dr.Close();
             con.Close();
         }
@@ -240,10 +240,10 @@ namespace EasyTimeTable.Views.Staff.Course
             foreach (var item in TenGV)
             {
                 comboGiaoVien.Items.Add(item.TenGV);
-            }    
+            }
             LoadTiet(TenMon[comboMonHoc.SelectedIndex].SoTCLT);
             comboTiet.ItemsSource = Tiet;
-            if (TenMon[comboMonHoc.SelectedIndex].SoTCTH>0)
+            if (TenMon[comboMonHoc.SelectedIndex].SoTCTH > 0)
             {
                 textThucHanh.Visibility = Visibility.Visible;
                 HT1.Visibility = Visibility.Visible;
@@ -274,9 +274,9 @@ namespace EasyTimeTable.Views.Staff.Course
                 comboPhong.Items.Clear();
                 foreach (var item in PhongHoc)
                 {
-                    
-                     comboPhong.Items.Add(item.Toa + item.SoPhong);
-                    
+
+                    comboPhong.Items.Add(item.Toa + item.SoPhong);
+
                 }
             }
         }
@@ -287,7 +287,7 @@ namespace EasyTimeTable.Views.Staff.Course
             comboPhong.Items.Clear();
             foreach (var item in PhongHoc)
             {
-                    comboPhong.Items.Add(item.Toa + item.SoPhong);
+                comboPhong.Items.Add(item.Toa + item.SoPhong);
             }
         }
         private void comboThuTH_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -325,18 +325,18 @@ namespace EasyTimeTable.Views.Staff.Course
             {
                 MessageBox.Show("Phòng này chỉ chứa tối đa " + PhongHoc[comboPhong.SelectedIndex].SoLuongToiDa.ToString() + " sinh viên!");
                 return;
-            }    
+            }
             var cmd = new SqlCommand("SET DATEFORMAT DMY", con);
             cmd.ExecuteNonQuery();
-            cmd = new SqlCommand("Insert into hocphan values ('" + course.MaHocPhan + "','" + course.TenMon + "','" + course.TenGV +"'," + course.Nam.ToString() + "," + course.Ki.ToString() + ",'" + course.SoPhong +"','" + course.Toa +"','" + course.NgayBatDau.Value.ToString("dd/MM/yyyy") +"','" + course.NgayKetThuc.Value.ToString("dd/MM/yyyy") + "','" + course.TietHoc + "', " + course.Thu.ToString() +"," + course.SiSo.ToString() + ")", con);
+            cmd = new SqlCommand("Insert into hocphan values ('" + course.MaHocPhan + "','" + course.TenMon + "','" + course.TenGV + "'," + course.Nam.ToString() + "," + course.Ki.ToString() + ",'" + course.SoPhong + "','" + course.Toa + "','" + course.NgayBatDau.Value.ToString("dd/MM/yyyy") + "','" + course.NgayKetThuc.Value.ToString("dd/MM/yyyy") + "','" + course.TietHoc + "', " + course.Thu.ToString() + "," + course.SiSo.ToString() + ")", con);
             try
             {
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "Insert into hocphanodotdk values (" + dotDKHP.MaDot.ToString() + "," + dotDKHP.HocKi.ToString() + ",'" + course.MaHocPhan + "','" + dotDKHP.NamHoc + "')";
                 cmd.ExecuteNonQuery();
-                if (HT1.IsChecked==true && TenMon[comboMonHoc.SelectedIndex].SoTCTH>0)
+                if (HT1.IsChecked == true && TenMon[comboMonHoc.SelectedIndex].SoTCTH > 0)
                 {
-                    cmd = new SqlCommand("Insert into hocphan values ('" + course.MaHocPhan + ".1" + "','" + course.TenMon + "','" + course.TenGV + "'," + course.Nam.ToString() + "," + course.Ki.ToString() + ",'" + PhongThucHanh[comboPhong_TH.SelectedIndex].SoPhong + "','" + PhongThucHanh[comboPhong_TH.SelectedIndex].Toa + "','" + course.NgayBatDau.Value.ToString("dd/MM/yyyy") + "','" + course.NgayKetThuc.Value.ToString("dd/MM/yyyy") + "','" + comboTiet_TH.Text + "', " + comboThu_TH.Text + "," + (course.SiSo/2).ToString() + ")", con);
+                    cmd = new SqlCommand("Insert into hocphan values ('" + course.MaHocPhan + ".1" + "','" + course.TenMon + "','" + course.TenGV + "'," + course.Nam.ToString() + "," + course.Ki.ToString() + ",'" + PhongThucHanh[comboPhong_TH.SelectedIndex].SoPhong + "','" + PhongThucHanh[comboPhong_TH.SelectedIndex].Toa + "','" + course.NgayBatDau.Value.ToString("dd/MM/yyyy") + "','" + course.NgayKetThuc.Value.ToString("dd/MM/yyyy") + "','" + comboTiet_TH.Text + "', " + comboThu_TH.Text + "," + (course.SiSo / 2).ToString() + ")", con);
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "Insert into hocphanodotdk values (" + dotDKHP.MaDot.ToString() + "," + dotDKHP.HocKi.ToString() + ",'" + course.MaHocPhan + ".1','" + dotDKHP.NamHoc + "')";
                     cmd.ExecuteNonQuery();
@@ -351,11 +351,12 @@ namespace EasyTimeTable.Views.Staff.Course
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "Insert into hocphanodotdk values (" + dotDKHP.MaDot.ToString() + "," + dotDKHP.HocKi.ToString() + ",'" + course.MaHocPhan + ".1','" + dotDKHP.NamHoc + "')";
                     cmd.ExecuteNonQuery();
-                }    
+                }
                 MessageBox.Show("Thêm học phần thành công");
                 view.LoadDB(ManageCourses.list[view.comboDotDKHP.SelectedIndex].MaDot, ManageCourses.list[view.comboDotDKHP.SelectedIndex].HocKi, ManageCourses.list[view.comboDotDKHP.SelectedIndex].NamHoc);
                 this.Close();
-            } catch (Exception f)
+            }
+            catch (Exception f)
             {
                 MessageBox.Show(f.Message);
             }
@@ -374,15 +375,17 @@ namespace EasyTimeTable.Views.Staff.Course
             nam = Convert.ToInt32(dotDKHP.NamHoc.Remove(0, 5));
             thu = Convert.ToInt32(comboThu.Text);
             siSo = Convert.ToInt32(textSiSo.Text);
-            ngayBatDau = NgayBatDau.SelectedDate;
-            ngayKetThuc = NgayKetThuc.SelectedDate;
+            ngayBatDau = NgayBatDau.DateTime;
+            ngayKetThuc = NgayKetThuc.DateTime;
             CourseModel model = new CourseModel();
             maHocPhan = tenMon + "." + (char)(nam - 2020 + ki + 65);
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("SELECT COUNT(*) FROM hocphan where mamon = '"+tenMon+"' and ky = " + ki.ToString() + " and nam = " + nam.ToString(), con);
+            var cmd = new SqlCommand("SELECT MAX(mahocphan) FROM hocphan where mamon = '" + tenMon + "' and ky = " + ki.ToString() + " and nam = " + nam.ToString(), con);
             var dr = cmd.ExecuteReader();
-            if (dr.Read()) maHocPhan = maHocPhan + (dr.GetInt32(0) + 1).ToString();
+            string t = "";
+            if (dr.Read()) t = dr.GetString(0);
+            maHocPhan = Converter.Converter.TaoMaHocPhan(maHocPhan, t);
             con.Close();
             dr.Close();
             model.MaHocPhan = maHocPhan;
@@ -409,6 +412,11 @@ namespace EasyTimeTable.Views.Staff.Course
             comboTiet_TH.Visibility = Visibility.Visible;
             textPhongTH.Visibility = Visibility.Visible;
             comboPhong_TH.Visibility = Visibility.Visible;
+        }
+
+        private void NgayBatDau_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

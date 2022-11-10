@@ -11,9 +11,9 @@ namespace EasyTimeTable.Converter
         public static TimeOnly StartTime(string a)
         {
 
-         var groups = a.Select((c, ix) => new { Char = c, Index = ix })
-        .GroupBy(x => x)
-        .Select(g => String.Concat(g.Select(x => x.Char)));
+            var groups = a.Select((c, ix) => new { Char = c, Index = ix })
+           .GroupBy(x => x)
+           .Select(g => String.Concat(g.Select(x => x.Char)));
             string result = string.Join(",", groups);
             var numbers = result?.Split(",")?.Select(Int32.Parse)?.ToList();
             int min = numbers[0];
@@ -114,6 +114,17 @@ namespace EasyTimeTable.Converter
 
                 return Convert.ToHexString(hashBytes);
             }
+        }
+        public static string TaoMaHocPhan(string maHocPhan, string t)
+        {
+            int i = t.Length;
+            string tmp = "";
+            while (t[i - 2] != '.')
+            {
+                tmp = t[i - 1] + tmp;
+                i--;
+            }
+            return maHocPhan + tmp;
         }
     }
 }
