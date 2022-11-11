@@ -60,6 +60,16 @@ namespace EasyTimeTable.ViewModel
                     return Brushes.Crimson;
                 case 2:
                     return Brushes.Cyan;
+                case 3:
+                    return Brushes.Purple;
+                case 4:
+                    return Brushes.Orange;
+                case 5:
+                    return Brushes.Yellow;
+                case 6:
+                    return Brushes.SpringGreen;
+                case 7:
+                    return Brushes.Pink;
                 default:
                     return Brushes.Black;
 

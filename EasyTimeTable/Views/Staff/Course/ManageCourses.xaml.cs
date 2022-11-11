@@ -22,7 +22,7 @@ namespace EasyTimeTable.Views.Staff.Course
     /// <summary>
     /// Interaction logic for ManageCourses.xaml
     /// </summary>
-    public partial class ManageCourses : Window
+    public partial class ManageCourses : Page
     {
         public static List<Model.DotDKHP> list;
         public static List<CourseModel> courses;
@@ -33,21 +33,6 @@ namespace EasyTimeTable.Views.Staff.Course
             LoadDotDKHP();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Window.Show();
-            FrameworkElement GetParentWindow(FrameworkElement p)
-            {
-                FrameworkElement? parent = p;
-
-                while (parent.Parent != null)
-                {
-                    parent = parent.Parent as FrameworkElement;
-                }
-                return parent;
-            }
-
-        }
         public void LoadDotDKHP()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
@@ -115,8 +100,8 @@ namespace EasyTimeTable.Views.Staff.Course
             AddCourse.dotDKHP = list[comboDotDKHP.SelectedIndex];
             AddCourse add = new AddCourse();
             add.view = this;
-            add.Show();
-        }
+            add.ShowDialog();
+        }   
 
         private void buttonXoa_Click(object sender, RoutedEventArgs e)
         {
@@ -173,7 +158,6 @@ namespace EasyTimeTable.Views.Staff.Course
             PrintListStudentCourse print = new PrintListStudentCourse();
             print.Show();
             PrintListStudentCourse.view = this;
-            this.Hide();
         }
     }
 }

@@ -73,10 +73,6 @@ namespace EasyTimeTable.Views
             LoadSinhVien(comboHocPhan.SelectedItem.ToString());
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            view.Show();
-        }
 
         private void buttonThem_Click(object sender, RoutedEventArgs e)
         {

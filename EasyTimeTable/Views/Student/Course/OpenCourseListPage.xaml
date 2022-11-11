@@ -7,6 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       FontSize="20"
+      x:Name="mainPage"
       mc:Ignorable="d" 
       d:DesignHeight="960" d:DesignWidth="1440"
       DataContext="{StaticResource StudentOpenCourseVM}"
@@ -15,6 +16,25 @@
     <Page.Background>
         <ImageBrush ImageSource="/Assets/Background.jpg" />
     </Page.Background>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetMaskName}"
+                                   CommandParameter="{Binding ElementName=ShadowMask}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="mainPage"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
     <Grid>
         <StackPanel>
             <Grid Margin="20" Height="40">
@@ -50,9 +70,13 @@
                           Background="Transparent"
                           ItemsSource="{Binding FilteredOpenCourse}"
                           SelectedItem="{Binding Path=SelectedCourse, Mode=TwoWay}">
+                    
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding DatagridChangedSelectionCM}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Loaded">
+                            <i:InvokeCommandAction Command="{Binding LoadDataGrid}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>

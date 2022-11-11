@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Course" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         Title="AddCourse" Height="550" Width="900">
+    <Window.Background>
+        <ImageBrush ImageSource="/Assets/BackgroundStaff.jpg"/>
+    </Window.Background>
     <Grid>
         <TextBlock x:Name="textMonHoc" HorizontalAlignment="Left" Margin="206,55,0,0" VerticalAlignment="Top" Width="559" FontSize="20" />
         <ComboBox x:Name="comboGiaoVien" HorizontalAlignment="Left" Margin="206,119,0,0" VerticalAlignment="Top" Width="559" FontSize="20">

@@ -32,15 +32,13 @@ namespace EasyTimeTable.Views.Student.Calendar
         private void Thang_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
+            ScheduleReal.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
         }
         private void Tuan_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
+            ScheduleReal.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
         }
 
-        private void a(object sender, DataTransferEventArgs e)
-        {
-            MessageBox.Show("Hello");
-        }
     }
 }

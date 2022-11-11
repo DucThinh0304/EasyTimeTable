@@ -8,6 +8,8 @@ using EasyTimeTable.Views.Student.Home;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Staff;
 using EasyTimeTable.Views.Staff.Home;
+using EasyTimeTable.Views.Staff.Course;
+using EasyTimeTable.Views.LoginWindow;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -16,12 +18,51 @@ namespace EasyTimeTable.ViewModel
     {
         public ICommand LoadStaffHomeCM { get; set; }
         public ICommand LoadStaffTuitionCM { get; set; }
-        public ICommand LoadCourseListCM { get; set; }
+        public ICommand SignoutCM { get; set; }
+
+        public static Frame? MainFrame { get; set; }
 
         [ObservableProperty]
         public String selectFuncName;
+
         public StaffViewModel()
         {
+            LoadStaffHomeCM = new RelayCommand<Frame>((p) =>
+            {
+
+                if (StaffWindow.Slidebtn != null)
+                    StaffWindow.Slidebtn.IsChecked = false;
+                if (StaffWindow.funcTitle != null)
+                    StaffWindow.funcTitle.Text = "Ngôi nhà chung";
+                if (p != null)
+                    p.Content = new StaffHomePage();
+                MainFrame = p;
+            });
+
+            LoadStaffTuitionCM = new RelayCommand<Frame>((p) =>
+            {
+
+                if (StaffWindow.Slidebtn != null)
+                    StaffWindow.Slidebtn.IsChecked = false;
+                if (StaffWindow.funcTitle != null)
+                    StaffWindow.funcTitle.Text = "Quản lý học phần";
+                if (p != null)
+                    p.Content = new ManageCourses();
+            });
+
+            SignoutCM = new RelayCommand<FrameworkElement>((p) =>
+            {
+                FrameworkElement window = GetParentWindow(p);
+                var w = window as Window;
+                if (w != null)
+                {
+                    w.Hide();
+                    LoginWindow w1 = new LoginWindow();
+                    w1.ShowDialog();
+                    w.Close();
+                }
+            });
+
             FrameworkElement GetParentWindow(FrameworkElement p)
             {
                 FrameworkElement parent = p;
@@ -32,16 +73,6 @@ namespace EasyTimeTable.ViewModel
                 }
                 return parent;
             }
-            LoadStaffHomeCM = new RelayCommand<Frame>((p) =>
-            {
-
-                if (StaffWindow.Slidebtn != null)
-                    StaffWindow.Slidebtn.IsChecked = false;
-                if (StaffWindow.funcTitle != null)
-                    StaffWindow.funcTitle.Text = "Ngôi nhà chung";
-                if (p != null)
-                    p.Content = new StaffHomePage();
-            });
 
 
         }

@@ -4,57 +4,120 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Course" 
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        x:Name="AddCourseWindow"
+        WindowStyle="None"
         Title="AddCourse" Height="550" Width="900">
-    <Grid>
-        <ComboBox x:Name="comboMonHoc" HorizontalAlignment="Left" Margin="206,55,0,0" VerticalAlignment="Top" Width="559" FontSize="20" SelectionChanged="comboMonHoc_SelectionChanged"/>
-        <ComboBox x:Name="comboGiaoVien" HorizontalAlignment="Left" Margin="206,119,0,0" VerticalAlignment="Top" Width="559" FontSize="20">
-        </ComboBox>
-        <ComboBox x:Name="comboPhong" HorizontalAlignment="Left" Margin="645,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top"/>
-        <syncfusion:DateTimeEdit x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,249,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31" CultureInfo="vi-VN"/>
-        <syncfusion:DateTimeEdit x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,249,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31" CultureInfo="vi-VN"/>
-        <TextBlock HorizontalAlignment="Left" Margin="58,59,0,0" TextWrapping="Wrap" Text="Môn học" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Margin="58,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Giáo viên"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="562,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Phòng"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="58,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Ngày bắt đầu"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="415,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Ngày kết thúc"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="58,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Thứ"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="351,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Tiết"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="58,317,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Sỉ số"/></TextBlock>
-        <ComboBox x:Name="comboThu" HorizontalAlignment="Left" Margin="206,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top" SelectedIndex="0" HorizontalContentAlignment="Center" SelectionChanged="comboThu_SelectionChanged">
-            <ComboBoxItem>2</ComboBoxItem>
-            <ComboBoxItem>3</ComboBoxItem>
-            <ComboBoxItem>4</ComboBoxItem>
-            <ComboBoxItem>5</ComboBoxItem>
-            <ComboBoxItem>6</ComboBoxItem>
-            <ComboBoxItem>7</ComboBoxItem>
-        </ComboBox>
-        <ComboBox x:Name="comboTiet" HorizontalAlignment="Left" Margin="421,185,0,0" Width="120" FontSize="20" VerticalAlignment="Top" HorizontalContentAlignment="Center" SelectionChanged="comboTiet_SelectionChanged"/>
-        <TextBlock x:Name="textThucHanh" HorizontalAlignment="Left" Margin="369,317,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
-        <RadioButton x:Name="HT2" Content="Hình thức 2" HorizontalAlignment="Left" Margin="640,316,0,0" VerticalAlignment="Top" FontSize="20" Checked="RadioButton_Checked" Visibility="Hidden"/>
-        <RadioButton x:Name="HT1" Content="Hình thức 1" HorizontalAlignment="Left" Margin="485,315,0,0" VerticalAlignment="Top" FontSize="20" Visibility="Hidden" Checked="HT1_Checked"/>
-        <TextBox x:Name="textSiSo" HorizontalAlignment="Left" Margin="206,312,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" FontSize="20" HorizontalContentAlignment="Center"/>
-        <Button Content="Xác nhận" HorizontalAlignment="Left" Margin="416,467,0,0" VerticalAlignment="Top" Height="44" Width="126" Click="Button_Click"/>
-        <TextBlock FontSize="30" FontWeight="Bold" Foreground="#FF686BFF" Margin="262,10,210,384"><Run Language="vi-vn" Text="THÊM MỚI HỌC PHẦN"/></TextBlock>
-        <TextBlock x:Name="textThuTH" HorizontalAlignment="Left" Margin="61,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thứ"/></TextBlock>
-        <ComboBox x:Name="comboPhong_TH" HorizontalAlignment="Left" Margin="643,398,0,0" Width="120" FontSize="20" VerticalAlignment="Top" Visibility="Hidden"/>
-        <TextBlock x:Name="textPhongTH" HorizontalAlignment="Left" Margin="560,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Phòng"/></TextBlock>
-        <TextBlock x:Name="textTietTH" HorizontalAlignment="Left" Margin="349,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Tiết"/></TextBlock>
-        <ComboBox x:Name="comboThu_TH" HorizontalAlignment="Left" Margin="204,398,0,0" Width="120" FontSize="20" VerticalAlignment="Top" SelectedIndex="0" HorizontalContentAlignment="Center" SelectionChanged="comboThuTH_SelectionChanged" Visibility="Hidden">
-            <ComboBoxItem Content="2"/>
-            <ComboBoxItem Content="3"/>
-            <ComboBoxItem Content="4"/>
-            <ComboBoxItem Content="5"/>
-            <ComboBoxItem Content="6"/>
-            <ComboBoxItem Content="7"/>
-        </ComboBox>
-        <ComboBox x:Name="comboTiet_TH" HorizontalAlignment="Left" Margin="419,397,0,0" Width="120" FontSize="20" VerticalAlignment="Top" HorizontalContentAlignment="Center" SelectionChanged="comboTietTH_SelectionChanged" SelectedIndex="0" Visibility="Hidden">
-            <ComboBoxItem Content="12345"/>
-            <ComboBoxItem Content="67890"/>
-        </ComboBox>
-        <TextBlock x:Name="ThucHanh" HorizontalAlignment="Left" Margin="415,365,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="AddCourseWindow"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3" />
 
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <Window.Background>
+        <ImageBrush ImageSource="/Assets/BackgroundStaff.jpg"/>
+    </Window.Background>
+    <Border BorderBrush="Black"
+            BorderThickness="3"
+            Background="Transparent"
+            CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*" />
+                <RowDefinition Height="83*" />
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <Border BorderThickness="0,0,0,0.5"
+                    BorderBrush="Black"
+                    Grid.Row="0"
+                    CornerRadius="10 10 0 0"
+                    Background="#5498f9">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Thêm học phần" Grid.ColumnSpan="2"
+                               FontSize="25"
+                               FontWeight="Bold"         
+                               Margin="10,0,0,0" 
+                               TextAlignment="Center"
+                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1"
+                            ToolBar.OverflowMode="AsNeeded"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Background="OrangeRed"
+                            Foreground="White"
+                            BorderBrush="Transparent"
+                            materialDesign:ButtonAssist.CornerRadius="50"
+                            Margin="0 ,0,4,0"
+                            Click="Exit_Click"
+                            Height="30" Width="30">
+                        <materialDesign:PackIcon Kind="WindowClose"
+                                                 Padding="0" />
+                    </Button>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1">
+            <ComboBox x:Name="comboMonHoc" HorizontalAlignment="Left" Margin="206,55,0,0" VerticalAlignment="Top" Width="559" FontSize="20" SelectionChanged="comboMonHoc_SelectionChanged"/>
+            <ComboBox x:Name="comboGiaoVien" HorizontalAlignment="Left" Margin="206,119,0,0" VerticalAlignment="Top" Width="559" FontSize="20">
+            </ComboBox>
+            <ComboBox x:Name="comboPhong" HorizontalAlignment="Left" Margin="645,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top"/>
+            <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,249,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31"/>
+            <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,249,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31"/>
+            <TextBlock HorizontalAlignment="Left" Margin="58,59,0,0" TextWrapping="Wrap" Text="Môn học" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
+            <TextBlock HorizontalAlignment="Left" Margin="58,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Giáo viên"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="562,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Phòng"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="58,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Ngày bắt đầu"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="415,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Ngày kết thúc"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="58,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Thứ"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="351,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Tiết"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="58,317,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Sỉ số"/></TextBlock>
+            <ComboBox x:Name="comboThu" HorizontalAlignment="Left" Margin="206,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top" SelectedIndex="0" HorizontalContentAlignment="Center" SelectionChanged="comboThu_SelectionChanged">
+                <ComboBoxItem>2</ComboBoxItem>
+                <ComboBoxItem>3</ComboBoxItem>
+                <ComboBoxItem>4</ComboBoxItem>
+                <ComboBoxItem>5</ComboBoxItem>
+                <ComboBoxItem>6</ComboBoxItem>
+                <ComboBoxItem>7</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="comboTiet" HorizontalAlignment="Left" Margin="421,185,0,0" Width="120" FontSize="20" VerticalAlignment="Top" HorizontalContentAlignment="Center" SelectionChanged="comboTiet_SelectionChanged"/>
+            <TextBlock x:Name="textThucHanh" HorizontalAlignment="Left" Margin="369,317,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
+            <RadioButton x:Name="HT2" Content="Hình thức 2" HorizontalAlignment="Left" Margin="640,316,0,0" VerticalAlignment="Top" FontSize="20" Checked="RadioButton_Checked" Visibility="Hidden"/>
+            <RadioButton x:Name="HT1" Content="Hình thức 1" HorizontalAlignment="Left" Margin="485,315,0,0" VerticalAlignment="Top" FontSize="20" Visibility="Hidden" Checked="HT1_Checked"/>
+            <TextBox x:Name="textSiSo" HorizontalAlignment="Left" Margin="206,312,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" FontSize="20" HorizontalContentAlignment="Center"/>
+            <Button Content="Xác nhận" HorizontalAlignment="Left" Margin="416,400,0,0" VerticalAlignment="Top" Height="44" Width="126" Click="Button_Click"/>
+            <TextBlock x:Name="textThuTH" HorizontalAlignment="Left" Margin="61,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thứ"/></TextBlock>
+            <ComboBox x:Name="comboPhong_TH" HorizontalAlignment="Left" Margin="643,398,0,0" Width="120" FontSize="20" VerticalAlignment="Top" Visibility="Hidden"/>
+            <TextBlock x:Name="textPhongTH" HorizontalAlignment="Left" Margin="560,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Phòng"/></TextBlock>
+            <TextBlock x:Name="textTietTH" HorizontalAlignment="Left" Margin="349,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Tiết"/></TextBlock>
+            <ComboBox x:Name="comboThu_TH" HorizontalAlignment="Left" Margin="204,398,0,0" Width="120" FontSize="20" VerticalAlignment="Top" SelectedIndex="0" HorizontalContentAlignment="Center" SelectionChanged="comboThuTH_SelectionChanged" Visibility="Hidden">
+                <ComboBoxItem Content="2"/>
+                <ComboBoxItem Content="3"/>
+                <ComboBoxItem Content="4"/>
+                <ComboBoxItem Content="5"/>
+                <ComboBoxItem Content="6"/>
+                <ComboBoxItem Content="7"/>
+            </ComboBox>
+            <ComboBox x:Name="comboTiet_TH" HorizontalAlignment="Left" Margin="419,397,0,0" Width="120" FontSize="20" VerticalAlignment="Top" HorizontalContentAlignment="Center" SelectionChanged="comboTietTH_SelectionChanged" SelectedIndex="0" Visibility="Hidden">
+                <ComboBoxItem Content="12345"/>
+                <ComboBoxItem Content="67890"/>
+            </ComboBox>
+            <TextBlock x:Name="ThucHanh" HorizontalAlignment="Left" Margin="415,365,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
+
+            </Grid>
+            </Grid>
+    </Border>
 </Window>

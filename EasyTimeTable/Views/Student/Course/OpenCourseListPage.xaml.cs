@@ -25,5 +25,6 @@ namespace EasyTimeTable.Views.Student.Course
         {
             InitializeComponent();
         }
+
     }
 }

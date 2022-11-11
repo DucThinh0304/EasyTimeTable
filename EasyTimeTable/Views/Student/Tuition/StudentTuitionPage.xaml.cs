@@ -56,5 +56,10 @@ namespace EasyTimeTable.Views.Student.Tuition
                 viewModel.LoadListDB.Execute(null);
             return;
         }
+
+        private void ListViewItem_PreviewMouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

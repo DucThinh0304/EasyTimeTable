@@ -9,9 +9,11 @@
         FontSize="20"
         mc:Ignorable="d" 
         Height="960" Width="1440"
-        Title="Quản lý học phần" Closed="Window_Closed" VerticalAlignment="Center" VerticalContentAlignment="Center" Loaded="Window_Loaded">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Title="Quản lý học phần" VerticalAlignment="Center" VerticalContentAlignment="Center" Loaded="Window_Loaded">
     <Window.Background>
-        <ImageBrush ImageSource="/Assets/Background.jpg" />
+        <ImageBrush ImageSource="/Assets/BackgroundStaff.jpg"/>
     </Window.Background>
     <StackPanel>
         <Grid Margin="20" Height="40">

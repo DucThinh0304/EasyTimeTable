@@ -6,12 +6,32 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Home"
       mc:Ignorable="d" 
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      x:Name="mainPage"
       d:DesignHeight="960" d:DesignWidth="1440"
       DataContext="{StaticResource StudentHomeVM}"
       Title="StudentHomePage">
     <Page.Background>
         <ImageBrush ImageSource="/Assets/Background.jpg"/>
     </Page.Background>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="mainPage"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDB}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <StackPanel>
         <materialDesign:Card MaxWidth="900" Margin="0,100,0,0" Background="#FFF9F9F9">
         <WrapPanel Height="300" MaxWidth="880">
@@ -49,8 +69,8 @@
                     <StackPanel Margin="8">
                         <materialDesign:PackIcon HorizontalAlignment="Center"
 											    Kind="BookOpenVariant" Width="80" Height="80"/>
-                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Năm học: 2022-2023" Margin="0,12,0,0"/>
-                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(Số tín chỉ: 24)" HorizontalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Year}" Margin="0,12,0,0"/>
+                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding Semester}" HorizontalAlignment="Center"/>
                         <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}"/>
                     </StackPanel>
                 </StackPanel>

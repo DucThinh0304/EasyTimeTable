@@ -7,14 +7,13 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Name="Main_Staff"
         DataContext="{StaticResource StaffVM}"
-         Height="960" Width="1440"
+        Height="960" Width="1440"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
-
         <Grid Grid.Row="0">
-
             <Frame x:Name="MainFrame"
                    Height="960"
                    Width="1440"
@@ -152,7 +151,7 @@
                                         FontSize="22"
                                         HorizontalContentAlignment="Left"
                                         Width="285"
-                                        Command="{Binding LoadStudentHomeCM}"
+                                        Command="{Binding LoadStaffHomeCM}"
                                         CommandParameter="{Binding ElementName=MainFrame}" >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Home"
@@ -174,7 +173,7 @@
                                         FontSize="22"
                                         HorizontalContentAlignment="Left"
                                         Width="285"
-                                        Command="{Binding LoadOpenCourseListCM}" 
+                                        Command="{Binding LoadStaffCourseListCM}" 
                                         CommandParameter="{Binding ElementName=MainFrame}" >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="FormatListBulleted"
@@ -195,7 +194,7 @@
                                         FontSize="23"
                                         HorizontalContentAlignment="Left"
                                         Width="285"
-                                        Command="{Binding LoadStudentTuitionCM}"
+                                        Command="{Binding LoadStaffTuitionCM}"
                                         CommandParameter="{Binding ElementName=MainFrame}" >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Cash"
@@ -216,7 +215,7 @@
                                         FontSize="23"
                                         HorizontalContentAlignment="Left"
                                         Width="285"
-                                        Command="{Binding LoadStudentTuitionCM}"
+                                        Command="{Binding LoadStaffTuitionStatusCM}"
                                         CommandParameter="{Binding ElementName=MainFrame}" >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="FormatListChecks"
@@ -247,7 +246,6 @@
                                FontSize="25"
                                Margin="15,12.5,0,0"
                                x:Name="FuncTitle"
-                               Loaded="selectFunc_Loaded"
                                FontWeight="Bold"
                                Foreground="White">
                     </TextBlock>
@@ -269,9 +267,35 @@
                            FontSize="25"
                            Foreground="White" />
                     <materialDesign:PopupBox
-                        DockPanel.Dock="Right" 
+                        DockPanel.Dock="Left" 
                                              Foreground="White"
                                              PlacementMode="BottomAndAlignRightEdges">
+                        <StackPanel>
+                            <Button Command="{Binding SignoutCM}"
+                                    CommandParameter="{Binding ElementName=Main_Staff}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="SignOut"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Right"
+                                             Height="25"
+                                             Width="25" />
+                                    <TextBlock FontSize="22" Text="Chỉnh sửa hồ sơ"
+                                                   Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding SignoutCM}"
+                                    CommandParameter="{Binding ElementName=Main_Staff}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="SignOut"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Right"
+                                             Height="25"
+                                             Width="25" />
+                                    <TextBlock FontSize="22" Text="Đăng xuất"
+                                                   Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
                     </materialDesign:PopupBox>
                 </StackPanel>
             </DockPanel>

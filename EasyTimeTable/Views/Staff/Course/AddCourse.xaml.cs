@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,12 +34,19 @@ namespace EasyTimeTable.Views.Staff.Course
         public static DotDKHP dotDKHP;
         public AddCourse()
         {
+            CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
+            ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            Thread.CurrentThread.CurrentCulture = ci;
             InitializeComponent();
             LoadTenMon();
             foreach (var item in TenMon)
             {
                 comboMonHoc.Items.Add(item.TenMon);
             }
+        }
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
         private void LoadTenMon()
         {
@@ -375,8 +384,8 @@ namespace EasyTimeTable.Views.Staff.Course
             nam = Convert.ToInt32(dotDKHP.NamHoc.Remove(0, 5));
             thu = Convert.ToInt32(comboThu.Text);
             siSo = Convert.ToInt32(textSiSo.Text);
-            ngayBatDau = NgayBatDau.DateTime;
-            ngayKetThuc = NgayKetThuc.DateTime;
+            ngayBatDau = NgayBatDau.DisplayDate;
+            ngayKetThuc = NgayKetThuc.DisplayDate;
             CourseModel model = new CourseModel();
             maHocPhan = tenMon + "." + (char)(nam - 2020 + ki + 65);
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);

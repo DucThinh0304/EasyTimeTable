@@ -18,6 +18,8 @@ namespace EasyTimeTable.ViewModel
         public ICommand TuitionPageCM { get; set; }
         public ICommand CoursePageCM { get; set; }
 
+        public ICommand LoadDB { get; set; }
+
         [ObservableProperty]
         private string tuitionCheck;
 
@@ -25,7 +27,10 @@ namespace EasyTimeTable.ViewModel
         private Brush colorTuition;
 
         [ObservableProperty]
-        private string courseNumberText;
+        private string semester;
+
+        [ObservableProperty]
+        private string year;
         public StudentHomeVM()
         {
             TuitionPageCM = new RelayCommand<object>((p) =>
@@ -40,24 +45,35 @@ namespace EasyTimeTable.ViewModel
                 if (StudentMainWindow.funcTitle != null)
                     StudentMainWindow.funcTitle.Text = "Danh sách học phần";
             });
-            TuitionCheck = "(đã đóng học phí)";
-            ColorTuition = new SolidColorBrush(Colors.Black);
-            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-            con.Open();
-            var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL", con);
-            var dr = cmd.ExecuteReader();
-            if (dr.Read())
+            LoadDB = new RelayCommand<object>((p) =>
             {
-                TuitionCheck = "(chưa đóng học phí)";
-                ColorTuition = new SolidColorBrush(Colors.Red);
-            }
-            dr.Close();
-            cmd = new SqlCommand("select Sum(sotclt)+sum(sotcth) from sinhvienmonhoc, monhoc where masv = '20520782' and monhoc.mamon = sinhvienmonhoc.mamon", con);
-            dr = cmd.ExecuteReader();
-            if (dr.Read())
-            {
-                CourseNumberText = "(Số tín chỉ: " + dr.GetInt32(0).ToString() + ")";
-            }
+                TuitionCheck = "(đã đóng học phí)";
+                ColorTuition = new SolidColorBrush(Colors.Black);
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL", con);
+                var dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    TuitionCheck = "(chưa đóng học phí)";
+                    ColorTuition = new SolidColorBrush(Colors.Red);
+                }
+                dr.Close();
+                cmd = new SqlCommand("SELECT ki from thamso", con);
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    Semester = "(kì mở học phần hiện tại: " + dr.GetInt32(0).ToString() + ")";
+                }
+                dr.Close();
+                cmd = new SqlCommand("SELECT namhoc from thamso", con);
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    Year = "Năm học: " + dr.GetInt32(0).ToString() + " - " + (dr.GetInt32(0) + 1).ToString();
+                }
+                dr.Close();
+            });
 
 
         }

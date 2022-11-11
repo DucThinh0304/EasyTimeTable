@@ -30,30 +30,5 @@
                 </StackPanel>
             </WrapPanel>
         </materialDesign:Card>
-        <WrapPanel MaxWidth="900" Margin="0 100 0 0">
-            <materialDesign:Card  Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
-                <StackPanel>
-                    <StackPanel Margin="8">
-                        <materialDesign:PackIcon HorizontalAlignment="Center" 
-											    Kind="Cash" Width="80" Height="80"/>
-                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Học phí: 7.000.000đ" Margin="0,12,0,0"/>
-                        <TextBlock Foreground="{Binding ColorTuition}"
-                            Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding TuitionCheck}" HorizontalAlignment="Center"/>
-                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPageCM}"/>
-                    </StackPanel>
-                </StackPanel>
-            </materialDesign:Card>
-            <materialDesign:Card Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
-                <StackPanel>
-                    <StackPanel Margin="8">
-                        <materialDesign:PackIcon HorizontalAlignment="Center"
-											    Kind="BookOpenVariant" Width="80" Height="80"/>
-                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Năm học: 2022-2023" Margin="0,12,0,0"/>
-                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="(Số tín chỉ: 24)" HorizontalAlignment="Center"/>
-                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}"/>
-                    </StackPanel>
-                </StackPanel>
-            </materialDesign:Card>
-        </WrapPanel>
     </StackPanel>
 </Page>
