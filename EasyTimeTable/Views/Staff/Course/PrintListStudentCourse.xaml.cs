@@ -2,23 +2,11 @@
 using EasyTimeTable.Views.Staff.Course;
 using System.Collections.Generic;
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Data;
-using System.ComponentModel;
-
+using Microsoft.Office.Interop.Excel;
 
 namespace EasyTimeTable.Views
 {
@@ -92,7 +80,33 @@ namespace EasyTimeTable.Views
 
         private void buttonThem_Click(object sender, RoutedEventArgs e)
         {
-            
+            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.Visible = true;
+            Workbook workbook = excel.Workbooks.Add(1);
+            Worksheet sheet1 = (Worksheet)workbook.Sheets[1];
+            for (int i = 0; i < 4; i++)
+            {
+                Microsoft.Office.Interop.Excel.Range myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[3, i + 1];
+                myRange.Value2 = Grid.Columns[i].Header;
+            }
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 7]].Merge();
+            Microsoft.Office.Interop.Excel.Range TitleExcel = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[1, 1];
+            TitleExcel.Value2 = "Danh sách sinh viên lớp " + HocPhanChon;
+            sheet1.get_Range("A1", "G3").Cells.HorizontalAlignment =
+                 Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            int r = 3;
+            foreach (var item in SinhViens)
+            {
+                Microsoft.Office.Interop.Excel.Range myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[r + 1, 1];
+                myRange.Value2 = item.STT;
+                myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[r + 1, 2];
+                myRange.Value2 = item.MaSV;
+                myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[r + 1, 3];
+                myRange.Value2 = item.TenSV;
+                myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[r + 1, 4];
+                myRange.Value2 = item.LopHoc;
+                r++;
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

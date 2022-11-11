@@ -21,5 +21,7 @@ namespace EasyTimeTable.Model
         public string? TietHoc { get; set; }
         public int Thu { get; set; }
         public int SiSo { get; set; }
+        public int SoTinChi { get; set; }
+
     }
 }
