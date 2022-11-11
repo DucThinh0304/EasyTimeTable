@@ -13,26 +13,130 @@
     <Page.Background>
         <ImageBrush ImageSource="/Assets/Background.jpg"/>
     </Page.Background>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDB}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid Margin="20 10 40 10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <materialDesign:Card VerticalAlignment="Top" Grid.Column="0" Margin="40 20 20 20" MinHeight="520" materialDesign:ElevationAssist.Elevation="Dp12">
+        <materialDesign:Card VerticalAlignment="Top" Grid.Column="0" Margin="40 20 20 20" MinHeight="800" materialDesign:ElevationAssist.Elevation="Dp12">
             <StackPanel>
-                <TextBlock TextAlignment="Center" FontSize="25" FontWeight="Bold"
-                           materialDesign:ElevationAssist.Elevation="Dp12">
+                <TextBlock TextAlignment="Center" 
+                           FontSize="28" FontWeight="Bold">
                     Thông tin học phần
                 </TextBlock>
                 <TextBlock FontSize="20" Margin="20 0 0 0" Text="{Binding SoTinChi}"></TextBlock>
-                <ListView MinHeight="300" FontSize="20" Margin="20 0 0 0" ItemsSource="{Binding CourseList}">
-                    Danh sách đăng kí môn học
-                </ListView>
+                <Border Margin="10 0 10 0" BorderBrush="Gray" BorderThickness="1" CornerRadius="10 10 10 10">
+                    <StackPanel>
+                        <Border BorderBrush="Gray" BorderThickness="0 0 0 1">
+                            <TextBlock  FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Text="Danh sách môn đã đăng kí"></TextBlock>
+                        </Border>
+                        <ListView MaxHeight="500" FontSize="20" 
+                          ScrollViewer.CanContentScroll="False"
+                          x:Name="listview"
+                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                          HorizontalContentAlignment="Stretch"
+                          Margin="10 5 10 5" ItemsSource="{Binding CourseList}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Expander Margin="0"
+                                        Width="820"
+                                        Header="{Binding}"
+                                        HorizontalAlignment="Right"
+                                        Background="Transparent" 
+                                             x:Name="expander"
+                                        IsExpanded="False">
+                                            <Expander.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+
+                                                        <TextBlock FontSize="20" Foreground="Black">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding StringFormat="Mã môn học: {0}  -  Tên môn học: {1}">
+                                                                    <Binding Path="MaHocPhan"/>
+                                                                    <Binding Path="TenMon"/>
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </Expander.HeaderTemplate>
+                                            <Grid>
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"></RowDefinition>
+                                                    <RowDefinition Height="40"></RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Background="Transparent" Orientation="Vertical">
+                                                    <TextBlock
+                                                        Margin="50,0,0,0"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        FontWeight="Bold"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding SoTinChi, StringFormat=Số tín chỉ: {0}}"></TextBlock>
+                                                    <TextBlock
+                                                        Margin="50,5,0,0"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding TenGV, StringFormat=Giảng viên: {0}}"></TextBlock>
+                                                    <TextBlock
+                                                        Margin="50,5,0,0"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding SiSo, StringFormat=Sỉ số: {0}}"></TextBlock>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="3" Grid.ColumnSpan="3">
+                                                    <TextBlock FontSize="16" FontWeight="Bold">Lịch học</TextBlock>
+                                                    <TextBlock Margin="0,5,0,0" FontSize="16" LineHeight="25" Text="{Binding Thu, StringFormat=Thứ: {0}}"></TextBlock>
+                                                    <TextBlock Margin="0,5,0,0" FontSize="16" LineHeight="25" Text="{Binding TietHoc, StringFormat=Tiết học: {0}}"></TextBlock>
+                                                </StackPanel>
+                                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}" 
+                                                        Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1"   Margin="0,0,40,5" Width="150" Height="35" HorizontalAlignment="Right"
+                                                        Click="Button_Click">Hủy đăng ký</Button>
+                                            </Grid>
+                                        </Expander>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:InvokeCommandAction Command="{Binding LoadListDB}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ListView>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </materialDesign:Card>
         <StackPanel Grid.Column="1" >
-            <TextBlock Margin="0 100 0 0"  FontSize="20">Tổng số tiền cần thanh toán: </TextBlock>
+            <TextBlock TextAlignment="Center" FontSize="28" 
+                       FontWeight="Bold" Text="Tổng tiền" Margin="0 20 0 0"/>
+            <TextBlock Margin="0 100 0 0"  FontSize="20">Tổng số tiền cần thanh toán:</TextBlock>
             <TextBlock HorizontalAlignment="Right" FontSize="20">7.000.000 VND</TextBlock>
             <Button Height="45" FontSize="25" Margin="20 200 20 0" materialDesign:ButtonAssist.CornerRadius="5">
                 Thanh toán

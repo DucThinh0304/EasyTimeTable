@@ -10,17 +10,17 @@
         DataContext="{StaticResource StaffVM}"
          Height="960" Width="1440"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen" VerticalAlignment="Center">
+        WindowStartupLocation="CenterScreen">
     <Grid>
 
         <Grid Grid.Row="0">
 
             <Frame x:Name="MainFrame"
-                   Height="720"
-                   Width="1080"
+                   Height="960"
+                   Width="1440"
                    NavigationUIVisibility="Hidden"
                    Panel.ZIndex="0"
-                   Margin="0,80,0,0">
+                   Margin="0,60,0,0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadStaffHomeCM}"
@@ -30,11 +30,43 @@
             </Frame>
             <Grid Grid.RowSpan="2"
                   Background="Gray"
-                  Opacity="0.3"
-                  Visibility="Collapsed"
+                  Opacity="0"
                   x:Name="shadow">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=SlideButton}"
+                                             Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                         Storyboard.TargetProperty="Opacity"
+                                         From="0"
+                                         To="0.3"
+                                         Duration="0:0:0.3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0.3"
+                                     To="0"
+                                     Duration="0:0:0.3" />
+
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
             </Grid>
             <materialDesign:ColorZone Mode="PrimaryLight"
+                                      Background="#ad82f2"
                                       Padding="16"
                                       Height="60"
                                       materialDesign:ShadowAssist.ShadowDepth="Depth3"/>
@@ -143,7 +175,7 @@
                                         HorizontalContentAlignment="Left"
                                         Width="285"
                                         Command="{Binding LoadOpenCourseListCM}" 
-                                        CommandParameter="{Binding ElementName=MainFrame}" Click="Button_Click" >
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="FormatListBulleted"
                                                          Height="30"

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +26,8 @@ namespace EasyTimeTable.Views.Student.Calendar
         {
             InitializeComponent();
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("vi-vn");
+            Thread.CurrentThread.CurrentCulture = culture;
         }
         private void Thang_Click(object sender, RoutedEventArgs e)
         {
@@ -32,6 +36,11 @@ namespace EasyTimeTable.Views.Student.Calendar
         private void Tuan_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
+        }
+
+        private void a(object sender, DataTransferEventArgs e)
+        {
+            MessageBox.Show("Hello");
         }
     }
 }

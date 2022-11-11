@@ -23,6 +23,9 @@ namespace EasyTimeTable.ViewModel
 
         [ObservableProperty]
         private Brush colorTuition;
+
+        [ObservableProperty]
+        private string courseNumberText;
         public StudentHomeVM()
         {
             TuitionPageCM = new RelayCommand<object>((p) =>
@@ -48,6 +51,15 @@ namespace EasyTimeTable.ViewModel
                 TuitionCheck = "(chưa đóng học phí)";
                 ColorTuition = new SolidColorBrush(Colors.Red);
             }
+            dr.Close();
+            cmd = new SqlCommand("select Sum(sotclt)+sum(sotcth) from sinhvienmonhoc, monhoc where masv = '20520782' and monhoc.mamon = sinhvienmonhoc.mamon", con);
+            dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                CourseNumberText = "(Số tín chỉ: " + dr.GetInt32(0).ToString() + ")";
+            }
+
+
         }
 
     }

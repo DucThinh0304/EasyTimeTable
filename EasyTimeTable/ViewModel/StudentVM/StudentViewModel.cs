@@ -6,6 +6,8 @@ using EasyTimeTable.Views.Student.Calendar;
 using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Home;
 using EasyTimeTable.Views.Student.Tuition;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,6 +24,8 @@ namespace EasyTimeTable.ViewModel
         public ICommand SignoutCM { get; set; }
         public static Frame? MainFrame { get; set; }
 
+        [ObservableProperty]
+        private bool isLoading;
 
         public StudentViewModel()
         {
@@ -33,6 +37,7 @@ namespace EasyTimeTable.ViewModel
                     StudentMainWindow.funcTitle.Text = "Thông tin học phí";
                 if (p != null)
                     p.Content = new StudentTuitionPage();
+
             });
             LoadStudentHomeCM = new RelayCommand<Frame>((p) =>
             {
@@ -87,7 +92,8 @@ namespace EasyTimeTable.ViewModel
                     w.Close();
                 }
             });
-            
+
+
         }
 
     }

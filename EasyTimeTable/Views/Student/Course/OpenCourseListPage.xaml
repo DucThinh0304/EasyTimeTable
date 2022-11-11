@@ -15,23 +15,24 @@
     <Page.Background>
         <ImageBrush ImageSource="/Assets/Background.jpg" />
     </Page.Background>
-    <StackPanel>
+    <Grid>
+        <StackPanel>
             <Grid Margin="20" Height="40">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <ComboBox Margin="20 0 20 0" FontSize="20" SelectedIndex="0" SelectedItem="{Binding SelectedCombobox, Mode=TwoWay}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding RegionChangedCM}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <ComboBoxItem Content="Tự động"/>
-                <ComboBoxItem Content="Môn đã chọn"/>
-                <ComboBoxItem Content="Môn chưa chọn"/>
-                <ComboBoxItem Content="Tất cả"/>
-            </ComboBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ComboBox Margin="20 0 20 0" FontSize="20" SelectedIndex="0" SelectedItem="{Binding SelectedCombobox, Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RegionChangedCM}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ComboBoxItem Content="Tự động"/>
+                    <ComboBoxItem Content="Môn đã chọn"/>
+                    <ComboBoxItem Content="Môn chưa chọn"/>
+                    <ComboBoxItem Content="Tất cả"/>
+                </ComboBox>
                 <DockPanel Grid.Column="1">
                     <materialDesign:PackIcon Kind="Search" Width="40" Height="40"></materialDesign:PackIcon>
                     <TextBox materialDesign:HintAssist.Hint="Tìm kiếm" 
@@ -49,20 +50,21 @@
                           Background="Transparent"
                           ItemsSource="{Binding FilteredOpenCourse}"
                           SelectedItem="{Binding Path=SelectedCourse, Mode=TwoWay}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding DatagridChangedSelectionCM}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <DataGrid.Columns>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding DatagridChangedSelectionCM}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Chọn" 
                                                 ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                                 EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
-                                                x:Name="check" Binding="{Binding isSignUp}" 
+                                                x:Name="check" Binding="{Binding IsSignUp}" 
                                                 IsReadOnly="True"/>
                         <DataGridTextColumn Header="Mã học phần" Binding="{Binding MaHocPhan}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Số tín chỉ" Binding="{Binding SoTinChi}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Năm" Binding="{Binding Nam}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Kì" Binding="{Binding Ki}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Số phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
@@ -72,6 +74,7 @@
                         <DataGridTextColumn Header="Tiết học" Binding="{Binding TietHoc}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Thứ" Binding="{Binding Thu}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
+
                     </DataGrid.Columns>
                 </DataGrid>
             </materialDesign:Card>
@@ -80,9 +83,21 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <Button Margin="100 20 100 20" Height="50" FontSize="25" Content="{Binding ButtonContent}" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}"/>
-            <Button Margin="100 20 100 20" Height="50" FontSize="25" Content="Tạo yêu cầu mở lớp" Command="{Binding RequestCM}" Grid.Column="1"/>
+                <Button Margin="100 20 100 20" Height="50" FontSize="25" Content="{Binding ButtonContent}" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourseCM}"/>
+                <Button Margin="100 20 100 20" Height="50" FontSize="25" Content="Tạo yêu cầu mở lớp" Command="{Binding RequestCM}" Grid.Column="1"/>
             </Grid>
         </StackPanel>
+        <Grid Grid.RowSpan="2"
+                  Background="Gray"
+                  Opacity="0.3"
+                  Visibility="Collapsed"
+                  x:Name="ShadowMask" />
+        <ProgressBar Height="100"
+                            Width="100"
+                            Margin="0 0 0 0"
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            IsIndeterminate="{Binding IsLoading}">
+        </ProgressBar>
+    </Grid>
 </Page>
 

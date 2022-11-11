@@ -6,12 +6,14 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <NeutralLanguage>vi</NeutralLanguage>
+    <ApplicationIcon>Assets\ETTlogo-large.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Background.jpg" />
     <None Remove="Assets\BackgroundStaff.jpg" />
     <None Remove="Assets\ETT-logoflat.png" />
+    <None Remove="Assets\ETTlogo-large.ico" />
     <None Remove="Assets\ETTlogo-large.png" />
   </ItemGroup>
 
@@ -28,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\ETTlogo-large.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="MaterialDesignColors" Version="2.0.9" />
     <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
@@ -41,6 +47,7 @@
     <Resource Include="Assets\Background.jpg" />
     <Resource Include="Assets\BackgroundStaff.jpg" />
     <Resource Include="Assets\ETT-logoflat.png" />
+    <Resource Include="Assets\ETTlogo-large.ico" />
     <Resource Include="Assets\ETTlogo-large.png" />
   </ItemGroup>
 
