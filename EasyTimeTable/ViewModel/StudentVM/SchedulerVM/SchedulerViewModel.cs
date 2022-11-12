@@ -14,9 +14,13 @@ namespace EasyTimeTable.ViewModel
     public partial class SchedulerViewModel
     {
         [ObservableProperty]
-        public ScheduleAppointmentCollection scheduleAppointmentCollection;
+        public ScheduleAppointmentCollection? scheduleAppointmentCollection;
+
+        [ObservableProperty]
+        public ScheduleAppointmentCollection? scheduleAppointmentCollectionReal;
 
         public ICommand LoadSchedulerCM { get; set; }
+        public ICommand LoadSchedulerRealCM { get; set; }
 
         public SchedulerViewModel()
         {
@@ -25,8 +29,8 @@ namespace EasyTimeTable.ViewModel
                 ScheduleAppointmentCollection = new ScheduleAppointmentCollection();
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
-                var cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu from hocphan, lophocphansinhvien, monhoc, giaovien where  " +
-                    "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon", con);
+                var cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
+                    "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam ", con);
                 var dr = cmd.ExecuteReader();
                 int i = 0;
                 while (dr.Read())
@@ -47,6 +51,81 @@ namespace EasyTimeTable.ViewModel
                     };
                     scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=15";
                     ScheduleAppointmentCollection.Add(scheduleAppointment);
+                }
+                dr.Close();
+                cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
+                   "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '20520782' and (thamso.ki <> hocphan.ky or thamso.namhoc <> hocphan.nam) and daduyet = 1", con);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    i++;
+                    DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
+                    DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
+                    datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                    dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                    var scheduleAppointment = new ScheduleAppointment()
+                    {
+                        Id = i,
+                        StartTime = datestart,
+                        EndTime = dateend,
+                        Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3),
+                        AppointmentBackground = Brushes.Black,
+                        Foreground = Brushes.White,
+                    };
+                    scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=15";
+                    ScheduleAppointmentCollection.Add(scheduleAppointment);
+                }
+            });
+
+            LoadSchedulerRealCM = new RelayCommand<object>((p) => {
+                ScheduleAppointmentCollectionReal = new ScheduleAppointmentCollection();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
+                    "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and daduyet = 1", con);
+                var dr = cmd.ExecuteReader();
+                int i = 0;
+                while (dr.Read())
+                {
+                    i++;
+                    DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
+                    DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
+                    datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                    dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                    var scheduleAppointment = new ScheduleAppointment()
+                    {
+                        Id = i,
+                        StartTime = datestart,
+                        EndTime = dateend,
+                        Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3),
+                        AppointmentBackground = PickBrush(i),
+                        Foreground = Brushes.White,
+                    };
+                    scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=15";
+                    ScheduleAppointmentCollectionReal.Add(scheduleAppointment);
+                }
+                dr.Close();
+                cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
+                   "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '20520782' and (thamso.ki <> hocphan.ky or thamso.namhoc <> hocphan.nam) and daduyet = 1", con);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    i++;
+                    DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
+                    DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
+                    datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                    dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                    var scheduleAppointment = new ScheduleAppointment()
+                    {
+                        Id = i,
+                        StartTime = datestart,
+                        EndTime = dateend,
+                        Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3),
+                        AppointmentBackground = Brushes.Black,
+                        Foreground = Brushes.White,
+                    };
+                    scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=15";
+                    ScheduleAppointmentCollectionReal.Add(scheduleAppointment);
                 }
             });
         }

@@ -3,9 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Tuition;
+using Syncfusion.Windows.Shared;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -17,7 +17,6 @@ namespace EasyTimeTable.ViewModel
     {
         public ICommand TuitionPageCM { get; set; }
         public ICommand CoursePageCM { get; set; }
-
         public ICommand LoadDB { get; set; }
 
         [ObservableProperty]
@@ -27,12 +26,19 @@ namespace EasyTimeTable.ViewModel
         private Brush colorTuition;
 
         [ObservableProperty]
+        private Brush colorSemester;
+
+        [ObservableProperty]
         private string semester;
 
         [ObservableProperty]
         private string year;
+
+        [ObservableProperty]
+        private bool isEnable;
         public StudentHomeVM()
         {
+           
             TuitionPageCM = new RelayCommand<object>((p) =>
             {
                 StudentViewModel.MainFrame.Content = new StudentTuitionPage();
@@ -63,7 +69,18 @@ namespace EasyTimeTable.ViewModel
                 dr = cmd.ExecuteReader();
                 if (dr.Read())
                 {
-                    Semester = "(kì mở học phần hiện tại: " + dr.GetInt32(0).ToString() + ")";
+                    if (dr.GetInt32(0) == 0)
+                    {
+                        Semester = "(Chưa đến thời gian đăng kí học phần)";
+                        IsEnable = false;
+                        ColorSemester = new SolidColorBrush(Colors.Red);
+                    }
+                    else
+                    {     
+                        Semester = "(kì mở học phần hiện tại: " + dr.GetInt32(0).ToString() + ")";
+                        IsEnable = true;
+                        ColorSemester = new SolidColorBrush(Colors.Black);
+                    }
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT namhoc from thamso", con);

@@ -40,5 +40,18 @@ namespace EasyTimeTable.Views.Student.Calendar
             ScheduleReal.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
         }
 
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tab.SelectedIndex == 0)
+            {
+                Schedule.Visibility = Visibility.Visible;
+                ScheduleReal.Visibility = Visibility.Hidden; 
+            }
+            else
+            {
+                Schedule.Visibility = Visibility.Hidden;
+                ScheduleReal.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

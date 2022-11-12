@@ -89,8 +89,6 @@
                         <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Số tín chỉ" Binding="{Binding SoTinChi}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Năm" Binding="{Binding Nam}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Kì" Binding="{Binding Ki}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Số phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Tòa" Binding="{Binding Toa}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
@@ -98,7 +96,6 @@
                         <DataGridTextColumn Header="Tiết học" Binding="{Binding TietHoc}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Thứ" Binding="{Binding Thu}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
-
                     </DataGrid.Columns>
                 </DataGrid>
             </materialDesign:Card>

@@ -61,6 +61,7 @@ namespace EasyTimeTable.ViewModel
             OpenCourse = new ObservableCollection<OpenCourseModel>();
             LoadDataGrid = new RelayCommand<object>(async (p) =>
             {
+                
                 OpenCourse.Clear();
                 LoadDB(OpenCourse);
             });
@@ -177,7 +178,8 @@ namespace EasyTimeTable.ViewModel
                 "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon " +
                 "AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
                 "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '20520782') AND tenmon not in (select tenmon FROM lophocphansinhvien, " +
-                "HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam)", con);
+                "HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan " +
+                "and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam)", con);
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -232,7 +234,7 @@ namespace EasyTimeTable.ViewModel
                 dr.Close();
                 if (count == 0)
                 {
-                    cmd = new SqlCommand("Insert into lophocphansinhvien (mahocphan, masv, lanhoc, diem, ngaydangki) values " + "(@mahocphan, @masv, @lanhoc, @diem, @ngaydangki)", con);
+                    cmd = new SqlCommand("Insert into lophocphansinhvien (mahocphan, masv, lanhoc, diem, ngaydangki, daduyet) values " + "(@mahocphan, @masv, @lanhoc, @diem, @ngaydangki, @daduyet)", con);
                     cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
                     cmd.Parameters["@mahocphan"].Value = SelectedCourse.MaHocPhan;
                     cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
@@ -243,6 +245,8 @@ namespace EasyTimeTable.ViewModel
                     cmd.Parameters["@ngaydangki"].Value = DateTime.Now;
                     cmd.Parameters.Add("@diem", System.Data.SqlDbType.Int);
                     cmd.Parameters["@diem"].Value = 0;
+                    cmd.Parameters.Add("@daduyet", System.Data.SqlDbType.Int);
+                    cmd.Parameters["@daduyet"].Value = 0;
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Đăng kí thành công");
                     RegionChanged();
@@ -251,7 +255,7 @@ namespace EasyTimeTable.ViewModel
                 else
                 {
                     MessageBox.Show("Đây là lần học lại lần thứ " + count.ToString() + "!!");
-                    cmd = new SqlCommand("Insert into lophocphansinhvien (mahocphan, masv, lanhoc, diem, ngaydangki) values " + "(@mahocphan, @masv, @lanhoc, @diem, @ngaydangki)", con);
+                    cmd = new SqlCommand("Insert into lophocphansinhvien (mahocphan, masv, lanhoc, diem, ngaydangki, daduyet) values " + "(@mahocphan, @masv, @lanhoc, @diem, @ngaydangki, @daduyet)", con);
                     cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
                     cmd.Parameters["@mahocphan"].Value = SelectedCourse.MaHocPhan;
                     cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
@@ -262,6 +266,8 @@ namespace EasyTimeTable.ViewModel
                     cmd.Parameters["@ngaydangki"].Value = DateTime.Now;
                     cmd.Parameters.Add("@diem", System.Data.SqlDbType.Int);
                     cmd.Parameters["@diem"].Value = 0;
+                    cmd.Parameters.Add("@daduyet", System.Data.SqlDbType.Int);
+                    cmd.Parameters["@daduyet"].Value = 0;
                     cmd.ExecuteNonQuery();
                     RegionChanged();
                     return;

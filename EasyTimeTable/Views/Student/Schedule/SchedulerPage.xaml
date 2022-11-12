@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
       xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Calendar"
+       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       xml:lang="vi-VN"
       x:Name="mainPage"
@@ -38,48 +39,56 @@
             <Button HorizontalAlignment="Right" FontSize="20" Height="40" Width="100" Margin="20 0 20 0" Click="Thang_Click">Tháng</Button>
             <Button HorizontalAlignment="Right" FontSize="20" Height="40" Width="100"  Margin="20 0 20 0" Click="Tuan_Click">Tuần</Button>
         </StackPanel>
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" materialDesign:ColorZoneAssist.Mode="PrimaryLight" x:Name="tab"
+            SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Thời khóa biêu dự kiến" FontSize="30">
-                <syncfusion:SfScheduler
-            x:Name="Schedule" 
-            ItemsSource="{Binding ScheduleAppointmentCollection}"
-            ViewType="Week" 
-            Language="vi-VN"
-            Background="Transparent">
-                    <syncfusion:SfScheduler.DaysViewSettings>
-                        <syncfusion:DaysViewSettings 
-                    TimeIntervalSize="96.1"
-                    StartHour="7.5"
-                    EndHour="17"/>
-                    </syncfusion:SfScheduler.DaysViewSettings>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Loaded">
-                            <i:InvokeCommandAction Command="{Binding LoadSchedulerCM}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </syncfusion:SfScheduler>
             </TabItem>
             <TabItem Header="Thời khóa biêu chính thức" FontSize="30">
-                <syncfusion:SfScheduler
-                    x:Name="ScheduleReal" 
-                    ItemsSource="{Binding ScheduleAppointmentCollectionReal}"
-                    ViewType="Week" 
-                    Language="vi-VN"
-                    AppointmentEditFlag="None"
-                    Background="Transparent">
-                    <syncfusion:SfScheduler.DaysViewSettings>
-                        <syncfusion:DaysViewSettings 
-                            TimeIntervalSize="100"
-                            StartHour="7"
-                            EndHour="17"/>  
-                    </syncfusion:SfScheduler.DaysViewSettings>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Loaded">
-                            <i:InvokeCommandAction Command="{Binding LoadSchedulerCM}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </syncfusion:SfScheduler>
             </TabItem>
         </TabControl>
+        <syncfusion:SfScheduler
+                            Margin="0 50 0 0"
+                            Grid.Row="1"
+                            x:Name="Schedule" 
+                            ItemsSource="{Binding ScheduleAppointmentCollection}"
+                            ViewType="Week" 
+                            AppointmentEditFlag="None"
+                            Language="vi-VN"
+                            Background="Transparent">
+            <syncfusion:SfScheduler.DaysViewSettings>
+                <syncfusion:DaysViewSettings 
+                            TimeIntervalSize="96.1"
+                            StartHour="7.5"
+                            EndHour="17"/>
+            </syncfusion:SfScheduler.DaysViewSettings>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding LoadSchedulerCM}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </syncfusion:SfScheduler>
+        <syncfusion:SfScheduler
+                        Margin="0 50 0 0"
+                        Grid.Row="1"
+                        Visibility="Hidden"
+                        x:Name="ScheduleReal" 
+                        ItemsSource="{Binding ScheduleAppointmentCollectionReal}"
+                        ViewType="Week" 
+                        Language="vi-VN"
+                        AppointmentEditFlag="None"
+                        Background="Transparent">
+            <syncfusion:SfScheduler.DaysViewSettings>
+                <syncfusion:DaysViewSettings 
+                                TimeIntervalSize="96.1"
+                                StartHour="7"
+                                EndHour="17"/>
+            </syncfusion:SfScheduler.DaysViewSettings>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding LoadSchedulerRealCM}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </syncfusion:SfScheduler>
+        
     </Grid>
 </Page>
