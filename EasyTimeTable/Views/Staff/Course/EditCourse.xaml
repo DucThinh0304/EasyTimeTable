@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Course" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Course"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         ResizeMode="NoResize"
@@ -11,7 +11,22 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
+        x:Name="EditCourseWindow"
         Title="AddCourse" Height="550" Width="900">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="EditCourseWindow"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3" />
+
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Border BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="10">
@@ -60,8 +75,8 @@
                 <ComboBox x:Name="comboGiaoVien" HorizontalAlignment="Left" Margin="206,119,0,0" VerticalAlignment="Top" Width="559" FontSize="20">
                 </ComboBox>
                 <ComboBox x:Name="comboPhong" HorizontalAlignment="Left" Margin="645,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top"/>
-                <syncfusion:DateTimeEdit x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="584,244,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="36" CultureInfo="vi-VN"/>
-                <syncfusion:DateTimeEdit x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,244,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="36" CultureInfo="vi-VN"/>
+                <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="584,244,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="36"/>
+                <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,244,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="36"/>
                 <TextBlock HorizontalAlignment="Left" Margin="58,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Mã môn học"/><LineBreak/><Run Language="vi-vn"/></TextBlock>
                 <TextBlock HorizontalAlignment="Left" Margin="58,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Giáo viên"/></TextBlock>
                 <TextBlock HorizontalAlignment="Left" Margin="562,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Phòng"/></TextBlock>

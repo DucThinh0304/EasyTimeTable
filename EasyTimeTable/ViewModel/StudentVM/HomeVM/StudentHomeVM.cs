@@ -57,7 +57,7 @@ namespace EasyTimeTable.ViewModel
                 ColorTuition = new SolidColorBrush(Colors.Black);
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
-                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL", con);
+                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL and masv = '20520782'", con);
                 var dr = cmd.ExecuteReader();
                 if (dr.Read())
                 {

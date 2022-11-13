@@ -1,10 +1,13 @@
 ﻿using EasyTimeTable.Model;
+using Syncfusion.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,6 +37,9 @@ namespace EasyTimeTable.Views.Staff.Course
         public static DotDKHP dotDKHP;
         public EditCourse()
         {
+            CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
+            ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            Thread.CurrentThread.CurrentCulture = ci;
             InitializeComponent();
             LoadTenGiaoVien(MaMonHoc);
             foreach (var item in TenGV)
@@ -399,8 +405,8 @@ namespace EasyTimeTable.Views.Staff.Course
             nam = Convert.ToInt32(dotDKHP.NamHoc.Remove(0, 5));
             thu = Convert.ToInt32(comboThu.Text);
             siSo = Convert.ToInt32(textSiSo.Text);
-            ngayBatDau = NgayBatDau.DateTime;
-            ngayKetThuc = NgayKetThuc.DateTime;
+            ngayBatDau = NgayBatDau.ToDateTime();
+            ngayKetThuc = NgayKetThuc.ToDateTime();
             CourseModel model = new CourseModel();
             maHocPhan = HocPhan.MaHocPhan;
             model.MaHocPhan = maHocPhan;

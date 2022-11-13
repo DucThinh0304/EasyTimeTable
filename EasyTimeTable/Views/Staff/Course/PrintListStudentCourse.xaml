@@ -14,7 +14,23 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Title="Quản lý học phần" VerticalAlignment="Center" VerticalContentAlignment="Center" Loaded="Window_Loaded">
+        x:Name="PrintListStudent"
+        Title="Quản lý học phần"
+        Loaded="Window_Loaded">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="PrintListStudent"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3" />
+
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Border BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="10">
@@ -78,7 +94,7 @@
                 </Grid>
                 <Grid>
                     <TextBlock TextWrapping="Wrap" Text="Sỉ số: " HorizontalAlignment="Right" Margin="0 0 150 0" FontWeight="Bold"/>
-                    <TextBlock x:Name="textSiSo" TextWrapping="Wrap" Text="Sỉ số: " HorizontalAlignment="Right" Margin="0 0 50 0"/>
+                    <TextBlock x:Name="textSiSo" TextWrapping="Wrap" Text="xx" HorizontalAlignment="Right" Margin="0 0 50 0"/>
                 </Grid>
                 <materialDesign:Card Margin="20 20 40 40" Background="Transparent">
                     <DataGrid x:Name="Grid" Height="500" FontSize="20" 

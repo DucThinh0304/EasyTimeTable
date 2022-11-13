@@ -11,7 +11,8 @@ using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.LoginWindow;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Staff;
-
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -39,6 +40,8 @@ namespace EasyTimeTable.ViewModel
 
         [ObservableProperty]
         private String currentPage;
+
+        public static String mssv;
 
 
         public LoginViewModel()
@@ -73,19 +76,51 @@ namespace EasyTimeTable.ViewModel
 
             LoginCM = new RelayCommand<Label>((p) =>
             {
-                if (Password == "student" && Username == "student")
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("SELECT * FROM Taikhoan WHERE mssv = @mssv", con);
+                cmd.Parameters.Add("@mssv", System.Data.SqlDbType.VarChar);
+                cmd.Parameters["@mssv"].Value = Username;
+                var dr = cmd.ExecuteReader();
+                if (dr.Read())
                 {
-                    LoginWindow.Hide();
-                    StudentMainWindow studentMainWindow = new StudentMainWindow();
-                    studentMainWindow.Show();
-                    LoginWindow.Close();
-                }
-                else if (Password == "staff" && Username == "staff")
-                {
-                    LoginWindow.Hide();
-                    StaffWindow staffWindow = new StaffWindow();
-                    staffWindow.Show();
-                    LoginWindow.Close();
+                    SqlConnection con1 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                    con1.Open();
+                    var cmd1 = new SqlCommand("SELECT * FROM sinhvien WHERE masv = @mssv", con1);
+                    cmd1.Parameters.Add("@mssv", System.Data.SqlDbType.VarChar);
+                    cmd1.Parameters["@mssv"].Value = Username;
+                    var dr1 = cmd1.ExecuteReader();
+                    if (dr1.Read())
+                    {
+                        if (Password.ToLower() == dr.GetString(1).ToLower())
+                        {
+                            LoginWindow.Hide();
+                            mssv = Username;
+                            StudentMainWindow studentMainWindow = new StudentMainWindow();
+                            studentMainWindow.Show();
+                            LoginWindow.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Sai mật khẩu");
+                        }
+                    }
+                    else
+                    {
+                        if (Password.ToLower() == dr.GetString(1).ToLower())
+                        {
+                            LoginWindow.Hide();
+                            mssv = Username;
+                            StaffWindow staffWindow = new StaffWindow();
+                            staffWindow.Show();
+                            LoginWindow.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Sai mật khẩu");
+                        }
+                    }
+
                 }
                 else
                 {

@@ -8,11 +8,25 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         FontSize="20"
         mc:Ignorable="d" 
+        x:Name="mainPage"
         Height="960" Width="1440"
         Title="Quản lý học phần">
     <Page.Background>
         <ImageBrush ImageSource="/Assets/BackgroundStaff.jpg"/>
     </Page.Background>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="mainPage"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
     <StackPanel>
         <Grid Margin="20" Height="40">
             <Grid.ColumnDefinitions>
