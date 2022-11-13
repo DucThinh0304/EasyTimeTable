@@ -25,6 +25,7 @@ namespace EasyTimeTable.Views.Student.Tuition
     public partial class StudentTuitionPage : Page
     {
         public OpenCourseModel current;
+
         public StudentTuitionPage()
         {
             InitializeComponent();
@@ -60,6 +61,11 @@ namespace EasyTimeTable.Views.Student.Tuition
         private void ListViewItem_PreviewMouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            tab.TabIndex = 2;
         }
     }
 }

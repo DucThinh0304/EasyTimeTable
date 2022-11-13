@@ -39,7 +39,7 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <materialDesign:Card VerticalAlignment="Top" Grid.Column="0" Margin="40 20 20 20" MinHeight="800" MaxHeight="800" materialDesign:ElevationAssist.Elevation="Dp12">
-            <TabControl SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
+            <TabControl SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}" x:Name="tab">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding TabChangedCM}" />
@@ -370,83 +370,120 @@
         <StackPanel  Grid.Column="1" Height="900">
             <TextBlock TextAlignment="Center" FontSize="28" 
                        FontWeight="Bold" Text="Tổng tiền"/>
-            <StackPanel Visibility="{Binding TienTronGoi}" >
-                <ListView ScrollViewer.CanContentScroll="False"
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="-5 5 -5 5" Padding="5" Visibility="{Binding TienTronGoi}">
+                <StackPanel >
+                    <ListView ScrollViewer.CanContentScroll="False"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         HorizontalContentAlignment="Stretch"
                         Margin="0 5 0 5" ItemsSource="{Binding Course}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Width="450">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="9*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock FontSize="16" Grid.Column="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="450">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="9*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock FontSize="16" Grid.Column="0">
                                     <Run Text="{Binding TenMon}"/>
                                     <Run Text=" - "/>
                                     <Run Text="{Binding MaHocPhan}"/>
-                                </TextBlock>
-                                <TextBlock FontSize="16" Text="{Binding SoTinChi, StringFormat={}{0} (tc)}" HorizontalAlignment="Right" Grid.Column="1"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <Grid>
-                    <TextBlock FontSize="20" Margin="0 10 0 0">Tiền trọn gói:</TextBlock>
-                    <TextBlock FontSize="20" Margin="0 10 0 0" HorizontalAlignment="Right" Text="{Binding GiaTronGoi}"></TextBlock>
-                </Grid>
-            </StackPanel>
+                                    </TextBlock>
+                                    <TextBlock FontSize="16" Text="{Binding SoTinChi, StringFormat={}{0} (tc)}" HorizontalAlignment="Right" Grid.Column="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Grid>
+                        <TextBlock FontSize="20" Margin="0 10 0 0">Tiền trọn gói:</TextBlock>
+                        <TextBlock FontSize="20" Margin="0 10 0 0" HorizontalAlignment="Right" Text="{Binding GiaTronGoi, StringFormat={}{0:N0} VND}"></TextBlock>
+                    </Grid>
+                </StackPanel>
+            </Border>
 
-            <StackPanel Visibility="{Binding TienTinChi}"  Margin="0 10">
-                <ListView ScrollViewer.CanContentScroll="False"       
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="-5 5 -5 5" Padding="5" Visibility="{Binding TienTinChi}">
+                <StackPanel Margin="0 10">
+                    <ListView ScrollViewer.CanContentScroll="False"       
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         Margin="0 5 0 5" ItemsSource="{Binding Course}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0 0 0 0">
-                                <TextBlock FontSize="20" Text="{Binding MaHocPhan}"></TextBlock>
-                                <TextBlock FontSize="20" HorizontalAlignment="Right" Text="{Binding SoTinChi}"></TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                
-                <TextBlock FontSize="20">Tiền theo tín chỉ:</TextBlock>
-                <TextBlock FontSize="20" HorizontalAlignment="Right">150.000 VND x 24 = 17.280.000 VND</TextBlock>
-            </StackPanel>
-            
-            <StackPanel Visibility="{Binding TienHocLai}"  Margin="0 10">
-                <ListView ScrollViewer.CanContentScroll="False"
-                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                        Margin="10 5 10 5" ItemsSource="{Binding CourseHocLai}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0 3 0 0">
-                                <TextBlock FontSize="15" Text="{Binding MaHocPhan}"></TextBlock>
-                                <TextBlock FontSize="15" HorizontalAlignment="Right" Text="{Binding SoTinChi}">7.000.000 VND</TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <TextBlock FontSize="20">Tiền tín chỉ học lại:</TextBlock>
-                <TextBlock FontSize="20" HorizontalAlignment="Right" TextWrapping="Wrap">150.000 VND x 24 x 1.2 = 17.280.000 VND</TextBlock>
-            </StackPanel>
-            
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 0 0 0">
+                                    <Grid Width="450">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="9*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontSize="16" Grid.Column="0">
+                                    <Run Text="{Binding TenMon}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{Binding MaHocPhan}"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="16" Text="{Binding SoTinChi, StringFormat={}{0} (tc)}" HorizontalAlignment="Right" Grid.Column="1"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock FontSize="20" Margin="0 10 0 0">Tiền tín chỉ:</TextBlock>
+                    <TextBlock FontSize="20" Margin="0 10 0 0" HorizontalAlignment="Right">
+                    <Run Text="{Binding GiaTinChi, StringFormat={}{0:N0} VND x}"></Run>
+                    <Run Text="{Binding SoTinChiLanDau}"></Run>
+                    <Run Text=" = "></Run>
+                    <Run Text="{Binding Sum, StringFormat={}{0:N0} VND}"></Run>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="-5 5 -5 5" Padding="5" Visibility="{Binding TienHocLai}">
+                <StackPanel   Margin="0 10">
+                    <ListView ScrollViewer.CanContentScroll="False"
+                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                            Margin="0 5 0 5" ItemsSource="{Binding CourseHocLai}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 0 0 0">
+                                    <Grid Width="450">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="9*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontSize="16" Grid.Column="0">
+                                        <Run Text="{Binding TenMon}"/>
+                                        <Run Text=" - "/>
+                                        <Run Text="{Binding MaHocPhan}"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="16" Text="{Binding SoTinChi, StringFormat={}{0} (tc)}" HorizontalAlignment="Right" Grid.Column="1"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock FontSize="20">Tiền tín chỉ học lại:</TextBlock>
+                    <TextBlock FontSize="20" HorizontalAlignment="Right" TextWrapping="Wrap">
+                        <Run Text="{Binding GiaTinChi, StringFormat={}{0:N0} VND x}"></Run>
+                        <Run Text="{Binding SoTinChiHocLai}"></Run>
+                        <Run Text=" x "></Run>
+                        <Run Text="{Binding HeSoHocLai}"></Run>
+                        <Run Text=" = "></Run>
+                        <Run Text="{Binding SumHocLai, StringFormat={}{0:N0} VND}"></Run>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
             <StackPanel Visibility="{Binding HocKiHe}" Margin="0 20 0 0">
                 <Grid>
                     <TextBlock FontSize="20">Học kì hè:</TextBlock>
-                    <TextBlock FontSize="20" HorizontalAlignment="Right">x 1.5</TextBlock>
+                    <TextBlock FontSize="20" HorizontalAlignment="Right" Text="{Binding HeSoHocHe, StringFormat=x {0}}"></TextBlock>
                 </Grid>
             </StackPanel>
         </StackPanel>
         
         <Grid Grid.Column="1" Margin="0 0 0 100">
             <TextBlock Margin="0 0 0 150" VerticalAlignment="Bottom" FontSize="20">Tổng số tín chỉ:</TextBlock>
-            <TextBlock Margin="0 0 0 150" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20" Text="{Binding SoTinChiTuition, StringFormat={}{0} (tc)}"></TextBlock>
+            <TextBlock Margin="0 0 0 150" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20" Text="{Binding TongTinChi, StringFormat={}{0} (tc)}"></TextBlock>
             <TextBlock Margin="0 0 0 120" VerticalAlignment="Bottom" FontSize="20">Tổng số tiền cần thanh toán: </TextBlock>
-            <TextBlock Margin="0 0 0 120" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20">7.000.000 VND</TextBlock>
-            <Button  Height="45" FontSize="25" DockPanel.Dock="Top" materialDesign:ButtonAssist.CornerRadius="5" VerticalAlignment="Bottom" Margin="50">
+            <TextBlock Margin="0 0 0 120" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20" Text="{Binding TienThanhToan, StringFormat={}{0:N0} VND}"></TextBlock>
+            <Button  Height="45" FontSize="25" DockPanel.Dock="Top" materialDesign:ButtonAssist.CornerRadius="5" VerticalAlignment="Bottom" Margin="50" IsEnabled="{Binding EnableThanhToan}" Command="{Binding ThanhToanCM}" Click="Button_Click_1">
                 Thanh toán
             </Button>
         </Grid>

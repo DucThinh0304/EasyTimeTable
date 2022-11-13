@@ -80,7 +80,7 @@
             <syncfusion:SfScheduler.DaysViewSettings>
                 <syncfusion:DaysViewSettings 
                                 TimeIntervalSize="96.1"
-                                StartHour="7"
+                                StartHour="7.5"
                                 EndHour="17"/>
             </syncfusion:SfScheduler.DaysViewSettings>
             <i:Interaction.Triggers>
