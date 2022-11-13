@@ -9,6 +9,7 @@ namespace EasyTimeTable.Model
     public partial class DotDKHP
     {
         public int MaDot { get; set; }
+        public int STT { get; set; }
         public int HocKi { get; set; }
         public string NamHoc { get; set; }
         public DateTime? NgayBatDau { get; set; }

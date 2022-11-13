@@ -92,7 +92,7 @@ namespace EasyTimeTable.ViewModel
                     var dr1 = cmd1.ExecuteReader();
                     if (dr1.Read())
                     {
-                        if (Password.ToLower() == dr.GetString(1).ToLower())
+                        if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
                         {
                             LoginWindow.Hide();
                             mssv = Username;
@@ -107,7 +107,7 @@ namespace EasyTimeTable.ViewModel
                     }
                     else
                     {
-                        if (Password.ToLower() == dr.GetString(1).ToLower())
+                        if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
                         {
                             LoginWindow.Hide();
                             mssv = Username;

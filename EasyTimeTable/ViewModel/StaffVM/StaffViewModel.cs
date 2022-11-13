@@ -19,7 +19,8 @@ namespace EasyTimeTable.ViewModel
         public ICommand LoadStaffHomeCM { get; set; }
         public ICommand LoadStaffTuitionCM { get; set; }
         public ICommand SignoutCM { get; set; }
-
+        public ICommand LoadStaffCourseListCM { get; set; }
+        public ICommand LoadListOfRegister { get; set; }
         public static Frame? MainFrame { get; set; }
 
         [ObservableProperty]
@@ -39,7 +40,7 @@ namespace EasyTimeTable.ViewModel
                 MainFrame = p;
             });
 
-            LoadStaffTuitionCM = new RelayCommand<Frame>((p) =>
+            LoadStaffCourseListCM = new RelayCommand<Frame>((p) =>
             {
 
                 if (StaffWindow.Slidebtn != null)
@@ -48,6 +49,15 @@ namespace EasyTimeTable.ViewModel
                     StaffWindow.funcTitle.Text = "Quản lý học phần";
                 if (p != null)
                     p.Content = new ManageCourses();
+            });
+            LoadListOfRegister = new RelayCommand<Frame>((p) =>
+            {
+                if (StaffWindow.Slidebtn != null)
+                    StaffWindow.Slidebtn.IsChecked = false;
+                if (StaffWindow.funcTitle != null)
+                    StaffWindow.funcTitle.Text = "Quản lý đợt Đăng kí học phần";
+                if (p != null)
+                    p.Content = new ManageDotDKHP();
             });
 
             SignoutCM = new RelayCommand<FrameworkElement>((p) =>
