@@ -110,6 +110,10 @@ namespace EasyTimeTable.Views
 
             comboHocPhan.Text = HocPhanChon;
         }
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
 

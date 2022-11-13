@@ -7,9 +7,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        x:Name="AddCourseWindow"
+        Background="Transparent"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
-        x:Name="AddCourseWindow"
         WindowStyle="None"
         Title="AddCourse" Height="550" Width="900">
     <Window.Triggers>
@@ -26,13 +27,12 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <Window.Background>
-        <ImageBrush ImageSource="/Assets/BackgroundStaff.jpg"/>
-    </Window.Background>
     <Border BorderBrush="Black"
-            BorderThickness="3"
-            Background="Transparent"
+            BorderThickness="1"
             CornerRadius="10">
+        <Border.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Assets/BackgroundStaff.jpg"/>
+        </Border.Background>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="7*" />
@@ -115,8 +115,7 @@
                 <ComboBoxItem Content="12345"/>
                 <ComboBoxItem Content="67890"/>
             </ComboBox>
-            <TextBlock x:Name="ThucHanh" HorizontalAlignment="Left" Margin="415,365,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
-
+                <TextBlock x:Name="ThucHanh" HorizontalAlignment="Left" Margin="415,365,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
             </Grid>
             </Grid>
     </Border>

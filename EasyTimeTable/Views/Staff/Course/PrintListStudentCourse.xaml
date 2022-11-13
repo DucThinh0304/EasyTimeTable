@@ -8,55 +8,98 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         FontSize="20"
         mc:Ignorable="d" 
-        Height="960" Width="1440"
+        Height="800" Width="1200"
         ResizeMode="NoResize"
+        Background="Transparent"
         WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        WindowStyle="None"
         Title="Quản lý học phần" VerticalAlignment="Center" VerticalContentAlignment="Center" Loaded="Window_Loaded">
-    <Window.Background>
-        <ImageBrush ImageSource="/Assets/BackgroundStaff.jpg"/>
-    </Window.Background>
-    <StackPanel>
-        <Grid Margin="20" Height="40">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <ComboBox x:Name="comboHocPhan" Margin="20 0 20 0" FontSize="20" SelectionChanged="comboDotDKHP_SelectionChanged" >
-            </ComboBox>
-            <DockPanel Grid.Column="1">
-                <materialDesign:PackIcon Kind="Search" Width="40" Height="40"></materialDesign:PackIcon>
-                <TextBox materialDesign:HintAssist.Hint="Tìm kiếm" 
+    <Border BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="10">
+        <Border.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Assets/BackgroundStaff.jpg"/>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="83*" />
+            </Grid.RowDefinitions>
+
+            <Border BorderThickness="0,0,0,0.5"
+                    BorderBrush="Black"
+                    Grid.Row="0"
+                    CornerRadius="10 10 0 0"
+                    Background="#5498f9">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Danh sách sinh viên đăng kí học phần" Grid.ColumnSpan="2"
+                               FontSize="25"
+                               FontWeight="Bold"         
+                               Margin="10,0,0,0" 
+                               TextAlignment="Center"
+                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1"
+                            ToolBar.OverflowMode="AsNeeded"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Background="OrangeRed"
+                            Foreground="White"
+                            BorderBrush="Transparent"
+                            materialDesign:ButtonAssist.CornerRadius="50"
+                            Margin="0 ,0,4,0"
+                            Click="Exit_Click"
+                            Height="30" Width="30">
+                        <materialDesign:PackIcon Kind="WindowClose"
+                                                 Padding="0" />
+                    </Button>
+                </Grid>
+            </Border>
+            <StackPanel Grid.Row="1">
+                <Grid Margin="20" Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="comboHocPhan" Margin="20 0 20 0" FontSize="20" SelectionChanged="comboDotDKHP_SelectionChanged" >
+                    </ComboBox>
+                    <DockPanel Grid.Column="1">
+                        <materialDesign:PackIcon Kind="Search" Width="40" Height="40"></materialDesign:PackIcon>
+                        <TextBox materialDesign:HintAssist.Hint="Tìm kiếm" 
                              Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
                              x:Name="SearchBox"
                              Margin="0 0 50 0"
                              FontSize="20" VerticalAlignment="Stretch">
-                </TextBox>
-            </DockPanel>
-        </Grid>
-        <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#FF686BFF"><Run Text="DANH SÁCH "/><Run Language="vi-vn" Text="SINH VIÊN ĐĂNG KÍ HỌC PHẦN"/></TextBlock>
-        <Grid>
-            <TextBlock TextWrapping="Wrap" Text="Sỉ số: " HorizontalAlignment="Right" Margin="0 0 150 0" FontWeight="Bold"/>
-            <TextBlock x:Name="textSiSo" TextWrapping="Wrap" Text="Sỉ số: " HorizontalAlignment="Right" Margin="0 0 50 0"/>
-        </Grid>
-        <materialDesign:Card Margin="20 20 40 20" Background="Transparent">
-            <DataGrid x:Name="Grid" Height="600" FontSize="20" 
+                        </TextBox>
+                    </DockPanel>
+                </Grid>
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="Sỉ số: " HorizontalAlignment="Right" Margin="0 0 150 0" FontWeight="Bold"/>
+                    <TextBlock x:Name="textSiSo" TextWrapping="Wrap" Text="Sỉ số: " HorizontalAlignment="Right" Margin="0 0 50 0"/>
+                </Grid>
+                <materialDesign:Card Margin="20 20 40 40" Background="Transparent">
+                    <DataGrid x:Name="Grid" Height="500" FontSize="20" 
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           Background="Transparent">
-
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="STT" Binding="{Binding STT}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Mã sinh viên" Binding="{Binding MaSV}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Tên sinh viên" Binding="{Binding TenSV}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Lớp" Binding="{Binding LopHoc}" IsReadOnly="True"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </materialDesign:Card>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="buttonThem" Margin="600 20 600 20" Height="50" FontSize="25" Content="Xuất Excel" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Click="buttonThem_Click"/>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="STT" Binding="{Binding STT}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Mã sinh viên" Binding="{Binding MaSV}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Tên sinh viên" Binding="{Binding TenSV}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Lớp" Binding="{Binding LopHoc}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </materialDesign:Card>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="buttonThem" HorizontalAlignment="Center" Width="200" Height="50" FontSize="25" Content="Xuất Excel" Click="buttonThem_Click"/>
+                </Grid>
+            </StackPanel>
         </Grid>
-    </StackPanel>
+    </Border>
 </Window>

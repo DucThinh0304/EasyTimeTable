@@ -428,5 +428,9 @@ namespace EasyTimeTable.Views.Staff.Course
             textPhongTH.Visibility = Visibility.Visible;
             comboPhong_TH.Visibility = Visibility.Visible;
         }
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

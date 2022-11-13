@@ -10,6 +10,7 @@
         Width="850"
         AllowsTransparency="True"
         WindowStyle="None"
+        Background="Transparent"
         Name="RequestWindow"
         DataContext="{StaticResource StudentOpenCourseVM}"
         ResizeMode="NoResize"
@@ -28,13 +29,12 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <Window.Background>
-        <ImageBrush ImageSource="/Assets/Background.jpg"/>
-    </Window.Background>
     <Border BorderBrush="Black"
             BorderThickness="3"
-            Background="Transparent"
             CornerRadius="10">
+        <Border.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Assets/BackgroundStaff.jpg"/>
+        </Border.Background>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="7*" />
