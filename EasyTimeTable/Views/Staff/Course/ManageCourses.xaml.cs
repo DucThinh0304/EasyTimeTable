@@ -159,5 +159,19 @@ namespace EasyTimeTable.Views.Staff.Course
             print.Show();
             PrintListStudentCourse.view = this;
         }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            List<CourseModel> course2 = new List<CourseModel>();
+            foreach (var item in courses) course2.Add(item);
+            int i = 0;
+            while (i < course2.Count)   
+            {
+                if (!(course2[i].MaHocPhan.Contains(SearchBox.Text) || course2[i].TenMon.Contains(SearchBox.Text) || course2[i].TenGV.Contains(SearchBox.Text)))
+                    course2.RemoveAt(i);
+                else i++;
+            }
+            Grid.ItemsSource = course2;
+        }
     }
 }

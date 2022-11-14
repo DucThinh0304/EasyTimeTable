@@ -10,6 +10,7 @@ using EasyTimeTable.Views.Staff;
 using EasyTimeTable.Views.Staff.Home;
 using EasyTimeTable.Views.Staff.Course;
 using EasyTimeTable.Views.LoginWindow;
+using EasyTimeTable.Views.Staff.TuiTion;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -59,6 +60,15 @@ namespace EasyTimeTable.ViewModel
                 if (p != null)
                     p.Content = new ManageDotDKHP();
             });
+            LoadStaffTuitionCM = new RelayCommand<Frame>((p) =>
+            {
+                if (StaffWindow.Slidebtn != null)
+                    StaffWindow.Slidebtn.IsChecked = false;
+                if (StaffWindow.funcTitle != null)
+                    StaffWindow.funcTitle.Text = "Quản lý học phí";
+                if (p != null)
+                    p.Content = new ManageTuition();
+            });
 
             SignoutCM = new RelayCommand<FrameworkElement>((p) =>
             {
@@ -72,7 +82,7 @@ namespace EasyTimeTable.ViewModel
                     w.Close();
                 }
             });
-
+            
             FrameworkElement GetParentWindow(FrameworkElement p)
             {
                 FrameworkElement parent = p;

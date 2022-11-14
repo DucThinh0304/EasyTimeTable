@@ -124,7 +124,7 @@ namespace EasyTimeTable.Converter
                 tmp = t[i - 1] + tmp;
                 i--;
             }
-            return maHocPhan + tmp;
+            return maHocPhan + (Convert.ToInt32(tmp) + 1).ToString();
         }
     }
 }

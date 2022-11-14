@@ -114,6 +114,21 @@ namespace EasyTimeTable.Views
         {
             this.Close();
         }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            List<SinhVien> course2 = new List<SinhVien>();
+            foreach (var item in SinhViens) course2.Add(item);
+            int i = 0;
+            while (i < course2.Count)
+            {
+                if (!(course2[i].MaSV.Contains(SearchBox.Text) || course2[i].TenSV.Contains(SearchBox.Text) || course2[i].LopHoc.Contains(SearchBox.Text)))
+                    course2.RemoveAt(i);
+                else i++;
+            }
+            Grid.ItemsSource = course2;
+        }
+
     }
 }
 

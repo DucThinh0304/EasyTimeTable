@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -393,7 +394,12 @@ namespace EasyTimeTable.Views.Staff.Course
             var cmd = new SqlCommand("SELECT MAX(mahocphan) FROM hocphan where mamon = '" + tenMon + "' and ky = " + ki.ToString() + " and nam = " + nam.ToString(), con);
             var dr = cmd.ExecuteReader();
             string t = "";
-            if (dr.Read()) t = dr.GetString(0);
+            if (dr.Read())
+            {
+                if (dr.IsDBNull(0))
+                    t = maHocPhan + "0";
+                else t = dr.GetString(0);
+            }
             maHocPhan = Converter.Converter.TaoMaHocPhan(maHocPhan, t);
             con.Close();
             dr.Close();
@@ -426,6 +432,12 @@ namespace EasyTimeTable.Views.Staff.Course
         private void NgayBatDau_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void textSiSo_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

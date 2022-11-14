@@ -63,7 +63,7 @@ namespace EasyTimeTable.Views.Staff.Course
             courses = new List<CourseModel>();
             int rowCount = xlRange.Rows.Count;
             int colCount = xlRange.Columns.Count;
-           // try
+            try
             {
 
 
@@ -89,9 +89,9 @@ namespace EasyTimeTable.Views.Staff.Course
                     }) ;  
                 }
                 Grid.ItemsSource = courses;
-            } //catch (Exception ex)
+            } catch (Exception ex)
             {
-          //      MessageBox.Show("File không đúng định dạng, vui lòng xem lại hướng dẫn");
+                MessageBox.Show("File không đúng định dạng, vui lòng xem lại hướng dẫn");
             }
 
             GC.Collect();

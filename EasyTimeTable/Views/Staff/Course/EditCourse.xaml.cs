@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -437,6 +438,12 @@ namespace EasyTimeTable.Views.Staff.Course
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void textSiSo_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

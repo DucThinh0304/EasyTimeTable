@@ -97,7 +97,7 @@
             <TextBlock x:Name="textThucHanh" HorizontalAlignment="Left" Margin="369,317,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thực hành"/></TextBlock>
             <RadioButton x:Name="HT2" Content="Hình thức 2" HorizontalAlignment="Left" Margin="640,316,0,0" VerticalAlignment="Top" FontSize="20" Checked="RadioButton_Checked" Visibility="Hidden"/>
             <RadioButton x:Name="HT1" Content="Hình thức 1" HorizontalAlignment="Left" Margin="485,315,0,0" VerticalAlignment="Top" FontSize="20" Visibility="Hidden" Checked="HT1_Checked"/>
-            <TextBox x:Name="textSiSo" HorizontalAlignment="Left" Margin="206,312,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" FontSize="20" HorizontalContentAlignment="Center"/>
+            <TextBox x:Name="textSiSo" HorizontalAlignment="Left" Margin="206,312,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" FontSize="20" HorizontalContentAlignment="Center" PreviewTextInput="textSiSo_PreviewTextInput"/>
             <Button Content="Xác nhận" HorizontalAlignment="Left" Margin="416,400,0,0" VerticalAlignment="Top" Height="44" Width="126" Click="Button_Click"/>
             <TextBlock x:Name="textThuTH" HorizontalAlignment="Left" Margin="61,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Visibility="Hidden"><Run Language="vi-vn" Text="Thứ"/></TextBlock>
             <ComboBox x:Name="comboPhong_TH" HorizontalAlignment="Left" Margin="643,398,0,0" Width="120" FontSize="20" VerticalAlignment="Top" Visibility="Hidden"/>
