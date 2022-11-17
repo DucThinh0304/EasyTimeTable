@@ -126,5 +126,11 @@ namespace EasyTimeTable.Converter
             }
             return maHocPhan + (Convert.ToInt32(tmp) + 1).ToString();
         }
+        public static string TextToCurrency(string t)
+        {
+            string c;
+            c = String.Format("{0:#,##0}" + " VND", double.Parse(t));
+            return c;
+        }
     }
 }

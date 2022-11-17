@@ -52,12 +52,12 @@
                           Background="Transparent" SelectionChanged="Grid_SelectionChanged">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="STT" Binding="{Binding STT}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Mã SV" Binding="{Binding MaSV}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Họ tên" Binding="{Binding HoTen}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="STT" Binding="{Binding STT}"  IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Mã SV" Binding="{Binding MaSV}"  IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Họ tên" Binding="{Binding HoTen}" Width="0.5*" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Lớp" Binding="{Binding Lop}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Học phí tổng" Binding="{Binding HocPhi}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Học phí đã đóng" Binding="{Binding HocPhiDaDong}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Học phí tổng" Binding="{Binding HocPhi, StringFormat={}{0:N0} VND}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Học phí đã đóng" Binding="{Binding HocPhiDaDong, StringFormat={}{0:N0} VND}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Tình trạng học phí" Binding="{Binding TinhTrangHocPhi}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
@@ -67,7 +67,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="buttonThem" Margin="200 20 200 20" Height="50" FontSize="25" Content="Thay đổi kiểu học phí" IsEnabled="{Binding ButtonEnable}" Command="{Binding SelectCourse}" Click="buttonThem_Click"/>
+            <Button x:Name="buttonThem" Margin="200 20 200 20" Height="50" FontSize="25" Content="Thay đổi kiểu học phí" Click="buttonThem_Click"/>
             <Button x:Name="buttonSua" Margin="200 20 200 20" Height="50" FontSize="25" Content="Sửa" Command="{Binding SelectCourse}" Grid.Column="2" IsEnabled="False" Click="buttonSua_Click"/>
         </Grid>
     </StackPanel>

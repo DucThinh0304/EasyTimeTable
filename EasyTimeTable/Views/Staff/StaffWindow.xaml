@@ -263,37 +263,39 @@
                                              Width="50"
                                              Foreground="White" />
                     <Label x:Name="CurrentUserName"
-                           Content=""
                            VerticalAlignment="Center"
+                           Content="{Binding CurrentUserName}"
                            FontSize="25"
-                           Foreground="White" />
-                    <materialDesign:PopupBox
+                            Foreground="#E4E6EB" />
+                    <materialDesign:PopupBox Margin="20 0 0 0"
                         DockPanel.Dock="Left" 
                                              Foreground="White"
                                              PlacementMode="BottomAndAlignRightEdges">
                         <StackPanel>
-                            <Button Command="{Binding SignoutCM}"
+                            <Button Command="{Binding SignoutCM}" Height="45" 
                                     CommandParameter="{Binding ElementName=Main_Staff}">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="SignOut"
+                                    <materialDesign:PackIcon Kind="AccountEdit"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Right"
-                                             Height="25"
-                                             Width="25" />
+                                             Height="30"
+                                             Margin="-10 7 5 0"
+                                             Width="30" />
                                     <TextBlock FontSize="22" Text="Chỉnh sửa hồ sơ"
-                                                   Margin="10,0,0,0"/>
+                                                   Margin="10,5,0,0"/>
                                 </StackPanel>
                             </Button>
-                            <Button Command="{Binding SignoutCM}"
+                            <Button Command="{Binding SignoutCM}" Height="45"
                                     CommandParameter="{Binding ElementName=Main_Staff}">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="SignOut"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Right"
-                                             Height="25"
-                                             Width="25" />
+                                             Height="30"
+                                             Width="30"
+                                             Margin="-10 7 5 0" />
                                     <TextBlock FontSize="22" Text="Đăng xuất"
-                                                   Margin="10,0,0,0"/>
+                                                   Margin="10,3,0,0"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>

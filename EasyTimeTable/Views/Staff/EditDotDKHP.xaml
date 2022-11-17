@@ -76,10 +76,10 @@
                     <Grid>
                         <TextBlock Text="Ngày bắt đầu" FontSize="20" FontWeight="Bold" Margin="40, 10, 0, 0"></TextBlock>
                         <TextBlock Text="Ngày kết thúc" FontSize="20" FontWeight="Bold" Margin="430, 10, 0, 0"></TextBlock>
-                        <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,10,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31"/>
-                        <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,10,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31"/>
+                        <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,10,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31" Language="vi-VN"/>
+                        <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,10,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31"  Language="vi-VN"/>
                     </Grid>
-                    <Button Content="Cập nhật" FontSize="20" Margin="350 20 350 20" Padding="10 10 10 10" Height="50" Click="Button_Click"></Button>
+                    <Button Content="Cập nhật" FontSize="20" Margin="350 250 350 20" Padding="10 10 10 10" Height="50" Click="Button_Click"></Button>
                 </StackPanel>
             </Grid>
         </Grid>

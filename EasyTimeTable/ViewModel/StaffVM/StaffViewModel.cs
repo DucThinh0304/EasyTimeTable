@@ -11,12 +11,16 @@ using EasyTimeTable.Views.Staff.Home;
 using EasyTimeTable.Views.Staff.Course;
 using EasyTimeTable.Views.LoginWindow;
 using EasyTimeTable.Views.Staff.TuiTion;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace EasyTimeTable.ViewModel
 {
     [ObservableObject]
     public partial class StaffViewModel
     {
+
+        private string MAGV;
         public ICommand LoadStaffHomeCM { get; set; }
         public ICommand LoadStaffTuitionCM { get; set; }
         public ICommand SignoutCM { get; set; }
@@ -25,10 +29,22 @@ namespace EasyTimeTable.ViewModel
         public static Frame? MainFrame { get; set; }
 
         [ObservableProperty]
+        private string currentUserName;
+
+        [ObservableProperty]
         public String selectFuncName;
 
         public StaffViewModel()
         {
+            MAGV = LoginViewModel.mssv;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Select tengv from giaovien where magv = '" + MAGV + "'", con);
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                CurrentUserName = dr.GetString(0);
+            }
             LoadStaffHomeCM = new RelayCommand<Frame>((p) =>
             {
 

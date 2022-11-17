@@ -30,7 +30,7 @@
         </EventTrigger>
     </Window.Triggers>
     <Border BorderBrush="Black"
-            BorderThickness="3"
+            BorderThickness="1"
             CornerRadius="10">
         <Border.Background>
             <ImageBrush Stretch="Fill" ImageSource="/Assets/BackgroundStaff.jpg"/>

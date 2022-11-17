@@ -30,5 +30,19 @@
                 </StackPanel>
             </WrapPanel>
         </materialDesign:Card>
+
+        <materialDesign:Card MaxWidth="900" Margin="0,100,0,0" Background="#FFF9F9F9">
+            <WrapPanel Height="95" MaxWidth="880" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="650">
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline2TextBlock}" 
+                           HorizontalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="MediumPurple"
+                           TextAlignment="Center"
+                           Margin="0,0,0,0" TextWrapping="Wrap">Quản lý cho giáo viên</TextBlock>
+                </Grid>
+            </WrapPanel>
+        </materialDesign:Card>
+
     </StackPanel>
 </Page>

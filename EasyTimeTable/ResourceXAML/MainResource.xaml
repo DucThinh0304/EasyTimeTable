@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-          xmlns:viewmodel="clr-namespace:EasyTimeTable.ViewModel" >
+          xmlns:viewmodel="clr-namespace:EasyTimeTable.ViewModel">
     <viewmodel:LoginViewModel x:Key="LoginVM" />
     <viewmodel:StudentViewModel x:Key="StudentVM" />
     <viewmodel:ForgotPassViewModel x:Key="ForgotPassVM" />
@@ -11,5 +11,6 @@
     <viewmodel:TuitionViewModel x:Key="TuitionVM"/>
     <viewmodel:StaffViewModel x:Key="StaffVM"/>
     <viewmodel:ManageCoursesVM x:Key="ManageCoursesVM"/>
-
+    <viewmodel:EnterCodeVM x:Key="EnterCodeVM"/>
+    <viewmodel:ChangePasswordVM x:Key="ChangePasswordVM"/>
 </ResourceDictionary>

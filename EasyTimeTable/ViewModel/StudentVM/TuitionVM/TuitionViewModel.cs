@@ -311,21 +311,23 @@ namespace EasyTimeTable.ViewModel
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("SELECT ki FROM thamso", con);
+            var cmd = new SqlCommand("SELECT ki, namhoc FROM thamso", con);
             var dr = cmd.ExecuteReader();
+            int namhoc = 0;
             while (dr.Read())
             {
                 if (dr.GetInt32(0) != 3)
                 {
                     HocKiHe = Visibility.Collapsed;
                 }
+                namhoc = dr.GetInt32(1);
             }
             dr.Close();
-            cmd = new SqlCommand("SELECT kieuhocphan FROM hocki, thamso where kihoc = ki and hocki.namhoc = thamso.namhoc", con);
+            cmd = new SqlCommand("SELECT kieuhocphan FROM hocki, thamso where kihoc = ki and hocki.namhoc = '" + (namhoc.ToString() + "-" + (namhoc + 1).ToString()) +"'", con);
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                if (dr.GetInt32(0) == 2)
+                if (dr.GetInt32(0) == 1)
                 {
                     TienTronGoi = Visibility.Collapsed;
                     TienTinChi = Visibility.Visible;
@@ -375,8 +377,12 @@ namespace EasyTimeTable.ViewModel
             }
             SoTinChiLanDau = TC.ToString();
 
-            Sum = TC * GiaTinChi;
-            
+            if (TienTinChi == Visibility.Visible)
+                Sum = TC * GiaTinChi;
+            else
+                Sum = GiaTronGoi;
+
+
         }
 
         public void getCourseHocLai()

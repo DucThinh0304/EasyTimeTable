@@ -7,6 +7,9 @@ using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Home;
 using EasyTimeTable.Views.Student.Tuition;
 using System;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,11 +27,25 @@ namespace EasyTimeTable.ViewModel
         public ICommand SignoutCM { get; set; }
         public static Frame? MainFrame { get; set; }
 
+        private string MSSV;
+
+        [ObservableProperty]
+        private string currentUserName;
+
         [ObservableProperty]
         private bool isLoading;
 
         public StudentViewModel()
         {
+            MSSV = LoginViewModel.mssv;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Select tensv from sinhvien where masv = '" + MSSV + "'", con);
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                CurrentUserName = dr.GetString(0);
+            }
             LoadStudentTuitionCM = new RelayCommand<Frame>((p) =>
             {
                 if (StudentMainWindow.Slidebtn != null)
@@ -37,6 +54,7 @@ namespace EasyTimeTable.ViewModel
                     StudentMainWindow.funcTitle.Text = "Thông tin học phí";
                 if (p != null)
                     p.Content = new StudentTuitionPage();
+
 
             });
             LoadStudentHomeCM = new RelayCommand<Frame>((p) =>

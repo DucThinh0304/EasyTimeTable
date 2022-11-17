@@ -75,8 +75,8 @@
             <ComboBox x:Name="comboGiaoVien" HorizontalAlignment="Left" Margin="206,119,0,0" VerticalAlignment="Top" Width="559" FontSize="20">
             </ComboBox>
             <ComboBox x:Name="comboPhong" HorizontalAlignment="Left" Margin="645,186,0,0" Width="120" FontSize="20" VerticalAlignment="Top"/>
-            <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,249,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31"/>
-            <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,249,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31"/>
+            <DatePicker x:Name="NgayKetThuc" HorizontalAlignment="Left" Margin="591,249,0,0" VerticalAlignment="Top" FontSize="20" Width="181" Height="31" Language="vi-VN"/>
+             <DatePicker x:Name="NgayBatDau" HorizontalAlignment="Left" Margin="206,249,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.545,1.348" Width="181" FontSize="20" Height="31" Language="vi-VN"/>
             <TextBlock HorizontalAlignment="Left" Margin="58,59,0,0" TextWrapping="Wrap" Text="Môn học" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Left" Margin="58,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Giáo viên"/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Margin="562,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"><Run Language="vi-vn" Text="Phòng"/></TextBlock>

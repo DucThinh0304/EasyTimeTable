@@ -81,8 +81,8 @@
                     </Grid>
                     <Grid>
                         <TextBlock Text="Giá tín chỉ" FontSize="20" FontWeight="Bold" Margin="100 30 30 30"></TextBlock>
-                        <TextBox x:Name="textGiaTinChi" FontSize="20" Margin="300 30 100 30" PreviewTextInput="textGiaTinChi_PreviewTextInput">
-                        </TextBox>
+                        <TextBox x:Name="textGiaTinChi" FontSize="20" Margin="300 30 100 30" PreviewTextInput="textGiaTinChi_PreviewTextInput"
+                                 GotFocus="textGiaTinChi_GotFocus" LostFocus="textGiaTinChi_LostFocus"  />
                     </Grid>
                     <Grid>
                         <TextBlock Text="Hệ số học lại" FontSize="20" FontWeight="Bold" Margin="100 30 30 30"></TextBlock>
@@ -96,7 +96,8 @@
                     </Grid>
                     <Grid>
                         <TextBlock Text="Giá trọn gói" FontSize="20" FontWeight="Bold" Margin="100 30 30 30"></TextBlock>
-                        <TextBox x:Name="TextGiaTronGoi" FontSize="20" Margin="300 30 100 30" TextChanged="TextGiaTronGoi_TextChanged" PreviewTextInput="TextGiaTronGoi_PreviewTextInput">
+                        <TextBox x:Name="TextGiaTronGoi" FontSize="20" Margin="300 30 100 30" PreviewTextInput="TextGiaTronGoi_PreviewTextInput"
+                                 GotFocus="TextGiaTronGoi_GotFocus" LostFocus="TextGiaTronGoi_LostFocus">  
                         </TextBox>
                     </Grid>
                     <Button Content="Cập nhật" FontSize="20" Margin="300 30 300 30" Padding="20 20 20 20" Height="72" Click="Button_Click" ></Button>

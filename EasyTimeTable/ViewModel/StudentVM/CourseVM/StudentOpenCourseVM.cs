@@ -34,6 +34,8 @@ namespace EasyTimeTable.ViewModel
         [ObservableProperty]
         private bool isLoading;
 
+        private string MSSV;
+
         public static Grid MaskName { get; set; }
 
         public List<string> ComboboxRequestKhoa { get; set; }
@@ -57,6 +59,7 @@ namespace EasyTimeTable.ViewModel
 
         public StudentOpenCourseVM()
         {
+            MSSV = LoginViewModel.mssv;
             ComboboxRequestKhoa = new List<string>();
             OpenCourse = new ObservableCollection<OpenCourseModel>();
             LoadDataGrid = new RelayCommand<object>(async (p) =>
@@ -151,7 +154,7 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv = GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam", con);
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv = GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '"+ MSSV + "' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -175,11 +178,10 @@ namespace EasyTimeTable.ViewModel
             }
             dr.Close();
             cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
-                "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon " +
-                "AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-                "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '20520782') AND tenmon not in (select tenmon FROM lophocphansinhvien, " +
+                "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
+                "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '"+ MSSV +"') AND tenmon not in (select tenmon FROM lophocphansinhvien, " +
                 "HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan " +
-                "and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam)", con);
+                "and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam) and len(hocphan.mahocphan) = 9", con);
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -201,6 +203,37 @@ namespace EasyTimeTable.ViewModel
                     SoTinChi = dr.GetInt32(12) + dr.GetInt32(13),
                 });
             }
+            dr.Close();
+            //List<OpenCourseModel> t = SignUpCourse();
+            //foreach (var item in t)
+            //{
+            //    cmd.CommandText = "SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
+            //        "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv " +
+            //        "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam AND (HOCPHAN.mahocphan like '" + item.MaHocPhan + "%') AND (HOCPHAN.MAHOCPHAN != '" + item.MaHocPhan + "')";
+            //    dr = cmd.ExecuteReader();
+            //    while (dr.Read())
+            //    {
+            //        list.Add(new OpenCourseModel
+            //        {
+            //            IsSignUp = false,
+            //            MaHocPhan = dr.GetString(0),
+            //            TenMon = dr.GetString(1),
+            //            TenGV = dr.GetString(2),
+            //            Nam = dr.GetInt32(3),
+            //            Ki = dr.GetInt32(4),
+            //            SoPhong = dr.GetString(5),
+            //            Toa = dr.GetString(6),
+            //            NgayBatDau = dr.GetDateTime(7),
+            //            NgayKetThuc = dr.GetDateTime(8),
+            //            TietHoc = dr.GetString(9),
+            //            Thu = dr.GetInt32(10),
+            //            SiSo = dr.GetInt32(11),
+            //            SoTinChi = dr.GetInt32(12) + dr.GetInt32(13),
+            //        });
+            //    }
+            //    dr.Close();
+            //}    
+
         }
 
         public async Task SelectCourseTask()
@@ -212,7 +245,7 @@ namespace EasyTimeTable.ViewModel
             {
                 foreach (OpenCourseModel c in SignUpCourse())
                 {
-                    if (c.TenMon == SelectedCourse.TenMon)
+                    if ((c.TenMon == SelectedCourse.TenMon) && (SelectedCourse.MaHocPhan.Length!=11))
                     {
                         MessageBox.Show("Bạn đã đăng kí môn " + c.TenMon + " rồi!!!");
                         return;
@@ -223,9 +256,10 @@ namespace EasyTimeTable.ViewModel
                         return;
                     }
                 }
+
                 int count = 0;
-                var cmd = new SqlCommand("SELECT * FROM lophocphansinhvien, hocphan, monhoc where masv = '20520782' and hocphan.mahocphan = lophocphansinhvien.mahocphan and hocphan.mamon = monhoc.mamon and " +
-                    "tenmon = N'" + SelectedCourse.TenMon + "'", con);
+                var cmd = new SqlCommand("SELECT * FROM lophocphansinhvien, hocphan, monhoc where masv = '"+ MSSV +"' and hocphan.mahocphan = lophocphansinhvien.mahocphan and hocphan.mamon = monhoc.mamon and " +
+                    "tenmon = N'" + SelectedCourse.TenMon + "' and len(hocphan.mahocphan) = 9", con);
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -238,7 +272,7 @@ namespace EasyTimeTable.ViewModel
                     cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
                     cmd.Parameters["@mahocphan"].Value = SelectedCourse.MaHocPhan;
                     cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
-                    cmd.Parameters["@masv"].Value = "20520782";
+                    cmd.Parameters["@masv"].Value = MSSV;
                     cmd.Parameters.Add("@lanhoc", System.Data.SqlDbType.Int);
                     cmd.Parameters["@lanhoc"].Value = 1;
                     cmd.Parameters.Add("@ngaydangki", System.Data.SqlDbType.DateTime);
@@ -259,7 +293,7 @@ namespace EasyTimeTable.ViewModel
                     cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
                     cmd.Parameters["@mahocphan"].Value = SelectedCourse.MaHocPhan;
                     cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
-                    cmd.Parameters["@masv"].Value = "20520782";
+                    cmd.Parameters["@masv"].Value = MSSV;
                     cmd.Parameters.Add("@lanhoc", System.Data.SqlDbType.Int);
                     cmd.Parameters["@lanhoc"].Value = count + 1;
                     cmd.Parameters.Add("@ngaydangki", System.Data.SqlDbType.DateTime);
@@ -279,7 +313,7 @@ namespace EasyTimeTable.ViewModel
                 cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
                 cmd.Parameters["@mahocphan"].Value = SelectedCourse.MaHocPhan;
                 cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
-                cmd.Parameters["@masv"].Value = "20520782";
+                cmd.Parameters["@masv"].Value = MSSV;
                 cmd.ExecuteNonQuery();
                 RegionChanged();
                 return;
@@ -299,7 +333,7 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam", con);
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = "+ MSSV + " and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -323,8 +357,8 @@ namespace EasyTimeTable.ViewModel
             }
             dr.Close();
             cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
-                "FROM HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon  and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-                "AND HOCPHAN.magv=GIAOVIEN.Magv AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '20520782')", con);
+                "FROM HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon  and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9 " +
+                "AND HOCPHAN.magv=GIAOVIEN.Magv AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = "+ MSSV +")", con);
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -354,8 +388,8 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
-               "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon  and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-               "AND HOCPHAN.magv=GIAOVIEN.Magv AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '20520782')", con);
+               "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon  and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9 " +
+               "AND HOCPHAN.magv=GIAOVIEN.Magv AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = "+ MSSV +")", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -386,7 +420,7 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC, thamso where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782'  and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam", con);
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = "+ MSSV + "  and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -417,7 +451,7 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam", con);
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = "+ MSSV + " and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {

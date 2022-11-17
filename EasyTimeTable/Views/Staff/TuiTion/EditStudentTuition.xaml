@@ -12,7 +12,7 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
-        Title="AddCourse" Height="650" Width="900">
+        Title="AddCourse" Height="400" Width="900">
     <Window.Triggers>
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard>
@@ -72,7 +72,6 @@
             </Border>
             <Grid Grid.Row="1">
                 <StackPanel>
-                    <Button x:Name="HinhAnh" Height="250" Width="200" Margin="20 20 20 20" Content="Chèn hình giùm ii"  ></Button>
                     <Grid>
                         <TextBlock Text="MSSV: " FontSize="20" FontWeight="Bold" Margin="100 30 30 30"></TextBlock>
                         <TextBlock x:Name="MSSV" Text="2152xxxx" FontSize="20" Margin="250 30 30 30"></TextBlock>
