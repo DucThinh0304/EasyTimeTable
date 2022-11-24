@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.LoginWindow;
-using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Staff;
-using System.Data.SqlClient;
+using EasyTimeTable.Views.Student;
+using MaterialDesignThemes.Wpf;
+using Syncfusion.Windows.Shared;
+using System;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using Button = System.Windows.Controls.Button;
+using Window = System.Windows.Window;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -36,6 +37,12 @@ namespace EasyTimeTable.ViewModel
         private String password;
 
         [ObservableProperty]
+        private bool isMSSVFocus;
+
+        [ObservableProperty]
+        private bool isPasswordFocus;
+
+        [ObservableProperty]
         private String username;
 
         [ObservableProperty]
@@ -43,9 +50,12 @@ namespace EasyTimeTable.ViewModel
 
         public static String mssv;
 
+        public SnackbarMessageQueue MessageQueueSnackBar { set; get; } = new(TimeSpan.FromSeconds(3));
+
 
         public LoginViewModel()
         {
+            Password = "";
             MouseLeftButtonDownWindowCM = new RelayCommand<Window>((p) =>
             {
                 if (p != null)
@@ -66,6 +76,7 @@ namespace EasyTimeTable.ViewModel
                     LoginWindow.funcTitle.Text = "Đăng nhập";
                 MainFrame = p;
                 p.Content = new LoginPage();
+                IsMSSVFocus = true;
 
             });
 
@@ -76,57 +87,87 @@ namespace EasyTimeTable.ViewModel
                 MainFrame.Content = new ForgotPasswordPage();
             });
 
-            LoginCM = new RelayCommand<Label>((p) =>
+            LoginCM = new RelayCommand<object>((p) =>
             {
-                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                con.Open();
-                var cmd = new SqlCommand("SELECT * FROM Taikhoan WHERE mssv = @mssv", con);
-                cmd.Parameters.Add("@mssv", System.Data.SqlDbType.VarChar);
-                cmd.Parameters["@mssv"].Value = Username;
-                var dr = cmd.ExecuteReader();
-                if (dr.Read())
+                IsMSSVFocus = false;
+                IsPasswordFocus = false;
+                if (Username.IsNullOrWhiteSpace() == false && Password.IsNullOrWhiteSpace() == false)
                 {
-                    SqlConnection con1 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                    con1.Open();
-                    var cmd1 = new SqlCommand("SELECT * FROM sinhvien WHERE masv = @mssv", con1);
-                    cmd1.Parameters.Add("@mssv", System.Data.SqlDbType.VarChar);
-                    cmd1.Parameters["@mssv"].Value = Username;
-                    var dr1 = cmd1.ExecuteReader();
-                    if (dr1.Read())
+                    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                    con.Open();
+                    var cmd = new SqlCommand("SELECT * FROM Taikhoan WHERE mssv = @mssv", con);
+                    cmd.Parameters.Add("@mssv", System.Data.SqlDbType.VarChar);
+                    cmd.Parameters["@mssv"].Value = Username;
+                    var dr = cmd.ExecuteReader();
+                    if (dr.Read())
                     {
-                        if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
+                        SqlConnection con1 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                        con1.Open();
+                        var cmd1 = new SqlCommand("SELECT * FROM sinhvien WHERE masv = @mssv", con1);
+                        cmd1.Parameters.Add("@mssv", System.Data.SqlDbType.VarChar);
+                        cmd1.Parameters["@mssv"].Value = Username;
+                        var dr1 = cmd1.ExecuteReader();
+                        if (dr1.Read())
                         {
-                            Login.Hide();
-                            mssv = Username;
-                            StudentMainWindow studentMainWindow = new StudentMainWindow();
-                            studentMainWindow.Show();
-                            Login.Close();
+                            if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
+                            {
+                                Login.Hide();
+                                mssv = Username;
+                                StudentMainWindow studentMainWindow = new StudentMainWindow();
+                                studentMainWindow.Show();
+                                Login.Close();
+                            }
+                            else
+                            {
+                                Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Sai mật khẩu"));
+                                LoginPage.password.Clear();
+                                IsPasswordFocus = true;
+                                IsMSSVFocus = false;
+
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("Sai mật khẩu");
+                            if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
+                            {
+                                Login.Hide();
+                                mssv = Username;
+                                StaffWindow staffWindow = new StaffWindow();
+                                staffWindow.Show();
+                                Login.Close();
+                            }
+                            else
+                            {
+                                Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Sai mật khẩu"));
+                                IsPasswordFocus = true;
+                                IsMSSVFocus = false;
+
+                            }
                         }
+
                     }
                     else
                     {
-                        if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
-                        {
-                            Login.Hide();
-                            mssv = Username;
-                            StaffWindow staffWindow = new StaffWindow();
-                            staffWindow.Show();
-                            Login.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Sai mật khẩu");
-                        }
-                    }
+                        Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Không có tài khoản này tồn tại"));
+                        IsMSSVFocus = true;
+                        IsPasswordFocus = false;
 
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Không có tài khoản này tồn tại");
+                    if (Username.IsNullOrWhiteSpace())
+                    {
+                        Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Bạn cần nhập MSSV"));
+                        IsMSSVFocus = true;
+                        IsPasswordFocus = false;
+                    }
+                    else
+                    {
+                        Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Bạn cần nhập mật khẩu"));
+                        IsMSSVFocus = false;
+                        IsPasswordFocus = true;
+                    }
                 }
             });
 

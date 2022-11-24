@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.LoginWindow;
 using System.Threading;
+using MaterialDesignThemes.Wpf;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -26,6 +27,8 @@ namespace EasyTimeTable.ViewModel
 
         [ObservableProperty]
         public string username;
+        [ObservableProperty]
+        private bool isMSSVFocus;
 
         [ObservableProperty]
         private Visibility maskVisibility;
@@ -37,8 +40,11 @@ namespace EasyTimeTable.ViewModel
 
         public ICommand ConfirmCM { get; set; }
 
+        public SnackbarMessageQueue MessageQueueSnackBar { set; get; } = new(TimeSpan.FromSeconds(3));
+
         public ForgotPassViewModel()
         {
+            IsMSSVFocus = true;
             MaskVisibility = Visibility.Collapsed;
             PreviousPageCM = new RelayCommand<object>((p) =>
             {
@@ -49,6 +55,7 @@ namespace EasyTimeTable.ViewModel
 
             ConfirmCM = new RelayCommand<object>(async (p) =>
             {
+                IsMSSVFocus = false;
                 MaskVisibility = Visibility.Visible;
                 IsLoading = true;
                 if (Username != null)
@@ -65,8 +72,14 @@ namespace EasyTimeTable.ViewModel
                     }
                     else
                     {
-                        MessageBox.Show("Không có tài khoản này");
+                        await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Không có tài khoản này tồn tại"));
+                        IsMSSVFocus = true;
                     }
+                }
+                else
+                {
+                    await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Bạn cần nhập MSSV !!!"));
+                    IsMSSVFocus = true;
                 }
                 MaskVisibility = Visibility.Collapsed;
                 IsLoading = false;
@@ -110,11 +123,11 @@ namespace EasyTimeTable.ViewModel
             try
             {
                 await Client.SendMailAsync(Mess);
-                MessageBox.Show("Đã gửi mã xác nhận. Bạn vui lòng kiểm tra trong hộp thư gmail của bạn.");
+                await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Đã gửi mã xác nhận vào hộp thư gmail của bạn."));
             }
             catch (Exception)
             {
-                MessageBox.Show("Đã có lỗi xảy ra");
+                await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Đã có lỗi xảy ra"));
             }
 
         }

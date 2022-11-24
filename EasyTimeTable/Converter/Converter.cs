@@ -153,7 +153,7 @@ namespace EasyTimeTable.Converter
                password.Any(c => IsLetter(c)) &&
                password.Any(c => IsDigit(c)) &&
                password.Any(c => IsSymbol(c)) &&
-               password.Length > 6;
+               password.Length >= 6;
         }
     }
 }

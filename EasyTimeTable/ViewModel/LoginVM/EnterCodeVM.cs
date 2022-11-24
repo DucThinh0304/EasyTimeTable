@@ -14,12 +14,14 @@ using System.Windows;
 using System.Data.SqlClient;
 using System.Windows.Controls;
 using System.Security.Policy;
+using MaterialDesignThemes.Wpf;
 
 namespace EasyTimeTable.ViewModel
 {
     [ObservableObject]
     public partial class EnterCodeVM
     {
+
         public ICommand PreviousPageCM { get; set; }
         public ICommand LoadCM { get; set; }
         public ICommand PasswordChangedCM { get; set; }
@@ -39,11 +41,18 @@ namespace EasyTimeTable.ViewModel
         private bool isLoading;
 
         [ObservableProperty]
+        private bool isMaXacNhanFocus;
+
+
+        [ObservableProperty]
         private Visibility maskVisibility;
+        public SnackbarMessageQueue MessageQueueSnackBar { set; get; } = new(TimeSpan.FromSeconds(3));
 
 
         public EnterCodeVM()
         {
+            IsMaXacNhanFocus = true;
+            Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Đã gửi mã xác nhận vào hộp thư gmail của bạn."));
             MaskVisibility = Visibility.Collapsed;
             PreviousPageCM = new RelayCommand<object>((p) =>
             {
@@ -64,6 +73,7 @@ namespace EasyTimeTable.ViewModel
 
             ConfirmCM = new RelayCommand<object>((p) =>
             {
+                IsMaXacNhanFocus = false;
                 if (MaXacNhan == Code)
                 {
                     if (LoginWindow.funcTitle != null)
@@ -72,7 +82,10 @@ namespace EasyTimeTable.ViewModel
                 }
                 else
                 {
-                    MessageBox.Show("Mã xác nhận không chính xác");
+                    Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Mã xác nhận không chính xác !!!"));
+                    EnterCode.ma.Clear();
+                    IsMaXacNhanFocus = true;
+
                 }
             });
 
@@ -118,7 +131,7 @@ namespace EasyTimeTable.ViewModel
             try
             {
                 await Client.SendMailAsync(Mess);
-                MessageBox.Show("Đã gửi mã xác nhận. Bạn vui lòng kiểm tra trong hộp thư gmail của bạn.");
+                await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Đã gửi mã xác nhận vào hộp thư gmail của bạn."));
             }
             catch (Exception ex)
             {

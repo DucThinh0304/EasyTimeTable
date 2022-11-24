@@ -20,10 +20,25 @@ namespace EasyTimeTable.Views.LoginWindow
     /// </summary>
     public partial class LoginPage : Page
     {
+        public static PasswordBox password;
         public LoginPage()
         {
             InitializeComponent();
-            MSSV.Focus();
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            MSSV.SelectAll();
+        }
+
+        private void FloatingPasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            FloatingPasswordBox.SelectAll();
+        }
+
+        private void FloatingPasswordBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            password = FloatingPasswordBox;
         }
     }
 }

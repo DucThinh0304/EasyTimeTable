@@ -7,6 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d" 
+      xmlns:ex="clr-namespace:EasyTimeTable.Extention"
       Background="White"
       TextElement.FontSize="20"
         TextOptions.TextFormattingMode="Ideal"
@@ -33,24 +34,30 @@
         <KeyBinding Command="{Binding LoginCM}"
                     Key="Enter"/>
     </Page.InputBindings>
-
-    <StackPanel MaxWidth="400" MaxHeight="400" Margin="20,0">
+    <Grid>
+       
+        <StackPanel MaxWidth="400" MaxHeight="400" Margin="20,0">
         <Image
 			Width="125" Height="125" HorizontalAlignment="Center" VerticalAlignment="Top"
             Source="/Assets/ETTlogo-large.png" Margin="0,20,0,20" />
         <TextBox
-            x:Name="MSSV"
+            ex:FocusExtension.IsFocused="{Binding IsMSSVFocus}"
             Margin="0 -15 0 0"       
             materialDesign:HintAssist.Hint="MSSV"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
             VerticalAlignment="Center" 
+            x:Name="MSSV"
             Text="{Binding Username}"
+            GotFocus="TextBox_GotFocus"
             materialDesign:TextFieldAssist.HasClearButton="True"
             FontSize="15"/>
 
         <PasswordBox  x:Name="FloatingPasswordBox"
             Margin="0 15 0 0"
+            ex:FocusExtension.IsFocused="{Binding IsPasswordFocus}"
             FontSize="15"
+                      Loaded="FloatingPasswordBox_Loaded"
+            GotFocus="FloatingPasswordBox_GotFocus"
             Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" 
             materialDesign:HintAssist.Hint="Mật khẩu"
             materialDesign:TextFieldAssist.HasClearButton="True">
@@ -78,4 +85,9 @@
             Style="{StaticResource MaterialDesignRaisedLightButton}"
             Content="Đăng nhập"/>
     </StackPanel>
+        <materialDesign:Snackbar MessageQueue="{Binding MessageQueueSnackBar}" 
+                                     Margin="10 -22.5" FontSize="25" 
+                                     HorizontalAlignment="Stretch">
+        </materialDesign:Snackbar>
+    </Grid>
 </Page>

@@ -21,10 +21,16 @@ namespace EasyTimeTable.Views.LoginWindow
     /// </summary>
     public partial class EnterCode : Page
     {
+
+        public static PasswordBox ma;
         public EnterCode()
         {
             InitializeComponent();
         }
 
+        private void FloatingPasswordBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ma = FloatingPasswordBox;
+        }
     }
 }

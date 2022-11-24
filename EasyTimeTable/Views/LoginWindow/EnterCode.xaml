@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:ex="clr-namespace:EasyTimeTable.Extention"
       mc:Ignorable="d"
       d:DesignHeight="400" d:DesignWidth="400"
       Background="White"
@@ -51,7 +52,9 @@
         <TextBlock Margin="5 10 5 25" TextWrapping="Wrap">Hãy nhập mã xác thực mà chúng tôi đã gửi tới Gmail của bạn</TextBlock>
         <PasswordBox  x:Name="FloatingPasswordBox"
             Margin="0 5 0 0"
+            ex:FocusExtension.IsFocused="{Binding IsMaXacNhanFocus}"          
             FontSize="15"
+                      Loaded="FloatingPasswordBox_Loaded"
             Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" 
             materialDesign:HintAssist.Hint="Mã xác thực"
             materialDesign:TextFieldAssist.HasClearButton="True"
@@ -94,5 +97,9 @@
                   Margin="0 -100"
                   Visibility="{Binding MaskVisibility}"
                   x:Name="ShadowMask" />
+        <materialDesign:Snackbar MessageQueue="{Binding MessageQueueSnackBar}" 
+                                     Margin="10 -22.5" FontSize="25" 
+                                     HorizontalAlignment="Stretch">
+        </materialDesign:Snackbar>
     </Grid>
 </Page>
