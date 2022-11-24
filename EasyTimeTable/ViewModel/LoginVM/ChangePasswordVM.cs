@@ -32,20 +32,25 @@ namespace EasyTimeTable.ViewModel
             ConfirmCM = new RelayCommand<object>((p) =>
             {
                 string AccountChange = ForgotPassViewModel.AccountChange;
-                if (Password.Length >= 5)
+                if (Converter.Converter.IsValidPassword(Password))
                 {
                     SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                     con.Open();
                     var cmd = new SqlCommand("Update taikhoan set matkhau = '" + Converter.Converter.CreateMD5(Password) + "' where MSSV = '" + AccountChange + "'", con);
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Đổi mật khẩu thành công, vui lòng đăng nhập lại!");
+                    if (LoginWindow.funcTitle != null)
+                        LoginWindow.funcTitle.Text = "Đăng nhập";
                     LoginViewModel.MainFrame.Content = new LoginPage();
                 }
                 else
                 {
-                    MessageBox.Show("Mật khẩu cần có ít nhất 5 chữ cái");
+                    MessageBox.Show("Mật khẩu không hợp lệ");
                 }
             });
+
+
+            
         }
 
     }

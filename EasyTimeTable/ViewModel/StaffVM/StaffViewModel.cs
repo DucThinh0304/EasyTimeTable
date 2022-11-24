@@ -26,7 +26,7 @@ namespace EasyTimeTable.ViewModel
         public ICommand SignoutCM { get; set; }
         public ICommand LoadStaffCourseListCM { get; set; }
         public ICommand LoadListOfRegister { get; set; }
-        public static Frame? MainFrame { get; set; }
+        public static Frame? Frame { get; set; }
 
         [ObservableProperty]
         private string currentUserName;
@@ -54,7 +54,7 @@ namespace EasyTimeTable.ViewModel
                     StaffWindow.funcTitle.Text = "Ngôi nhà chung";
                 if (p != null)
                     p.Content = new StaffHomePage();
-                MainFrame = p;
+                Frame = p;
             });
 
             LoadStaffCourseListCM = new RelayCommand<Frame>((p) =>
@@ -72,7 +72,7 @@ namespace EasyTimeTable.ViewModel
                 if (StaffWindow.Slidebtn != null)
                     StaffWindow.Slidebtn.IsChecked = false;
                 if (StaffWindow.funcTitle != null)
-                    StaffWindow.funcTitle.Text = "Quản lý đợt Đăng kí học phần";
+                    StaffWindow.funcTitle.Text = "Quản lý đợt đăng kí học phần";
                 if (p != null)
                     p.Content = new ManageDotDKHP();
             });

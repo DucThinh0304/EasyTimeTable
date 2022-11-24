@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:EasyTimeTable.Views.Staff.Home"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      DataContext="{StaticResource HomeStaffVM}"
       mc:Ignorable="d" 
       d:DesignHeight="960" d:DesignWidth="1440"
       Title="StaffHomePage">
@@ -31,18 +32,37 @@
             </WrapPanel>
         </materialDesign:Card>
 
-        <materialDesign:Card MaxWidth="900" Margin="0,100,0,0" Background="#FFF9F9F9">
-            <WrapPanel Height="95" MaxWidth="880" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid Width="650">
+        <materialDesign:Card MaxWidth="900" Margin="0,50,0,0" Background="#FFF9F9F9">
+            <WrapPanel Height="300" MaxWidth="880" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="/Assets/Cute_woman_teacher_character_cartoon_art_illustration [Converted].png" Height="270" Margin="15"/>
+                <StackPanel Width="700" Height="160">
                     <TextBlock Style="{StaticResource MaterialDesignHeadline2TextBlock}" 
                            HorizontalAlignment="Center"
-                               FontWeight="Bold"
-                               Foreground="MediumPurple"
+                           FontWeight="Bold"
+                           Foreground="MediumPurple"
                            TextAlignment="Center"
-                           Margin="0,0,0,0" TextWrapping="Wrap">Quản lý cho giáo viên</TextBlock>
-                </Grid>
+                           Margin="20,0,0,0" 
+                               TextWrapping="Wrap">Quản lý cho nhân viên</TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Height="40" FontSize="18" FontWeight="Bold"
+                                Margin="10,32,10,0" Content="Danh sách học phần"  
+                                HorizontalAlignment="Center" Command="{Binding CoursePageCM}" />
+                        <Button Grid.Column="1" Height="40" FontSize="18" FontWeight="Bold" 
+                                Margin="10,32,10,0" Content="Danh sách đợt ĐKHP" 
+                                HorizontalAlignment="Center" Command="{Binding TuitionPageCM}"
+                                materialDesign:ButtonAssist.CornerRadius="5"/>
+                        <Button Grid.Column="2" Height="40" FontSize="18" FontWeight="Bold" 
+                                Margin="10,32,10,0" Content="Danh sách học phí" 
+                                HorizontalAlignment="Center"  Command="{Binding DotPageCM}" 
+                                materialDesign:ButtonAssist.CornerRadius="5"/>
+                    </Grid>
+                </StackPanel>
             </WrapPanel>
         </materialDesign:Card>
-
     </StackPanel>
 </Page>

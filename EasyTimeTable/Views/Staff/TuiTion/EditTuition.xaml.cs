@@ -28,8 +28,6 @@ namespace EasyTimeTable.ViewModel.StudentVM.TuitionVM
         public static HocKi hk;
         public static ManageTuition view;
         private int GiaTinChi;
-        private double HeSoHocLai;
-        private double HeSoHocHe;
         private int GiaTronGoi;
         public EditTuition()
         {

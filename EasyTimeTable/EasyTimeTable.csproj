@@ -12,9 +12,11 @@
   <ItemGroup>
     <None Remove="Assets\Background.jpg" />
     <None Remove="Assets\BackgroundStaff.jpg" />
+    <None Remove="Assets\Cute_woman_teacher_character_cartoon_art_illustration [Converted].png" />
     <None Remove="Assets\ETT-logoflat.png" />
     <None Remove="Assets\ETTlogo-large.ico" />
     <None Remove="Assets\ETTlogo-large.png" />
+    <None Remove="Assets\Student.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,8 +46,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Student.jpg" />
     <Resource Include="Assets\Background.jpg" />
     <Resource Include="Assets\BackgroundStaff.jpg" />
+    <Resource Include="Assets\Cute_woman_teacher_character_cartoon_art_illustration [Converted].png" />
     <Resource Include="Assets\ETT-logoflat.png" />
     <Resource Include="Assets\ETTlogo-large.ico" />
     <Resource Include="Assets\ETTlogo-large.png" />

@@ -1,0 +1,118 @@
+﻿<Window x:Class="EasyTimeTable.Views.Student.Course.ChoosePraticeCourse"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyTimeTable.Views.Student.Course"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Width="900"
+        Height="400"
+        DataContext="{StaticResource StudentOpenCourseVM}"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        x:Name="ChooseWindow"
+        Title="ChoosePraticeCourse">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="ChooseWindow"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3" />
+
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <Border BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="10">
+        <Border.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Assets/BackgroundStaff.jpg"/>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="83*" />
+            </Grid.RowDefinitions>
+
+            <Border BorderThickness="0,0,0,0.5"
+                    BorderBrush="Black"
+                    Grid.Row="0"
+                    CornerRadius="10 10 0 0"
+                    Background="#5498f9">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Thêm yêu cầu mở môn" Grid.ColumnSpan="2"
+                               FontSize="25"
+                               FontWeight="Bold"         
+                               Margin="10,0,0,0" 
+                               TextAlignment="Center"
+                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1"
+                            ToolBar.OverflowMode="AsNeeded"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Background="OrangeRed"
+                            Foreground="White"
+                            BorderBrush="Transparent"
+                            materialDesign:ButtonAssist.CornerRadius="50"
+                            Margin="0 ,0,4,0"
+                            Click="Button_Click"
+                            Height="30" Width="30">
+                        <materialDesign:PackIcon Kind="WindowClose"
+                                                 Padding="0" />
+                    </Button>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                            Margin="20">
+                        <StackPanel>
+                            <TextBlock FontSize="15" Margin="20 20 20 5" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Mon1, StringFormat=Môn học: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding Tiet1, StringFormat=Tiết: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding Thu1, StringFormat=Thứ: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding GiangVien1, StringFormat=Giảng viên: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding SiSo1, StringFormat=Sỉ số: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayBatDau1, StringFormat=Ngày bắt đầu: {0:dd/MM/yy}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayKetThuc1, StringFormat=Ngày kết thúc: {0:dd/MM/yy}}"></TextBlock>
+                            <Button Content="Đăng kí" Margin="50 25 50 25" FontSize="20" Height="40" Command="{Binding DangKi1}"  CommandParameter="{Binding ElementName=ChooseWindow}"></Button>
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                            Grid.Column="1"
+                            Margin="20">
+                        <StackPanel>
+                            <TextBlock FontSize="15" Margin="20 20 20 5" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Mon2, StringFormat=Môn học: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding Tiet2, StringFormat=Tiết: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding Thu2, StringFormat=Thứ: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding GiangVien2, StringFormat=Giảng viên: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding SiSo2, StringFormat=Sỉ số: {0}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayBatDau2, StringFormat=Ngày bắt đầu: {0:dd/MM/yy}}"></TextBlock>
+                            <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayKetThuc2, StringFormat=Ngày kết thúc: {0:dd/MM/yy}}"></TextBlock>
+                            <Button Content="Đăng kí" Margin="50 25 50 25" FontSize="20" Height="40" Command="{Binding DangKi2}" CommandParameter="{Binding ElementName=ChooseWindow}"></Button>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

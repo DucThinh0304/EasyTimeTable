@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Tuition;
-using Syncfusion.Windows.Shared;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Windows.Input;
@@ -36,9 +35,15 @@ namespace EasyTimeTable.ViewModel
 
         [ObservableProperty]
         private bool isEnable;
+
+        [ObservableProperty]
+        private int hocPhi;
+
+        private int namhoc = 0;
+        private int SoTinChi = 0;
         public StudentHomeVM()
         {
-           
+
             TuitionPageCM = new RelayCommand<object>((p) =>
             {
                 StudentViewModel.MainFrame.Content = new StudentTuitionPage();
@@ -76,7 +81,7 @@ namespace EasyTimeTable.ViewModel
                         ColorSemester = new SolidColorBrush(Colors.Red);
                     }
                     else
-                    {     
+                    {
                         Semester = "(kì mở học phần hiện tại: " + dr.GetInt32(0).ToString() + ")";
                         IsEnable = true;
                         ColorSemester = new SolidColorBrush(Colors.Black);
@@ -90,9 +95,80 @@ namespace EasyTimeTable.ViewModel
                     Year = "Năm học: " + dr.GetInt32(0).ToString() + " - " + (dr.GetInt32(0) + 1).ToString();
                 }
                 dr.Close();
+                cmd = new SqlCommand("SELECT namhoc FROM thamso", con);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    namhoc = dr.GetInt32(0);
+                }
+                dr.Close();
+                cmd = new SqlCommand("SELECT sum(sotclt) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
+                "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and len(hocphan.mahocphan) = 9", con);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    if (dr.IsDBNull(0))
+                    {
+                        SoTinChi = 0;
+                    }
+                    else
+                    {
+                        SoTinChi = dr.GetInt32(0);
+                    }
+                }
+                dr.Close();
+                cmd = new SqlCommand("SELECT sum(sotcth) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
+               "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and len(hocphan.mahocphan) = 11", con);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    if (dr.IsDBNull(0) == false)
+                    {
+                        if (SoTinChi != 0)
+                        {
+                            SoTinChi += dr.GetInt32(0);
+                        }
+                    }
+                }
+                dr.Close();
+                cmd = new SqlCommand("SELECT kieuhocphan from thamso, hocki where ki=kihoc and hocki.namhoc = '" + (namhoc.ToString() + "-" + (namhoc + 1).ToString()) + "'", con);
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    if (dr.GetInt32(0) == 1)
+                    {
+                        TheoTinChi();
+                    }
+                    if (dr.GetInt32(0) == 2)
+                    {
+                        TheoTronGoi();
+                    }
+                }
+
             });
+        }
+        private void TheoTinChi()
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("select giatinchi from thamso", con);
+            var dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                HocPhi = SoTinChi * dr.GetInt32(0);
+            }
+        }
 
-
+        private void TheoTronGoi()
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("select giatrongoi from thamso", con);
+            var dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                HocPhi = dr.GetInt32(0);
+            }
         }
 
     }

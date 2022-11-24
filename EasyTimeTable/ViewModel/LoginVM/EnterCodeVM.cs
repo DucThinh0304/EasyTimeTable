@@ -32,31 +32,29 @@ namespace EasyTimeTable.ViewModel
         private string Code;
 
         private string MaXacNhan;
+
+        private string AccountChange;
+
+        [ObservableProperty]
+        private bool isLoading;
+
+        [ObservableProperty]
+        private Visibility maskVisibility;
+
+
         public EnterCodeVM()
         {
+            MaskVisibility = Visibility.Collapsed;
             PreviousPageCM = new RelayCommand<object>((p) =>
             {
                 LoginViewModel.MainFrame.Content = new ForgotPasswordPage();
             });
 
+            
             LoadCM = new RelayCommand<object>((p) =>
             {
-                string AccountChange = ForgotPassViewModel.AccountChange;
-                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                con.Open();
-                var cmd = new SqlCommand("Select EMAIL from SINHVIEN, taikhoan where MSSV = '" + AccountChange + "' and taikhoan.mssv = sinhvien.masv", con);
-                var dr = cmd.ExecuteReader();
-                if (dr.Read())
-                    SendMail(dr.GetString(0));
-                else
-                {
-                    SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                    con2.Open();
-                    var cmd2 = new SqlCommand("Select EMAIL from GiaoVien, taikhoan where MSSV = '" + AccountChange + "' and taikhoan.mssv = giaovien.magv", con2);
-                    var dr2 = cmd2.ExecuteReader();
-                    if (dr2.Read())
-                        SendMail(dr2.GetString(0));
-                }
+                MaXacNhan = ForgotPassViewModel.MaXacNhan;
+                AccountChange = ForgotPassViewModel.AccountChange;
             });
 
             PasswordChangedCM = new RelayCommand<PasswordBox>((p) =>
@@ -68,6 +66,8 @@ namespace EasyTimeTable.ViewModel
             {
                 if (MaXacNhan == Code)
                 {
+                    if (LoginWindow.funcTitle != null)
+                        LoginWindow.funcTitle.Text = "Đổi mật khẩu";
                     LoginViewModel.MainFrame.Content = new ChangePassword();
                 }
                 else
@@ -76,28 +76,32 @@ namespace EasyTimeTable.ViewModel
                 }
             });
 
-            GetCodeCM = new RelayCommand<object>((p) =>
+            GetCodeCM = new RelayCommand<object>(async (p) =>
             {
-                string AccountChange = ForgotPassViewModel.AccountChange;
+                IsLoading = true;
+                MaskVisibility = Visibility.Visible;
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("Select EMAIL from SINHVIEN, taikhoan where MSSV = '" + AccountChange + "' and taikhoan.mssv = sinhvien.masv", con);
                 var dr = cmd.ExecuteReader();
                 if (dr.Read())
-                    SendMail(dr.GetString(0));
+                    await SendMail(dr.GetString(0));
                 else
                 {
                     cmd = new SqlCommand("Select EMAIL from GiaoVien, taikhoan where MSSV = '" + AccountChange + "' and taikhoan.mssv = giaovien.magv", con);
                     var dr2 = cmd.ExecuteReader();
                     if (dr2.Read())
-                        SendMail(dr2.GetString(0));
+                    await SendMail(dr2.GetString(0));
                 }
+
+                MaskVisibility = Visibility.Collapsed;
+                IsLoading = false;
             });
 
 
         }
 
-        protected void SendMail(string CusMail)
+        protected async Task SendMail(string CusMail)
         {
 
             Random Ran = new Random();
@@ -113,7 +117,7 @@ namespace EasyTimeTable.ViewModel
             Client.Credentials = new NetworkCredential("20520782@gm.uit.edu.vn", "ranhgheha");
             try
             {
-                Client.Send(Mess);
+                await Client.SendMailAsync(Mess);
                 MessageBox.Show("Đã gửi mã xác nhận. Bạn vui lòng kiểm tra trong hộp thư gmail của bạn.");
             }
             catch (Exception ex)
@@ -122,7 +126,7 @@ namespace EasyTimeTable.ViewModel
                 LoginViewModel.MainFrame.Content = new ForgotPasswordPage();
             }
 
-
         }
+
     }
 }

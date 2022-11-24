@@ -57,10 +57,10 @@
                     <StackPanel Margin="8">
                         <materialDesign:PackIcon HorizontalAlignment="Center" 
 											    Kind="Cash" Width="80" Height="80"/>
-                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Học phí: 7.000.000đ" Margin="0,12,0,0"/>
+                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding HocPhi, StringFormat=Học phí: {0:N0} VND}" Margin="0,12,0,0"/>
                         <TextBlock Foreground="{Binding ColorTuition}"
                             Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding TuitionCheck}" HorizontalAlignment="Center"/>
-                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPageCM}"/>
+                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPageCM}" materialDesign:ButtonAssist.CornerRadius="5"/>
                     </StackPanel>
                 </StackPanel>
             </materialDesign:Card>

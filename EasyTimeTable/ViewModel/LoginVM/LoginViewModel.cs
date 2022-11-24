@@ -21,7 +21,7 @@ namespace EasyTimeTable.ViewModel
     {
         public Button LoginBtn { get; set; }
         public static Frame? MainFrame { get; set; }
-        public Window LoginWindow { get; set; }
+        public Window Login { get; set; }
         public ICommand CloseWindowCM { get; set; }
         public ICommand MinimizeWindowCM { get; set; }
         public ICommand MouseLeftButtonDownWindowCM { get; set; }
@@ -56,13 +56,14 @@ namespace EasyTimeTable.ViewModel
 
             SaveLoginWindowNameCM = new RelayCommand<Window>((p) =>
             {
-                LoginWindow = p;
+                Login = p;
             });
 
 
             LoadLoginPageCM = new RelayCommand<Frame>((p) =>
             {
-                CurrentPage = "Đăng nhập";
+                if (LoginWindow.funcTitle != null)
+                    LoginWindow.funcTitle.Text = "Đăng nhập";
                 MainFrame = p;
                 p.Content = new LoginPage();
 
@@ -70,7 +71,8 @@ namespace EasyTimeTable.ViewModel
 
             LoadForgotPassCM = new RelayCommand<object>((p) =>
             {
-                CurrentPage = "Quên mật khẩu";
+                if (LoginWindow.funcTitle != null)
+                    LoginWindow.funcTitle.Text = "Quên mật khẩu";
                 MainFrame.Content = new ForgotPasswordPage();
             });
 
@@ -94,11 +96,11 @@ namespace EasyTimeTable.ViewModel
                     {
                         if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
                         {
-                            LoginWindow.Hide();
+                            Login.Hide();
                             mssv = Username;
                             StudentMainWindow studentMainWindow = new StudentMainWindow();
                             studentMainWindow.Show();
-                            LoginWindow.Close();
+                            Login.Close();
                         }
                         else
                         {
@@ -109,11 +111,11 @@ namespace EasyTimeTable.ViewModel
                     {
                         if (Converter.Converter.CreateMD5(Password) == dr.GetString(1))
                         {
-                            LoginWindow.Hide();
+                            Login.Hide();
                             mssv = Username;
                             StaffWindow staffWindow = new StaffWindow();
                             staffWindow.Show();
-                            LoginWindow.Close();
+                            Login.Close();
                         }
                         else
                         {

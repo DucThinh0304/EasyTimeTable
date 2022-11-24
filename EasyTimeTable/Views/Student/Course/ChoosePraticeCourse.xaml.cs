@@ -10,20 +10,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasyTimeTable.Views.LoginWindow
+namespace EasyTimeTable.Views.Student.Course
 {
     /// <summary>
-    /// Interaction logic for LoginPage.xaml
+    /// Interaction logic for ChoosePraticeCourse.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class ChoosePraticeCourse : Window
     {
-        public LoginPage()
+        public ChoosePraticeCourse()
         {
             InitializeComponent();
-            MSSV.Focus();
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

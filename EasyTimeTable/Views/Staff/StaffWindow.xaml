@@ -30,6 +30,7 @@
             <Grid Grid.RowSpan="2"
                   Background="Gray"
                   Opacity="0"
+                  Visibility="Collapsed"
                   x:Name="shadow">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">

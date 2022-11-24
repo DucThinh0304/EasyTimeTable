@@ -6,9 +6,11 @@ using EasyTimeTable.Views.Student.Calendar;
 using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Home;
 using EasyTimeTable.Views.Student.Tuition;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,11 +34,16 @@ namespace EasyTimeTable.ViewModel
         [ObservableProperty]
         private string currentUserName;
 
+        private string Name;
+
         [ObservableProperty]
         private bool isLoading;
 
+        public SnackbarMessageQueue MessageQueueSnackBar { set; get; } = new(TimeSpan.FromSeconds(3));
+
         public StudentViewModel()
         {
+
             MSSV = LoginViewModel.mssv;
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
@@ -45,7 +52,9 @@ namespace EasyTimeTable.ViewModel
             while (dr.Read())
             {
                 CurrentUserName = dr.GetString(0);
+                Name = CurrentUserName.Split(' ').Last();
             }
+            Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xin chào, " + Name));
             LoadStudentTuitionCM = new RelayCommand<Frame>((p) =>
             {
                 if (StudentMainWindow.Slidebtn != null)
@@ -54,11 +63,10 @@ namespace EasyTimeTable.ViewModel
                     StudentMainWindow.funcTitle.Text = "Thông tin học phí";
                 if (p != null)
                     p.Content = new StudentTuitionPage();
-
-
             });
             LoadStudentHomeCM = new RelayCommand<Frame>((p) =>
             {
+                
                 if (StudentMainWindow.Slidebtn != null)
                     StudentMainWindow.Slidebtn.IsChecked = false;
                 if (StudentMainWindow.funcTitle != null)

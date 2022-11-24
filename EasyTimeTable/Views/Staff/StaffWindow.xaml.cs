@@ -56,9 +56,5 @@ namespace EasyTimeTable.Views.Staff
             funcTitle = FuncTitle;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ManageCourses.Window = this;
-        }
     }
 }

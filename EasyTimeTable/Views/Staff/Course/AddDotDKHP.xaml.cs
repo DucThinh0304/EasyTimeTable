@@ -89,7 +89,7 @@ namespace EasyTimeTable.Views.Staff.Course
                     }) ;  
                 }
                 Grid.ItemsSource = courses;
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 MessageBox.Show("File không đúng định dạng, vui lòng xem lại hướng dẫn");
             }

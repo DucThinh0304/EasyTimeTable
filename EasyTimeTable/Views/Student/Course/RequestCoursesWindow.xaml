@@ -109,6 +109,22 @@
                               Margin="20 10 10 0"
                               Style="{StaticResource MaterialDesignOutlinedComboBox}">
                     </ComboBox>
+                    <ComboBox materialDesign:HintAssist.Hint="Tiết bắt đầu" 
+                              Grid.Column="1"
+                              x:Name="ComboBox"
+                              Background="Transparent" 
+                              Margin="20 10 10 0"
+                              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              SelectionChanged="ComboBox_SelectionChanged">
+                    </ComboBox>
+                    <ComboBox materialDesign:HintAssist.Hint="Tiết kết thúc" 
+                              Background="Transparent" 
+                              Grid.Column="2"
+                              x:Name="ComboBoxEnd"
+                              SelectionChanged="ComboBoxEnd_SelectionChanged"
+                              Margin="20 10 10 0"
+                              Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                    </ComboBox>
                 </Grid>
                 <TextBox Grid.Row="2" Margin="20 20 20 0"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}" 
