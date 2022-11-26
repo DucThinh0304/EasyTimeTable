@@ -5,6 +5,8 @@ using EasyTimeTable.Views.Student.Course;
 using EasyTimeTable.Views.Student.Tuition;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -28,6 +30,12 @@ namespace EasyTimeTable.ViewModel
         private Brush colorSemester;
 
         [ObservableProperty]
+        private Visibility mask;
+
+        [ObservableProperty]
+        private bool isLoading;
+
+        [ObservableProperty]
         private string semester;
 
         [ObservableProperty]
@@ -43,7 +51,8 @@ namespace EasyTimeTable.ViewModel
         private int SoTinChi = 0;
         public StudentHomeVM()
         {
-
+            IsLoading = false;
+            Mask = Visibility.Collapsed;
             TuitionPageCM = new RelayCommand<object>((p) =>
             {
                 StudentViewModel.MainFrame.Content = new StudentTuitionPage();
@@ -56,23 +65,25 @@ namespace EasyTimeTable.ViewModel
                 if (StudentMainWindow.funcTitle != null)
                     StudentMainWindow.funcTitle.Text = "Danh sách học phần";
             });
-            LoadDB = new RelayCommand<object>((p) =>
+            LoadDB = new RelayCommand<object>(async (p) =>
             {
+                Mask = Visibility.Visible;
+                IsLoading = true;
                 TuitionCheck = "(đã đóng học phí)";
                 ColorTuition = new SolidColorBrush(Colors.Black);
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL and masv = '20520782'", con);
-                var dr = cmd.ExecuteReader();
-                if (dr.Read())
+                var dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
                 {
                     TuitionCheck = "(chưa đóng học phí)";
                     ColorTuition = new SolidColorBrush(Colors.Red);
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT ki from thamso", con);
-                dr = cmd.ExecuteReader();
-                if (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
                 {
                     if (dr.GetInt32(0) == 0)
                     {
@@ -89,23 +100,23 @@ namespace EasyTimeTable.ViewModel
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT namhoc from thamso", con);
-                dr = cmd.ExecuteReader();
-                if (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
                 {
                     Year = "Năm học: " + dr.GetInt32(0).ToString() + " - " + (dr.GetInt32(0) + 1).ToString();
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT namhoc FROM thamso", con);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     namhoc = dr.GetInt32(0);
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT sum(sotclt) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
                 "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and len(hocphan.mahocphan) = 9", con);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     if (dr.IsDBNull(0))
                     {
@@ -119,8 +130,8 @@ namespace EasyTimeTable.ViewModel
                 dr.Close();
                 cmd = new SqlCommand("SELECT sum(sotcth) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
                "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and len(hocphan.mahocphan) = 11", con);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     if (dr.IsDBNull(0) == false)
                     {
@@ -132,40 +143,41 @@ namespace EasyTimeTable.ViewModel
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT kieuhocphan from thamso, hocki where ki=kihoc and hocki.namhoc = '" + (namhoc.ToString() + "-" + (namhoc + 1).ToString()) + "'", con);
-                dr = cmd.ExecuteReader();
-                if (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
                 {
                     if (dr.GetInt32(0) == 1)
                     {
-                        TheoTinChi();
+                        await TheoTinChi();
                     }
                     if (dr.GetInt32(0) == 2)
                     {
-                        TheoTronGoi();
+                        await TheoTronGoi();
                     }
                 }
-
+                IsLoading = false;
+                Mask = Visibility.Collapsed;
             });
         }
-        private void TheoTinChi()
+        private async Task TheoTinChi()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("select giatinchi from thamso", con);
-            var dr = cmd.ExecuteReader();
-            if (dr.Read())
+            var dr =await cmd.ExecuteReaderAsync();
+            if (await dr.ReadAsync())
             {
                 HocPhi = SoTinChi * dr.GetInt32(0);
             }
         }
 
-        private void TheoTronGoi()
+        private async Task TheoTronGoi()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("select giatrongoi from thamso", con);
-            var dr = cmd.ExecuteReader();
-            if (dr.Read())
+            var dr = await cmd.ExecuteReaderAsync();
+            if (await dr.ReadAsync())
             {
                 HocPhi = dr.GetInt32(0);
             }

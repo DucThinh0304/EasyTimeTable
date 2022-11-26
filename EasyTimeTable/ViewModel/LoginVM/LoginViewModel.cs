@@ -149,6 +149,7 @@ namespace EasyTimeTable.ViewModel
                     else
                     {
                         Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Không có tài khoản này tồn tại"));
+                        LoginPage.password.Clear();
                         IsMSSVFocus = true;
                         IsPasswordFocus = false;
 

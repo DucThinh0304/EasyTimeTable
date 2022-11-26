@@ -32,8 +32,8 @@
             </BeginStoryboard>
         </EventTrigger>
     </Page.Triggers>
-
-    <Grid Margin="20 10 40 10">
+    <Grid>
+        <Grid Margin="20 10 40 10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
@@ -46,12 +46,12 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <TabItem Header="Môn đăng kí">
-            <StackPanel>
-                <TextBlock TextAlignment="Center" 
+                    <StackPanel>
+                        <TextBlock TextAlignment="Center" 
                            FontSize="28" FontWeight="Bold" Margin="25" Foreground="#774fce">
                     Thông tin học phần
-                </TextBlock>
-                <Border Margin="10 0 10 0" BorderBrush="Gray" BorderThickness="1" CornerRadius="10 10 10 10">
+                        </TextBlock>
+                        <Border Margin="10 0 10 0" BorderBrush="Gray" BorderThickness="1" CornerRadius="10 10 10 10">
                             <StackPanel>
                                 <Border BorderBrush="Gray" BorderThickness="0 0 0 1">
                                     <TextBlock  FontSize="20" HorizontalAlignment="Center" FontWeight="Bold" Text="Danh sách môn đã đăng kí"></TextBlock>
@@ -366,7 +366,7 @@
                 </TabItem>
             </TabControl>
         </materialDesign:Card>
-        
+
         <StackPanel  Grid.Column="1" Height="900">
             <TextBlock TextAlignment="Center" FontSize="28" 
                        FontWeight="Bold" Text="Tổng tiền"/>
@@ -477,15 +477,27 @@
                 </Grid>
             </StackPanel>
         </StackPanel>
-        
+
         <Grid Grid.Column="1" Margin="0 0 0 100">
             <TextBlock Margin="0 0 0 150" VerticalAlignment="Bottom" FontSize="20">Tổng số tín chỉ:</TextBlock>
             <TextBlock Margin="0 0 0 150" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20" Text="{Binding TongTinChi, StringFormat={}{0} (tc)}"></TextBlock>
-            <TextBlock Margin="0 0 0 120" VerticalAlignment="Bottom" FontSize="20">Tổng số tiền cần thanh toán: </TextBlock>
+            <TextBlock Margin="0 0 0 120" VerticalAlignment="Bottom" FontSize="20">Tổng số tiền cần thanh toán:</TextBlock>
             <TextBlock Margin="0 0 0 120" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20" Text="{Binding TienThanhToan, StringFormat={}{0:N0} VND}"></TextBlock>
             <Button  Height="45" FontSize="25" DockPanel.Dock="Top" materialDesign:ButtonAssist.CornerRadius="5" VerticalAlignment="Bottom" Margin="50" IsEnabled="{Binding EnableThanhToan}" Command="{Binding ThanhToanCM}" Click="Button_Click_1">
                 Thanh toán
             </Button>
         </Grid>
+    </Grid>
+        <Grid Grid.RowSpan="2"
+                  Background="Gray"
+                  Opacity="0.3"
+                  Visibility="Collapsed"
+                  x:Name="ShadowMask" />
+        <ProgressBar Height="50"
+                            Width="50"
+                            Margin="0 -30 0 0"
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            IsIndeterminate="{Binding IsLoading}">
+        </ProgressBar>
     </Grid>
 </Page>

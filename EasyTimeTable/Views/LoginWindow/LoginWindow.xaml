@@ -14,7 +14,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
-        Title="LoginWindow" Height="480" Width="400"
+        Title="LoginWindow" Height="720" Width="600"
         WindowStyle="None"
         Closing="Loginwindow_Closing">
     <i:Interaction.Triggers>
@@ -32,7 +32,7 @@
             CornerRadius="10"
             Background="white">
 
-        <StackPanel MaxWidth="400">
+        <StackPanel MaxWidth="600">
             <!--Close_Minimize bar-->
         <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Top"
@@ -63,11 +63,11 @@
                                                  Padding="0" />
             </Button>
         </StackPanel>
-            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth2" Padding="0 0 0 5" Height="Auto" Width="396" Margin="-0 0 -0 0" >
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth2" Padding="0 0 0 5" Height="Auto" Width="596" Margin="-0 0 -0 0" >
                 <TextBlock 
                 TextAlignment="Center"
                 FontWeight="Bold"
-                Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                Style="{StaticResource MaterialDesignHeadline2TextBlock}"
                 Name="FuncTitle" 
                     Loaded="FuncTitle_Loaded"/>
             </materialDesign:Card>

@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
       DataContext="{StaticResource LoginVM}"
-      d:DesignHeight="400" d:DesignWidth="400"
+      d:DesignHeight="720" d:DesignWidth="600"
       x:Name="mainPage"
       Title="LoginPage">
 
@@ -35,14 +35,13 @@
                     Key="Enter"/>
     </Page.InputBindings>
     <Grid>
-       
-        <StackPanel MaxWidth="400" MaxHeight="400" Margin="20,0">
+        <StackPanel MaxWidth="500" MaxHeight="600" Margin="20,0">
         <Image
-			Width="125" Height="125" HorizontalAlignment="Center" VerticalAlignment="Top"
+			Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top"
             Source="/Assets/ETTlogo-large.png" Margin="0,20,0,20" />
         <TextBox
             ex:FocusExtension.IsFocused="{Binding IsMSSVFocus}"
-            Margin="0 -15 0 0"       
+            Margin="0 15 0 0"       
             materialDesign:HintAssist.Hint="MSSV"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
             VerticalAlignment="Center" 
@@ -50,12 +49,12 @@
             Text="{Binding Username}"
             GotFocus="TextBox_GotFocus"
             materialDesign:TextFieldAssist.HasClearButton="True"
-            FontSize="15"/>
+            FontSize="23"/>
 
         <PasswordBox  x:Name="FloatingPasswordBox"
-            Margin="0 15 0 0"
+            Margin="0 30 0 0"
             ex:FocusExtension.IsFocused="{Binding IsPasswordFocus}"
-            FontSize="15"
+            FontSize="23"
                       Loaded="FloatingPasswordBox_Loaded"
             GotFocus="FloatingPasswordBox_GotFocus"
             Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" 
@@ -70,23 +69,24 @@
             </PasswordBox>
 
         <Button
-            Margin="0 0 0 15"
+            Margin="0 10 0 15"
             Style="{StaticResource MaterialDesignFlatButton}"
             ToolTip="MaterialDesignFlatButton"
             Content="Quên mật khẩu"
-            FontSize="13"
+            Height="50"
+            FontSize="20"
             HorizontalAlignment="Left"
             Command="{Binding LoadForgotPassCM}" />
         <Button
-            Height="45"
-            FontSize="20"
+            Height="60"
+            FontSize="30"
             materialDesign:ButtonAssist.CornerRadius="5"
             Command="{Binding LoginCM}"
             Style="{StaticResource MaterialDesignRaisedLightButton}"
             Content="Đăng nhập"/>
     </StackPanel>
         <materialDesign:Snackbar MessageQueue="{Binding MessageQueueSnackBar}" 
-                                     Margin="10 -22.5" FontSize="25" 
+                                     Margin="10 -43" 
                                      HorizontalAlignment="Stretch">
         </materialDesign:Snackbar>
     </Grid>

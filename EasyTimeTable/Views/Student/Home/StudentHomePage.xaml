@@ -32,49 +32,61 @@
             <i:InvokeCommandAction Command="{Binding LoadDB}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <StackPanel>
-        <materialDesign:Card MaxWidth="900" Margin="0,100,0,0" Background="#FFF9F9F9">
-        <WrapPanel Height="300" MaxWidth="880">
-            <materialDesign:Card Height="170" Width="170" Margin="15">
-                <Image Source="/Assets/ETT-logoflat.png" 
+    <Grid>
+        <StackPanel>
+            <materialDesign:Card MaxWidth="900" Margin="0,100,0,0" Background="#FFF9F9F9">
+                <WrapPanel Height="300" MaxWidth="880">
+                    <materialDesign:Card Height="170" Width="170" Margin="15">
+                        <Image Source="/Assets/ETT-logoflat.png" 
                    Height="150"/>
-            </materialDesign:Card>
-                <StackPanel Width="650" Margin="15 65 15 65">
-                <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" 
+                    </materialDesign:Card>
+                    <StackPanel Width="650" Margin="15 65 15 65">
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" 
                            HorizontalAlignment="Center"
                            FontWeight="Bold">EasyTimeTable</TextBlock>
-                <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}" 
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}" 
                            HorizontalAlignment="Center"
                            TextAlignment="Center"
                            Margin="0,0,0,0" TextWrapping="Wrap">Phần mềm quản lý đăng kí học phần và tính học phí</TextBlock>
-                
-            </StackPanel>
-        </WrapPanel>
-        </materialDesign:Card>
-        <WrapPanel MaxWidth="900" Margin="0 100 0 0">
-            <materialDesign:Card  Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
-                <StackPanel>
-                    <StackPanel Margin="8">
-                        <materialDesign:PackIcon HorizontalAlignment="Center" 
+
+                    </StackPanel>
+                </WrapPanel>
+            </materialDesign:Card>
+            <WrapPanel MaxWidth="900" Margin="0 100 0 0">
+                <materialDesign:Card  Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
+                    <StackPanel>
+                        <StackPanel Margin="8">
+                            <materialDesign:PackIcon HorizontalAlignment="Center" 
 											    Kind="Cash" Width="80" Height="80"/>
-                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding HocPhi, StringFormat=Học phí: {0:N0} VND}" Margin="0,12,0,0"/>
-                        <TextBlock Foreground="{Binding ColorTuition}"
+                            <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap"   Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding HocPhi, StringFormat=Học phí: {0:N0} VND}" Margin="0,12,0,0"/>
+                            <TextBlock Foreground="{Binding ColorTuition}"
                             Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding TuitionCheck}" HorizontalAlignment="Center"/>
-                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPageCM}" materialDesign:ButtonAssist.CornerRadius="5"/>
+                            <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem thông tin học phí"  HorizontalAlignment="Center" Command="{Binding TuitionPageCM}" materialDesign:ButtonAssist.CornerRadius="5"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </materialDesign:Card>
-            <materialDesign:Card Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
-                <StackPanel>
-                    <StackPanel Margin="8">
-                        <materialDesign:PackIcon HorizontalAlignment="Center"
+                </materialDesign:Card>
+                <materialDesign:Card Width="400" Padding="4" VerticalAlignment="Top" Margin="25,10,25,10"  HorizontalAlignment="Center">
+                    <StackPanel>
+                        <StackPanel Margin="8">
+                            <materialDesign:PackIcon HorizontalAlignment="Center"
 											    Kind="BookOpenVariant" Width="80" Height="80"/>
-                        <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Year}" Margin="0,12,0,0"/>
-                        <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding Semester}" HorizontalAlignment="Center"/>
-                        <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}"/>
+                            <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Year}" Margin="0,12,0,0"/>
+                            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding Semester}" HorizontalAlignment="Center"/>
+                            <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </materialDesign:Card>
-        </WrapPanel>
-    </StackPanel>
+                </materialDesign:Card>
+            </WrapPanel>
+        </StackPanel>
+        <Grid Grid.RowSpan="2"
+                  Background="Gray"
+                  Opacity="0.3"
+                  Visibility="{Binding Mask}" />
+        <ProgressBar Height="50"
+                            Width="50"
+                            Margin="0 -30 0 0"
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            IsIndeterminate="{Binding IsLoading}">
+        </ProgressBar>
+    </Grid>
 </Page>

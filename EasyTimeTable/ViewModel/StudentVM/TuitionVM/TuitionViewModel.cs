@@ -11,6 +11,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,8 @@ namespace EasyTimeTable.ViewModel
         private string? soTinChiHocLai;
         [ObservableProperty]
         private string? tongTinChi;
+        [ObservableProperty]
+        private bool isLoading;
 
         [ObservableProperty]
         private TabItem selectedItem;
@@ -92,14 +95,16 @@ namespace EasyTimeTable.ViewModel
 
         public TuitionViewModel()
         {
-            LoadDB = new RelayCommand<object>((p) =>
+            IsLoading = false;
+            LoadDB = new RelayCommand<object>(async (p) =>
             {
+                IsLoading = true;
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("SELECT sum(sotclt) + sum(sotcth) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
                     "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782'", con);
-                var dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     if (dr.IsDBNull(0))
                     {
@@ -112,8 +117,8 @@ namespace EasyTimeTable.ViewModel
                 }
                 dr.Close();
                 cmd = new SqlCommand("Select * from thamso", con);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     GiaTronGoi = dr.GetInt32(3);
                     HeSoHocHe = dr.GetDouble(2);
@@ -133,19 +138,20 @@ namespace EasyTimeTable.ViewModel
                 {
                     EnableThanhToan = true;
                 }
-                
+                IsLoading = false;
             });
             CourseList = new ObservableCollection<OpenCourseModel>();
-            LoadListDB = new RelayCommand<object>((p) =>
+            LoadListDB = new RelayCommand<object>(async (p) =>
             {
+                IsLoading = true;
                 CourseList = new ObservableCollection<OpenCourseModel>();
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                     "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null " +
                     "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
-                var dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     CourseList.Add(new OpenCourseModel
                     {
@@ -169,8 +175,8 @@ namespace EasyTimeTable.ViewModel
                 cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                     "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null " +
                     "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
                 {
                     CourseList.Add(new OpenCourseModel
                     {
@@ -196,8 +202,10 @@ namespace EasyTimeTable.ViewModel
                      TC += item.SoTinChi;
                 }
                 SoTinChi = TC.ToString();
-                getCourse();
-                FeeVisibility();
+                await getCourse();
+                await FeeVisibility();
+                IsLoading = false;
+
             });
 
             TabChangedCM = new RelayCommand<object>((p) =>
@@ -407,14 +415,14 @@ namespace EasyTimeTable.ViewModel
                     LoadListDB.Execute(null);
             });
         }
-        public void FeeVisibility()
+        public async Task FeeVisibility()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT ki, namhoc FROM thamso", con);
-            var dr = cmd.ExecuteReader();
+            var dr = await cmd.ExecuteReaderAsync();
             int namhoc = 0;
-            while (dr.Read())
+            while (await dr.ReadAsync())
             {
                 if (dr.GetInt32(0) != 3)
                 {
@@ -424,8 +432,8 @@ namespace EasyTimeTable.ViewModel
             }
             dr.Close();
             cmd = new SqlCommand("SELECT kieuhocphan FROM hocki, thamso where kihoc = ki and hocki.namhoc = '" + (namhoc.ToString() + "-" + (namhoc + 1).ToString()) +"'", con);
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            dr = await cmd.ExecuteReaderAsync();
+            while (await dr.ReadAsync())
             {
                 if (dr.GetInt32(0) == 1)
                 {
@@ -441,7 +449,7 @@ namespace EasyTimeTable.ViewModel
             dr.Close();
         }
 
-        public void getCourse()
+        public async Task getCourse()
         {
             Course = new ObservableCollection<OpenCourseModel>();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
@@ -449,8 +457,8 @@ namespace EasyTimeTable.ViewModel
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                 "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null and lanhoc = 1" +
                 "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
-            var dr = cmd.ExecuteReader();
-            while (dr.Read())
+            var dr = await cmd.ExecuteReaderAsync();
+            while (await dr.ReadAsync())
             {
                 Course.Add(new OpenCourseModel
                 {
@@ -485,7 +493,7 @@ namespace EasyTimeTable.ViewModel
 
         }
 
-        public void getCourseHocLai()
+        public async Task getCourseHocLai()
         {
             CourseHocLai = new ObservableCollection<OpenCourseModel>();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
@@ -493,8 +501,8 @@ namespace EasyTimeTable.ViewModel
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                 "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null and lanhoc > 1" +
                 "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
-            var dr = cmd.ExecuteReader();
-            while (dr.Read())
+            var dr = await cmd.ExecuteReaderAsync();
+            while (await dr.ReadAsync())
             {
                 CourseHocLai.Add(new OpenCourseModel
                 {

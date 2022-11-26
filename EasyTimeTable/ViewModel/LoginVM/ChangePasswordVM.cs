@@ -43,7 +43,20 @@ namespace EasyTimeTable.ViewModel
                     {
                         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con.Open();
-                        var cmd = new SqlCommand("Update taikhoan set matkhau = '" + Converter.Converter.CreateMD5(Password) + "' where MSSV = '" + AccountChange + "'", con);
+                        var cmd = new SqlCommand("Select matkhau from taikhoan where MSSV = '" + AccountChange + "'", con);
+                        var dr = await cmd.ExecuteReaderAsync();
+                        if (await dr.ReadAsync())
+                        {
+                            if (dr.GetString(0) == Converter.Converter.CreateMD5(Password))
+                            {
+                                await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Mật khẩu trùng với mật khẩu cũ, hãy chọn mật khẩu mới"));
+                                IsPasswordFocus = true;
+                                ChangePassword.pass.Clear();
+                                return;
+                            }
+                        }
+                        dr.Close();
+                        cmd = new SqlCommand("Update taikhoan set matkhau = '" + Converter.Converter.CreateMD5(Password) + "' where MSSV = '" + AccountChange + "'", con);
                         cmd.ExecuteNonQuery();
                         await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Đổi mật khẩu thành công, vui lòng đăng nhập lại!"));
                         await Task.Delay(4000);
