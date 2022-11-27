@@ -1,22 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Model;
-using EasyTimeTable.Views.Student;
-using EasyTimeTable.Views.Student.Tuition;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace EasyTimeTable.ViewModel
@@ -34,6 +25,8 @@ namespace EasyTimeTable.ViewModel
         private string? tongTinChi;
         [ObservableProperty]
         private bool isLoading;
+        [ObservableProperty]
+        private Visibility mask;
 
         [ObservableProperty]
         private TabItem selectedItem;
@@ -95,10 +88,12 @@ namespace EasyTimeTable.ViewModel
 
         public TuitionViewModel()
         {
+            Mask = Visibility.Collapsed;
             IsLoading = false;
             LoadDB = new RelayCommand<object>(async (p) =>
             {
                 IsLoading = true;
+                Mask = Visibility.Visible;
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("SELECT sum(sotclt) + sum(sotcth) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
@@ -124,7 +119,7 @@ namespace EasyTimeTable.ViewModel
                     HeSoHocHe = dr.GetDouble(2);
                     HeSoHocLai = dr.GetDouble(1);
                     GiaTinChi = dr.GetInt32(0);
-                 }
+                }
 
                 dr.Close();
                 FeeVisibility();
@@ -139,11 +134,13 @@ namespace EasyTimeTable.ViewModel
                     EnableThanhToan = true;
                 }
                 IsLoading = false;
+                Mask = Visibility.Collapsed;
             });
             CourseList = new ObservableCollection<OpenCourseModel>();
             LoadListDB = new RelayCommand<object>(async (p) =>
             {
                 IsLoading = true;
+                Mask = Visibility.Visible;
                 CourseList = new ObservableCollection<OpenCourseModel>();
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
@@ -199,21 +196,25 @@ namespace EasyTimeTable.ViewModel
                 int TC = 0;
                 foreach (OpenCourseModel item in CourseList)
                 {
-                     TC += item.SoTinChi;
+                    TC += item.SoTinChi;
                 }
                 SoTinChi = TC.ToString();
-                await getCourse();
-                await FeeVisibility();
+                getCourse();
+                FeeVisibility();
                 IsLoading = false;
+                Mask = Visibility.Collapsed;
 
             });
 
             TabChangedCM = new RelayCommand<object>((p) =>
             {
+                Mask = Visibility.Visible;
+                IsLoading = true;
+                if (CourseList != null)
+                    CourseList.Clear();
                 switch (SelectedItem.Header)
                 {
                     case "Môn đăng kí":
-                        CourseList.Clear();
                         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con.Open();
                         var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
@@ -273,7 +274,6 @@ namespace EasyTimeTable.ViewModel
                         SoTinChi = TC.ToString();
                         break;
                     case "Môn đang chờ":
-                        CourseList.Clear();
                         SqlConnection con1 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con1.Open();
                         var cmd1 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
@@ -333,7 +333,6 @@ namespace EasyTimeTable.ViewModel
                         SoTinChi = "Tổng số tín chỉ đang chờ: " + TC1;
                         break;
                     case "Môn đã thanh toán":
-                        CourseList.Clear();
                         SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con2.Open();
                         var cmd2 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
@@ -396,11 +395,14 @@ namespace EasyTimeTable.ViewModel
                         MessageBox.Show("Sth wrong happen");
                         break;
                 }
+                IsLoading = false;
+                Mask = Visibility.Collapsed;
             });
 
             ThanhToanCM = new RelayCommand<object>((p) =>
             {
-                foreach (OpenCourseModel item in CourseList) {
+                foreach (OpenCourseModel item in CourseList)
+                {
                     SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                     con.Open();
                     var cmd = new SqlCommand("update lophocphansinhvien set ngaythanhtoan = @ngaythanhtoan where mahocphan = '" + item.MaHocPhan + "'", con);
@@ -415,14 +417,14 @@ namespace EasyTimeTable.ViewModel
                     LoadListDB.Execute(null);
             });
         }
-        public async Task FeeVisibility()
+        public void FeeVisibility()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT ki, namhoc FROM thamso", con);
-            var dr = await cmd.ExecuteReaderAsync();
+            var dr = cmd.ExecuteReader();
             int namhoc = 0;
-            while (await dr.ReadAsync())
+            while (dr.Read())
             {
                 if (dr.GetInt32(0) != 3)
                 {
@@ -431,9 +433,9 @@ namespace EasyTimeTable.ViewModel
                 namhoc = dr.GetInt32(1);
             }
             dr.Close();
-            cmd = new SqlCommand("SELECT kieuhocphan FROM hocki, thamso where kihoc = ki and hocki.namhoc = '" + (namhoc.ToString() + "-" + (namhoc + 1).ToString()) +"'", con);
-            dr = await cmd.ExecuteReaderAsync();
-            while (await dr.ReadAsync())
+            cmd = new SqlCommand("SELECT kieuhocphan FROM hocki, thamso where kihoc = ki and hocki.namhoc = '" + (namhoc.ToString() + "-" + (namhoc + 1).ToString()) + "'", con);
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
             {
                 if (dr.GetInt32(0) == 1)
                 {
@@ -449,16 +451,18 @@ namespace EasyTimeTable.ViewModel
             dr.Close();
         }
 
-        public async Task getCourse()
+        public void getCourse()
         {
+            if (Course != null)
+                Course.Clear();
             Course = new ObservableCollection<OpenCourseModel>();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                 "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null and lanhoc = 1" +
                 "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
-            var dr = await cmd.ExecuteReaderAsync();
-            while (await dr.ReadAsync())
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
             {
                 Course.Add(new OpenCourseModel
                 {
@@ -489,20 +493,20 @@ namespace EasyTimeTable.ViewModel
                 Sum = TC * GiaTinChi;
             else
                 Sum = GiaTronGoi;
-
-
         }
 
-        public async Task getCourseHocLai()
+        public void getCourseHocLai()
         {
+            if (CourseHocLai != null)
+                CourseHocLai.Clear();
             CourseHocLai = new ObservableCollection<OpenCourseModel>();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                 "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null and lanhoc > 1" +
                 "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
-            var dr = await cmd.ExecuteReaderAsync();
-            while (await dr.ReadAsync())
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
             {
                 CourseHocLai.Add(new OpenCourseModel
                 {
@@ -544,6 +548,6 @@ namespace EasyTimeTable.ViewModel
             }
             else
                 TienThanhToan = SumHocLai + Sum;
-            }
+        }
     }
 }
