@@ -4,6 +4,7 @@ using EasyTimeTable.Views.LoginWindow;
 using EasyTimeTable.Views.Student;
 using EasyTimeTable.Views.Student.Calendar;
 using EasyTimeTable.Views.Student.Course;
+using EasyTimeTable.Views.OpenCourse;
 using EasyTimeTable.Views.Student.Home;
 using EasyTimeTable.Views.Student.Tuition;
 using MaterialDesignThemes.Wpf;
@@ -25,6 +26,7 @@ namespace EasyTimeTable.ViewModel
         public ICommand LoadStudentHomeCM { get; set; }
         public ICommand LoadStudentTuitionCM { get; set; }
         public ICommand LoadOpenCourseListCM { get; set; }
+        public ICommand LoadOpenCourseCM { get; set; }
         public ICommand LoadSchedulerCM { get; set; }
         public ICommand SignoutCM { get; set; }
         public static Frame? MainFrame { get; set; }
@@ -84,6 +86,16 @@ namespace EasyTimeTable.ViewModel
                     StudentMainWindow.funcTitle.Text = "Danh sách học phần";
                 if (p != null)
                     p.Content = new OpenCourseListPage();
+            });
+
+            LoadOpenCourseCM = new RelayCommand<Frame>((p) =>
+            {
+                if (StudentMainWindow.Slidebtn != null)
+                    StudentMainWindow.Slidebtn.IsChecked = false;
+                if (StudentMainWindow.funcTitle != null)
+                    StudentMainWindow.funcTitle.Text = "Danh sách học phần";
+                if (p != null)
+                    p.Content = new OpenCoursePage();
             });
 
             LoadSchedulerCM = new RelayCommand<Frame>((p) =>

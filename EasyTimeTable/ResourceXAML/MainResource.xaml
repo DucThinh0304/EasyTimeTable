@@ -14,4 +14,5 @@
     <viewmodel:EnterCodeVM x:Key="EnterCodeVM"/>
     <viewmodel:ChangePasswordVM x:Key="ChangePasswordVM"/>
     <viewmodel:HomeStaffVM x:Key="HomeStaffVM"/>
+    <viewmodel:OpenCourseVM x:Key="OpenCourseVM"/>
 </ResourceDictionary>

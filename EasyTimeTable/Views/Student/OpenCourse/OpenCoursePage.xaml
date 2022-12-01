@@ -1,0 +1,216 @@
+﻿<Page x:Class="EasyTimeTable.Views.OpenCourse.OpenCoursePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasyTimeTable.Views.OpenCourse"
+      mc:Ignorable="d" 
+      x:Name="mainPage"
+      DataContext="{StaticResource OpenCourseVM}"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      d:DesignHeight="960" d:DesignWidth="1440"
+      Title="OpenCoursePage">
+
+    <Page.Background>
+        <ImageBrush ImageSource="/Assets/Background.jpg" />
+    </Page.Background>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetMaskName}"
+                                   CommandParameter="{Binding ElementName=ShadowMask}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="mainPage"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+    <Grid>
+        <StackPanel>
+            <Grid Margin="20" Height="40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.12*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ComboBox Margin="20 0 20 0" FontSize="20" SelectedIndex="0" SelectedItem="{Binding SelectedCombobox, Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RegionChangedCM}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ComboBoxItem Content="Tự động"/>
+                    <ComboBoxItem Content="Môn chính trị"/>
+                    <ComboBoxItem Content="Lý thuyết"/>
+                    <ComboBoxItem Content="Thực hành"/>
+                </ComboBox>
+                <DockPanel Grid.Column="1">
+                    <materialDesign:PackIcon Kind="Search" Width="40" Height="40"></materialDesign:PackIcon>
+                    <TextBox materialDesign:HintAssist.Hint="Tìm kiếm" 
+                             Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
+                             x:Name="SearchBox"
+                             Margin="0 0 30 0"
+                             FontSize="20" VerticalAlignment="Stretch">
+                    </TextBox>
+                </DockPanel>
+                <Border BorderBrush="Black" BorderThickness="1 1 1 1" Grid.Column="2" CornerRadius="5" Margin="0 -5 10 -5" Background="#d39ddb" Padding="5">
+                    <Label FontSize="20" Content="{Binding SoTinChi, StringFormat=Số tín chỉ: {0}}" FontWeight="Bold"/>
+                </Border>
+                <materialDesign:Badged Grid.Column="3"
+                    Badge="{Binding NumberError}">
+                <materialDesign:PopupBox  Margin="10 -10 0 -10"
+                      PlacementMode="BottomAndAlignRightEdges">
+                    <materialDesign:PopupBox.ToggleContent>
+                        <materialDesign:PackIcon
+                        Foreground="Crimson"
+                        Kind="AlertCircle"
+                        Height="60"
+                        Width="60" />
+                    </materialDesign:PopupBox.ToggleContent>
+                    <materialDesign:PopupBox.ToggleCheckedContent>
+                        <materialDesign:PackIcon
+                            Foreground="#d39ddb"
+                            Kind="AlertCircle"
+                            Height="60"
+                            Width="60" />
+                    </materialDesign:PopupBox.ToggleCheckedContent>
+                    <StackPanel Margin="0 0 0 0" MaxHeight="500">
+                            <ListView ItemsSource="{Binding ListError}" 
+                                      FontSize="20"
+                                      ScrollViewer.CanContentScroll="False"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Hidden">  
+
+                            </ListView>
+                    </StackPanel>
+                </materialDesign:PopupBox>
+                </materialDesign:Badged>
+            </Grid>
+            <TabControl Grid.Row="1" materialDesign:ColorZoneAssist.Mode="PrimaryLight" x:Name="tab" SelectionChanged="tab_SelectionChanged">
+                <TabItem Header="Đăng kí môn" FontSize="30">
+                </TabItem>
+                <TabItem Header="Hủy đăng kí môn" FontSize="30">
+                </TabItem>
+            </TabControl>
+            <Grid>
+                <materialDesign:Card Margin="20 0 40 20" Background="Transparent" x:Name="Select">
+                <DataGrid Height="600" FontSize="20" 
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          Background="Transparent"
+                          ItemsSource="{Binding FilteredOpenCourse}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Loaded">
+                            <i:InvokeCommandAction Command="{Binding LoadDataGrid}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Chọn" 
+                                                ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                                EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
+                                                Binding="{Binding IsSignUp, Mode=TwoWay}" />
+                        <DataGridTextColumn Header="Mã học phần" Binding="{Binding MaHocPhan}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Số tín chỉ" Binding="{Binding SoTinChi}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Số phòng" IsReadOnly="True">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0}.{1}">
+                                    <Binding Path="Toa" />
+                                    <Binding Path="SoPhong" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                            <DataGridTextColumn Header="Tiết học" IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="Thứ {0} - {1}">
+                                        <Binding Path="Thu" />
+                                        <Binding Path="TietHoc" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                        <DataGridTextColumn Header="Lần học" Binding="{Binding LanHoc}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Ngày kết thúc" Binding="{Binding NgayKetThuc, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
+                <materialDesign:Card Margin="20 0 40 20" Background="Transparent" x:Name="Selected" Visibility="Hidden">
+                    <DataGrid Height="600" FontSize="20" 
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          Background="Transparent"
+                          ItemsSource="{Binding FilteredOpenCourseSelect}">
+                        <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Chọn" 
+                                                ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                                EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
+                                                Binding="{Binding IsSignUp, Mode=TwoWay}" />
+                        <DataGridTextColumn Header="Mã học phần" Binding="{Binding MaHocPhan}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Số tín chỉ" Binding="{Binding SoTinChi}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Số phòng" IsReadOnly="True">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0}.{1}">
+                                    <Binding Path="Toa" />
+                                    <Binding Path="SoPhong" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Tiết học" IsReadOnly="True">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="Thứ {0} - {1}">
+                                    <Binding Path="Thu" />
+                                    <Binding Path="TietHoc" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Lần học" Binding="{Binding LanHoc}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Ngày kết thúc" Binding="{Binding NgayKetThuc, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Margin="50 20 50 20" Height="50" FontSize="25" x:Name="Button" Content="{Binding ButtonContent, Mode=OneWayToSource}" Command="{Binding SelectCourseCM}"/>
+                <Button Grid.Column="1" Margin="50 20 50 20" Height="50" FontSize="25" Content="Đăng kí nhanh" Command="{Binding QuickSelectCM}"/>
+                <Button Margin="50 20 50 20" Height="50" FontSize="25" Content="Tạo yêu cầu mở lớp" Command="{Binding RequestCM}" Grid.Column="2"/>
+            </Grid>
+        </StackPanel>
+        <Grid Grid.RowSpan="2"
+                  Background="Gray"
+                  Opacity="0.3"
+                  Visibility="Collapsed"
+                  x:Name="ShadowMask" />
+        <ProgressBar Height="50"
+                            Width="50"
+                            Margin="670,375,670,485"
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            IsIndeterminate="{Binding IsLoading}">
+        </ProgressBar>
+        <materialDesign:Snackbar MessageQueue="{Binding MessageQueueSnackBar}" 
+                                 Background="#d39ddb"
+                                 Margin="100"
+                                 Foreground="Black"
+                                 HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        </materialDesign:Snackbar>
+    </Grid>
+</Page>

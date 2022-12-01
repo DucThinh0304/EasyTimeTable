@@ -205,6 +205,27 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="22"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadOpenCourseCM}" 
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="FormatListBulleted"
+                                                         Height="30"
+                                                         Width="30"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="20"
+                                                   Margin="10,0,0,0">
+                                            Danh sách học phần
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
                     </materialDesign:Card>
                     <Grid Margin="40,0,0,0">
@@ -251,8 +272,8 @@
 
                     <materialDesign:PopupBox Margin="20 0 0 0"
                         DockPanel.Dock="Left" 
-                                             Foreground="White"
-                                             PlacementMode="BottomAndAlignRightEdges">
+                        Foreground="White"
+                        PlacementMode="BottomAndAlignRightEdges">
                         <StackPanel>
                             <Button Command="{Binding SignoutCM}" Height="45" 
                                     CommandParameter="{Binding ElementName=Main_Student}">

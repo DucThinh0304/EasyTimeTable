@@ -55,4 +55,8 @@
     <Resource Include="Assets\ETTlogo-large.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModel\OpenCourseVM\" />
+  </ItemGroup>
+
 </Project>
