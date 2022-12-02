@@ -108,6 +108,8 @@ namespace EasyTimeTable.ViewModel
                     p.Content = new SchedulerPage();
             });
 
+
+
             FrameworkElement GetParentWindow(FrameworkElement p)
             {
                 FrameworkElement parent = p;

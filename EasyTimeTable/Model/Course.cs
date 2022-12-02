@@ -24,5 +24,6 @@ namespace EasyTimeTable.Model
         public int SoTinChi { get; set; }
         public bool IsSignUp { get; set; }
         public string LanHoc { get; set; }
+        public int SDK { get; set; }
     }
 }

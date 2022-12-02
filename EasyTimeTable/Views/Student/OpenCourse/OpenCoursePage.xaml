@@ -22,7 +22,8 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Page.Triggers>
-        <EventTrigger RoutedEvent="Page.Loaded">
+      
+            <EventTrigger RoutedEvent="Page.Loaded">
             <BeginStoryboard>
                 <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="mainPage"
@@ -41,7 +42,6 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.12*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <ComboBox Margin="20 0 20 0" FontSize="20" SelectedIndex="0" SelectedItem="{Binding SelectedCombobox, Mode=TwoWay}">
                     <i:Interaction.Triggers>
@@ -66,7 +66,7 @@
                 <Border BorderBrush="Black" BorderThickness="1 1 1 1" Grid.Column="2" CornerRadius="5" Margin="0 -5 10 -5" Background="#d39ddb" Padding="5">
                     <Label FontSize="20" Content="{Binding SoTinChi, StringFormat=Số tín chỉ: {0}}" FontWeight="Bold"/>
                 </Border>
-                <materialDesign:Badged Grid.Column="3"
+                <!--<materialDesign:Badged Grid.Column="3"
                     Badge="{Binding NumberError}">
                 <materialDesign:PopupBox  Margin="10 -10 0 -10"
                       PlacementMode="BottomAndAlignRightEdges">
@@ -93,7 +93,7 @@
                             </ListView>
                     </StackPanel>
                 </materialDesign:PopupBox>
-                </materialDesign:Badged>
+                </materialDesign:Badged>-->
             </Grid>
             <TabControl Grid.Row="1" materialDesign:ColorZoneAssist.Mode="PrimaryLight" x:Name="tab" SelectionChanged="tab_SelectionChanged">
                 <TabItem Header="Đăng kí môn" FontSize="30">
@@ -138,9 +138,15 @@
                                     </MultiBinding>
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
-                        <DataGridTextColumn Header="Lần học" Binding="{Binding LanHoc}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Sỉ số" IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0}/{1}">
+                                        <Binding Path="SDK" />
+                                        <Binding Path="SiSo" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Ngày kết thúc" Binding="{Binding NgayKetThuc, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -177,8 +183,15 @@
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
                         <DataGridTextColumn Header="Lần học" Binding="{Binding LanHoc}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Sỉ số" Binding="{Binding SiSo}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Sỉ số" IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0}/{1}">
+                                        <Binding Path="SDK" />
+                                        <Binding Path="SiSo" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding NgayBatDau, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Ngày kết thúc" Binding="{Binding NgayKetThuc, StringFormat=\{0:dd/MM/yy\}}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>

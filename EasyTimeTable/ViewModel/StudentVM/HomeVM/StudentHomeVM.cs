@@ -176,7 +176,7 @@ namespace EasyTimeTable.ViewModel
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("select giatrongoi from thamso", con);
+            var cmd = new SqlCommand("select giatrongioi from thamso", con);
             var dr = await cmd.ExecuteReaderAsync();
             if (await dr.ReadAsync())
             {

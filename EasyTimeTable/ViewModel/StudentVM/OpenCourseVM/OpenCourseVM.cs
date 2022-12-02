@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace EasyTimeTable.ViewModel
         private ComboBoxItem selectedCombobox;
         [ObservableProperty]
         private bool isLoading;
+        private bool confirm;
 
         private string MSSV;
 
@@ -52,7 +54,11 @@ namespace EasyTimeTable.ViewModel
         private List<string> listResult;
 
         [ObservableProperty]
-        private List<string> listError;
+        public List<string> listError;
+
+        [ObservableProperty]
+        public List<string> listSelect;
+
         [ObservableProperty]
         private int numberError;
 
@@ -106,9 +112,11 @@ namespace EasyTimeTable.ViewModel
         {
             ListResult = new List<string>();
             ListError = new List<string>();
+            ListSelect = new List<string>();
             MSSV = LoginViewModel.mssv;
             OpenCourse = new ObservableCollection<Course>();
             OpenCourseSelect = new ObservableCollection<Course>();
+            OpenCourseSelecttemp = new ObservableCollection<Course>();
             LoadDataGrid = new RelayCommand<object>(async (p) =>
             {
                 MaskName.Visibility = System.Windows.Visibility.Visible;
@@ -122,17 +130,18 @@ namespace EasyTimeTable.ViewModel
                 MaskName.Visibility = Visibility.Collapsed;
             });
 
-            OKDialog = new RelayCommand<object>(async (p) =>
+            OKDialog = new RelayCommand<object>((p) =>
             {
                 SoTinChi = "Số tín chỉ: " + TongTC().ToString();
-                await RegionChanged();
+                RegionChanged();
                 IsLoading = false;
                 int i = 0;
-                foreach (string c in ListError)
+                foreach (var c in ListError)
                 {
                     i++;
 
                 }
+                ListError.Clear();
                 NumberError = i;
                 MaskName.Visibility = Visibility.Collapsed;
                 ListResult.Clear();
@@ -221,43 +230,67 @@ namespace EasyTimeTable.ViewModel
                     Thu = dr.GetInt32(10),
                     SiSo = dr.GetInt32(11),
                     SoTinChi = dr.GetInt32(12),
-                    LanHoc = CountLanHoc(dr.GetString(1)).ToString()
+                    LanHoc = CountLanHoc(dr.GetString(1)).ToString(),
+                    SDK = DemSNDK(dr.GetString(0))
                 });
 
             }
             dr.Close();
-            cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
+            cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
                 "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv = GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + MSSV + "' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con);
             dr = await cmd.ExecuteReaderAsync();
             while (await dr.ReadAsync())
             {
-                list.Add(new Course
+                if (dr.GetInt32(14) == 1)
                 {
-                    IsSignUp = false,
-                    MaHocPhan = dr.GetString(0),
-                    TenMon = dr.GetString(1),
-                    TenGV = dr.GetString(2),
-                    Nam = dr.GetInt32(3),
-                    Ki = dr.GetInt32(4),
-                    SoPhong = dr.GetString(5),
-                    Toa = dr.GetString(6),
-                    NgayBatDau = dr.GetDateTime(7),
-                    NgayKetThuc = dr.GetDateTime(8),
-                    TietHoc = dr.GetString(9),
-                    Thu = dr.GetInt32(10),
-                    SiSo = dr.GetInt32(11),
-                    SoTinChi = dr.GetInt32(13),
-                    LanHoc = "_"
-                });
+                    list.Add(new Course
+                    {
+                        IsSignUp = false,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        SoPhong = dr.GetString(5),
+                        Toa = dr.GetString(6),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        TietHoc = dr.GetString(9),
+                        Thu = dr.GetInt32(10),
+                        SiSo = dr.GetInt32(11),
+                        SoTinChi = dr.GetInt32(13),
+                        LanHoc = "_",
+                        SDK = DemSNDK(dr.GetString(0))
+                    });
+                }
+                else
+                {
+                    list.Add(new Course
+                    {
+                        IsSignUp = false,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        SiSo = dr.GetInt32(11),
+                        TietHoc = "0",
+                        SoTinChi = dr.GetInt32(13),
+                        LanHoc = "_",
+                        SDK = DemSNDK(dr.GetString(0))
+                    });
+                }
             }
-            
+
 
         }
         public async Task LoadDB(ObservableCollection<Course> list)
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
+            var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc " +
                 "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
                 "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') and len(hocphan.mahocphan) = 9", con);
             var dr = await cmd.ExecuteReaderAsync();
@@ -279,34 +312,40 @@ namespace EasyTimeTable.ViewModel
                     Thu = dr.GetInt32(10),
                     SiSo = dr.GetInt32(11),
                     SoTinChi = dr.GetInt32(12),
-                    LanHoc = CountLanHoc(dr.GetString(1)).ToString()
+                    LanHoc = CountLanHoc(dr.GetString(1)).ToString(),
+                    SDK = DemSNDK(dr.GetString(0))
                 });
             }
             dr.Close();
-            cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
+
+            cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc " +
                 "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
                 "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') and len(hocphan.mahocphan) = 11", con);
             dr = await cmd.ExecuteReaderAsync();
             while (await dr.ReadAsync())
             {
-                list.Add(new Course
+                if (dr.GetInt32(14) == 1)
                 {
-                    IsSignUp = false,
-                    MaHocPhan = dr.GetString(0),
-                    TenMon = dr.GetString(1),
-                    TenGV = dr.GetString(2),
-                    Nam = dr.GetInt32(3),
-                    Ki = dr.GetInt32(4),
-                    SoPhong = dr.GetString(5),
-                    Toa = dr.GetString(6),
-                    NgayBatDau = dr.GetDateTime(7),
-                    NgayKetThuc = dr.GetDateTime(8),
-                    TietHoc = dr.GetString(9),
-                    Thu = dr.GetInt32(10),
-                    SiSo = dr.GetInt32(11),
-                    SoTinChi = dr.GetInt32(13),
-                    LanHoc = "_"
-                });
+                    list.Add(new Course
+                    {
+                        IsSignUp = false,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        SoPhong = dr.GetString(5),
+                        Toa = dr.GetString(6),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        TietHoc = dr.GetString(9),
+                        Thu = dr.GetInt32(10),
+                        SiSo = dr.GetInt32(11),
+                        SoTinChi = dr.GetInt32(13),
+                        LanHoc = "_",
+                        SDK = DemSNDK(dr.GetString(0))
+                    });
+                }
             }
             foreach (Course course in OpenCourseSelect)
             {
@@ -343,6 +382,7 @@ namespace EasyTimeTable.ViewModel
                 foreach (Course c in OpenCoursetemp)
                 {
                     if (CheckCourse(c) == false) continue;
+
                     cmd = new SqlCommand("SELECT mamontienquyet FROM monhoctienquyet where  mamonphuthuoc = '" + c.MaHocPhan.Substring(0, 5) + "'", con);
                     dr = await cmd.ExecuteReaderAsync();
                     if (await dr.ReadAsync())
@@ -371,8 +411,48 @@ namespace EasyTimeTable.ViewModel
                     await cmd.ExecuteNonQueryAsync();
                     c.IsSignUp = false;
 
+                    if (CheckHT2(c))
+                    {
+                        cmd = new SqlCommand("Insert into lophocphansinhvien (mahocphan, masv, lanhoc, diem, ngaydangki, daduyet) values " + "(@mahocphan, @masv, @lanhoc, @diem, @ngaydangki, @daduyet)", con);
+                        cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
+                        cmd.Parameters["@mahocphan"].Value = c.MaHocPhan + ".1";
+                        cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
+                        cmd.Parameters["@masv"].Value = MSSV;
+                        cmd.Parameters.Add("@lanhoc", System.Data.SqlDbType.Int);
+                        cmd.Parameters["@lanhoc"].Value = 1;
+                        cmd.Parameters.Add("@ngaydangki", System.Data.SqlDbType.DateTime);
+                        cmd.Parameters["@ngaydangki"].Value = DateTime.Now;
+                        cmd.Parameters.Add("@diem", System.Data.SqlDbType.Int);
+                        cmd.Parameters["@diem"].Value = 0;
+                        cmd.Parameters.Add("@daduyet", System.Data.SqlDbType.Int);
+                        cmd.Parameters["@daduyet"].Value = 0;
+                        await cmd.ExecuteNonQueryAsync();
+                    }
                     OpenCourseSelect.Add(c);
+                    if (CheckHT2(c))
+                    {
+                        OpenCourseSelect.Add(new Course
+                        {
+                            IsSignUp = false,
+                            MaHocPhan = c.MaHocPhan + ".1",
+                            TenMon = c.TenMon,
+                            TenGV = c.TenGV,
+                            Nam = c.Nam,
+                            Ki = c.Ki,
+                            NgayBatDau = c.NgayBatDau,
+                            NgayKetThuc = c.NgayKetThuc,
+                            SiSo = c.SiSo,
+                            TietHoc = "0",
+                            SoTinChi = 1,
+                            LanHoc = "_",
+                            SDK = DemSNDK(c.MaHocPhan + ".1")
+                        });
+                    }
                     ListResult.Add(c.MaHocPhan + " - " + c.TenMon);
+                    if (CheckHT2(c))
+                    {
+                        ListResult.Add(c.MaHocPhan + ".1 - " + c.TenMon);
+                    }
                     dr.Close();
                 }
                 if (ListResult.Count != 0)
@@ -391,7 +471,7 @@ namespace EasyTimeTable.ViewModel
             }
             else if (ButtonContent == "Hủy môn học")
             {
-                ObservableCollection<Course> OpenCourseSelecttemp = new ObservableCollection<Course>();
+                OpenCourseSelecttemp.Clear();
                 foreach (Course c in OpenCourseSelect)
                 {
                     if (c.IsSignUp == true)
@@ -405,37 +485,52 @@ namespace EasyTimeTable.ViewModel
                     IsLoading = false;
                     await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Hãy chọn ít nhất 1 môn"));
                 }
-                foreach (Course c in OpenCourseSelect)
+                CustomYesNoDialog customYesNoDialog = new CustomYesNoDialog();
+                customYesNoDialog.ShowDialog();
+                if (confirm == true)
                 {
-                    if (c.IsSignUp == true)
+                    foreach (Course c in OpenCourseSelect)
                     {
-                        CheckCancelTH(c);
-                        cmd = new SqlCommand("delete from lophocphansinhvien where mahocphan = @mahocphan and masv = @masv", con);
-                        cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
-                        cmd.Parameters["@mahocphan"].Value = c.MaHocPhan;
-                        cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
-                        cmd.Parameters["@masv"].Value = MSSV;
-                        cmd.ExecuteNonQuery();
+                        if (c.IsSignUp == true)
+                        {
+                            if (!CheckCancelTH(c))
+                            {
+                                ListError.Add(c.MaHocPhan + " - " + c.TenMon + ": Bạn cần phải xóa cả lý thuyết và thực hành");
+                            }
+                            else
+                            {
+                                cmd = new SqlCommand("delete from lophocphansinhvien where mahocphan = @mahocphan and masv = @masv", con);
+                                cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
+                                cmd.Parameters["@mahocphan"].Value = c.MaHocPhan;
+                                cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
+                                cmd.Parameters["@masv"].Value = MSSV;
+                                cmd.ExecuteNonQuery();
 
-                        ListResult.Add(c.MaHocPhan + " - " + c.TenMon);
+                                ListResult.Add(c.MaHocPhan + " - " + c.TenMon);
+                            }
+                        }
                     }
-                }
-                if (ListResult.Count != 0)
-                {
-                    foreach (string s in ListResult)
+                    if (ListResult.Count != 0)
                     {
-                        OpenCourseSelect.Remove(OpenCourseSelect.Where(i => i.MaHocPhan == Converter.Helper.GetUntilOrEmpty(s)).Single());
+                        foreach (string s in ListResult)
+                        {
+                            OpenCourseSelect.Remove(OpenCourseSelect.Where(i => i.MaHocPhan == Converter.Helper.GetUntilOrEmpty(s)).Single());
+                        }
+                        DialogTitle = "Hủy môn thành công";
+                        DangKiThanhCongDialog dangKiThanhCongDialog = new DangKiThanhCongDialog();
+                        dangKiThanhCongDialog.ShowDialog();
                     }
-                    DialogTitle = "Hủy môn thành công";
-                    DangKiThanhCongDialog dangKiThanhCongDialog = new DangKiThanhCongDialog();
-                    dangKiThanhCongDialog.ShowDialog();
+                    else
+                    {
+                        DialogTitle = "Hủy môn không thành công";
+                        ListResult.Add("Không có môn nào được hủy đăng kí");
+                        DangKiThanhCongDialog dangKiThanhCongDialog = new DangKiThanhCongDialog();
+                        dangKiThanhCongDialog.ShowDialog();
+                    }
                 }
                 else
                 {
-                    DialogTitle = "Hủy môn không thành công";
-                    ListResult.Add("Không có môn nào được hủy đăng kí");
-                    DangKiThanhCongDialog dangKiThanhCongDialog = new DangKiThanhCongDialog();
-                    dangKiThanhCongDialog.ShowDialog();
+
                 }
             }
         }
@@ -456,6 +551,37 @@ namespace EasyTimeTable.ViewModel
                 ListError.Add(c.TenMon + " - " + c.MaHocPhan + ": Bạn đã đăng kí quá 24 tín chỉ rồi!!!");
                 return false;
             }
+
+
+
+            if (CheckLTTH(c) == false && CheckHT2(c) == false)
+            {
+                string mahocphan = c.MaHocPhan.Substring(0, 9);
+                int dem = 0;
+                foreach (Course s in OpenCourse)
+                {
+                    if ((s.MaHocPhan.Substring(0, 9) == mahocphan) && s.IsSignUp == true) dem++;
+                }
+                if (!(dem >= 2) && c.MaHocPhan.Length == 9)
+                {
+                    ListError.Add(c.TenMon + " - " + c.MaHocPhan + ": Bạn chưa đăng kí thực hành cho học phần!!!");
+                    return false;
+                }
+                if ((dem == 1) && c.MaHocPhan.Length == 11)
+                {
+                    bool flag = false;
+                    foreach (Course s in OpenCourseSelect)
+                    {
+                        if (s.MaHocPhan.Contains(c.MaHocPhan.Substring(0, 9)) && c.MaHocPhan != s.MaHocPhan) flag = true;
+                    }
+                    if (flag == false)
+                    {
+                        ListError.Add(c.TenMon + " - " + c.MaHocPhan + ": Bạn chưa đăng kí lý thuyết cho học phần!!!");
+                        return false;
+                    }
+                }
+            }
+
             foreach (Course s in OpenCourseSelect)
             {
                 if ((c.TenMon == s.TenMon) && (c.MaHocPhan.Length != 11))
@@ -472,6 +598,7 @@ namespace EasyTimeTable.ViewModel
                     return false;
                 }
             }
+
             foreach (Course s in OpenCourseSelect)
             {
                 if ((c.TenMon == s.TenMon) && (c.MaHocPhan.Length == 11) && (s.MaHocPhan.Length == 11))
@@ -480,6 +607,7 @@ namespace EasyTimeTable.ViewModel
                     return false;
                 }
             }
+
             foreach (Course s in OpenCourseSelect)
             {
                 if (Converter.Converter.Compare(c.TietHoc, s.TietHoc, c.Thu, s.Thu) == false)
@@ -488,9 +616,46 @@ namespace EasyTimeTable.ViewModel
                     return false;
                 }
             }
-
             return true;
         }
+        public int DemSNDK(string s)
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("SELECT COUNT(DISTINCT MASV) FROM LOPHOCPHANSINHVIEN WHERE MAHOCPHAN='" + s + "' GROUP BY MAHOCPHAN", con);
+            var dr = cmd.ExecuteReader();
+            if (dr.Read())
+                return dr.GetInt32(0);
+            return 0;
+        }
+        public bool CheckLTTH(Course c)
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            string s = c.MaHocPhan.Substring(0, 9);
+            SqlCommand cmd = new SqlCommand("Select SoTCTH, hinhthuc from monhoc, hocphan where monhoc.mamon = hocphan.mamon and hocphan.mahocphan = '" + s + "'", con);
+            var dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                if (dr.GetInt32(0) == 0 && dr.GetInt32(1) != 2) return true;
+            }
+            return false;
+        }
+        public bool CheckHT2(Course c)
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            string s = c.MaHocPhan.Substring(0, 9);
+            SqlCommand cmd = new SqlCommand("Select hinhthuc from hocphan where mahocphan = '" + s + ".1'", con);
+            var dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                if (dr.GetInt32(0) == 2) return true;
+            }
+            return false;
+        }
+
+
 
         public bool CheckMonTienQuyet(string c, Course s)
         {
@@ -517,17 +682,23 @@ namespace EasyTimeTable.ViewModel
 
         public bool CheckCancelTH(Course c)
         {
-            bool flag = true;
-            if (c.MaHocPhan.Length == 9) return true;
-            foreach (Course s in OpenCourseSelect)
+            int dem = 0;
+            foreach (var t in OpenCourseSelect)
             {
-                if (s.IsSignUp == true)
-                {
-                    if (s.MaHocPhan == c.MaHocPhan.Substring(0, 8)) flag = false;
-                }
+                if (t.MaHocPhan.Substring(0, 9) == c.MaHocPhan.Substring(0, 9)) dem++;
             }
-            return flag;
-
+            if (dem != 2) return true;
+            else
+            {
+                int f = 0;
+                foreach (var t in OpenCourseSelect)
+                {
+                    if (t.MaHocPhan.Substring(0, 9) == c.MaHocPhan.Substring(0, 9) && t.IsSignUp == true) f++;
+                }
+                if (f == 2) return true;
+                else return false;
+            }
+            return false;
         }
 
         public int CountLanHoc(string TenMon)
@@ -535,8 +706,8 @@ namespace EasyTimeTable.ViewModel
             int count = 1;
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("SELECT * FROM lophocphansinhvien, hocphan, monhoc where masv = '" + MSSV + "' and hocphan.mahocphan = lophocphansinhvien.mahocphan and hocphan.mamon = monhoc.mamon and " +
-                "tenmon = N'" + TenMon + "' and len(hocphan.mahocphan) = 9", con);
+            var cmd = new SqlCommand("SELECT * FROM lophocphansinhvien, hocphan, monhoc, thamso where masv = '" + MSSV + "' and hocphan.mahocphan = lophocphansinhvien.mahocphan and hocphan.mamon = monhoc.mamon and " +
+                "tenmon = N'" + TenMon + "' and len(hocphan.mahocphan) = 9 and hocphan.nam <> thamso.namhoc", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -557,7 +728,8 @@ namespace EasyTimeTable.ViewModel
             {
                 foreach (Course s in list)
                 {
-                    if ((s.TenMon == course.TenMon) && (s.MaHocPhan.Length == 9)){
+                    if ((s.TenMon == course.TenMon) && (s.MaHocPhan.Length == 9))
+                    {
                         list1.Remove(s);
                     }
                 }
@@ -573,6 +745,8 @@ namespace EasyTimeTable.ViewModel
                 }
             }
         }
+
+
 
         // Refresh Tự động (Môn cùng tên sẽ không xuất hiện)
         public async Task RefreshDB(ObservableCollection<Course> list)
@@ -722,6 +896,8 @@ namespace EasyTimeTable.ViewModel
         }
 
 
+
+        public ObservableCollection<Course> OpenCourseSelecttemp { get; }
         // Custom ObservableCollection
         public ObservableCollection<Course> OpenCourse { get; }
         public ObservableCollection<Course> OpenCourseSelect { get; }
@@ -766,6 +942,20 @@ namespace EasyTimeTable.ViewModel
                 if (e.PropertyName == "Search")
                     this.Refresh();
             }
+        }
+
+        [RelayCommand]
+        private void CoDialog()
+        {
+            confirm = true;
+        }
+
+        [RelayCommand]
+        private void KhongDialog()
+        {
+            confirm = false;
+            IsLoading = false;
+            MaskName.Visibility = Visibility.Collapsed;
         }
     }
 }
