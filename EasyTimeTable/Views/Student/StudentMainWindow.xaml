@@ -148,7 +148,7 @@
                                         FontSize="22"
                                         HorizontalContentAlignment="Left"
                                         Width="285"
-                                        Command="{Binding LoadOpenCourseListCM}" 
+                                        Command="{Binding LoadOpenCourseCM}" 
                                         CommandParameter="{Binding ElementName=MainFrame}" >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="FormatListBulleted"
@@ -163,6 +163,27 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            <!--<StackPanel Orientation="Horizontal">
+                                <Button Margin="0,0,0,0"
+                                        Height="75"
+                                        FontSize="22"
+                                        HorizontalContentAlignment="Left"
+                                        Width="285"
+                                        Command="{Binding LoadOpenCourseListCM}" 
+                                        CommandParameter="{Binding ElementName=MainFrame}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="FormatListBulleted"
+                                                         Height="30"
+                                                         Width="30"
+                                                         Margin="0,0,0,0"
+                                                         VerticalAlignment="Center" />
+                                        <TextBlock FontSize="20"
+                                                   Margin="10,0,0,0">
+                                            Danh sách học phần
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>-->
                             <StackPanel Orientation="Horizontal">
                                 <Button Margin="0,0,0,0"
                                         Height="75"
@@ -201,27 +222,6 @@
                                         <TextBlock FontSize="22"
                                                    Margin="10,0,0,0">
                                             Thời gian biểu
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Margin="0,0,0,0"
-                                        Height="75"
-                                        FontSize="22"
-                                        HorizontalContentAlignment="Left"
-                                        Width="285"
-                                        Command="{Binding LoadOpenCourseCM}" 
-                                        CommandParameter="{Binding ElementName=MainFrame}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="FormatListBulleted"
-                                                         Height="30"
-                                                         Width="30"
-                                                         Margin="0,0,0,0"
-                                                         VerticalAlignment="Center" />
-                                        <TextBlock FontSize="20"
-                                                   Margin="10,0,0,0">
-                                            Danh sách học phần
                                         </TextBlock>
                                     </StackPanel>
                                 </Button>

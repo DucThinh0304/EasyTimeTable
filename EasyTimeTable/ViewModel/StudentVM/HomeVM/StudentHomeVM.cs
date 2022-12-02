@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using EasyTimeTable.Views.OpenCourse;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -61,7 +62,7 @@ namespace EasyTimeTable.ViewModel
             });
             CoursePageCM = new RelayCommand<object>((p) =>
             {
-                StudentViewModel.MainFrame.Content = new OpenCourseListPage();
+                StudentViewModel.MainFrame.Content = new OpenCoursePage();
                 if (StudentMainWindow.funcTitle != null)
                     StudentMainWindow.funcTitle.Text = "Danh sách học phần";
             });

@@ -250,6 +250,7 @@ namespace EasyTimeTable.ViewModel
                     LanHoc = "_"
                 });
             }
+            
 
         }
         public async Task LoadDB(ObservableCollection<Course> list)
@@ -258,9 +259,7 @@ namespace EasyTimeTable.ViewModel
             con.Open();
             var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
                 "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-                "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') AND tenmon not in (select tenmon FROM lophocphansinhvien, " +
-                "HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan " +
-                "and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam) and len(hocphan.mahocphan) = 9", con);
+                "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') and len(hocphan.mahocphan) = 9", con);
             var dr = await cmd.ExecuteReaderAsync();
             while (await dr.ReadAsync())
             {
@@ -286,9 +285,7 @@ namespace EasyTimeTable.ViewModel
             dr.Close();
             cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth " +
                 "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-                "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') AND tenmon not in (select tenmon FROM lophocphansinhvien, " +
-                "HOCPHAN,GIAOVIEN,MONHOC,thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan " +
-                "and masv = '20520782' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam) and len(hocphan.mahocphan) = 11", con);
+                "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') and len(hocphan.mahocphan) = 11", con);
             dr = await cmd.ExecuteReaderAsync();
             while (await dr.ReadAsync())
             {
@@ -310,6 +307,10 @@ namespace EasyTimeTable.ViewModel
                     SoTinChi = dr.GetInt32(13),
                     LanHoc = "_"
                 });
+            }
+            foreach (Course course in OpenCourseSelect)
+            {
+                FindAndRemove(list, course);
             }
         }
 
@@ -465,6 +466,14 @@ namespace EasyTimeTable.ViewModel
             }
             foreach (Course s in OpenCourseSelect)
             {
+                if ((c.TenMon == s.TenMon) && (c.MaHocPhan.Length == 11) && (s.MaHocPhan.Length != 11) && (c.MaHocPhan.Substring(0, 9) != s.MaHocPhan.Substring(0, 9)))
+                {
+                    ListError.Add(c.TenMon + " - " + c.MaHocPhan + ": Bạn cần phải đăng kí môn thực hành có mã môn tương tự môn lý thuyết bạn đã đăng kí (" + s.MaHocPhan + ")");
+                    return false;
+                }
+            }
+            foreach (Course s in OpenCourseSelect)
+            {
                 if ((c.TenMon == s.TenMon) && (c.MaHocPhan.Length == 11) && (s.MaHocPhan.Length == 11))
                 {
                     ListError.Add(c.TenMon + " - " + c.MaHocPhan + ": Bạn đã đăng kí môn thực hành cho môn này rồi (" + s.MaHocPhan + ")");
@@ -535,6 +544,34 @@ namespace EasyTimeTable.ViewModel
             }
             dr.Close();
             return count;
+        }
+
+        public void FindAndRemove(ObservableCollection<Course> list1, Course course)
+        {
+            ObservableCollection<Course> list = new ObservableCollection<Course>();
+            foreach (var c in list1)
+            {
+                list.Add(c);
+            }
+            if (course.MaHocPhan.Length == 9)
+            {
+                foreach (Course s in list)
+                {
+                    if ((s.TenMon == course.TenMon) && (s.MaHocPhan.Length == 9)){
+                        list1.Remove(s);
+                    }
+                }
+            }
+            if (course.MaHocPhan.Length == 11)
+            {
+                foreach (Course s in list)
+                {
+                    if ((s.TenMon == course.TenMon) && (s.MaHocPhan.Length == 11))
+                    {
+                        list1.Remove(s);
+                    }
+                }
+            }
         }
 
         // Refresh Tự động (Môn cùng tên sẽ không xuất hiện)
