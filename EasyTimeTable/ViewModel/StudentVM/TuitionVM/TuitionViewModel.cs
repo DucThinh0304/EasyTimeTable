@@ -5,7 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -97,7 +96,7 @@ namespace EasyTimeTable.ViewModel
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("SELECT sum(sotclt) + sum(sotcth) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
-                    "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782'", con);
+                    "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv + "'", con);
                 var dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
@@ -145,7 +144,7 @@ namespace EasyTimeTable.ViewModel
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
                 var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                    "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null " +
+                    "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null " +
                     "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
                 var dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
@@ -169,29 +168,49 @@ namespace EasyTimeTable.ViewModel
                     });
                 }
                 dr.Close();
-                cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                    "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null " +
+                cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth,hinhthuc FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
+                    "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null " +
                     "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con);
                 dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    CourseList.Add(new OpenCourseModel
+                    if (dr.GetInt32(14) == 2)
                     {
-                        IsSignUp = true,
-                        MaHocPhan = dr.GetString(0),
-                        TenMon = dr.GetString(1),
-                        TenGV = dr.GetString(2),
-                        Nam = dr.GetInt32(3),
-                        Ki = dr.GetInt32(4),
-                        SoPhong = dr.GetString(5),
-                        Toa = dr.GetString(6),
-                        NgayBatDau = dr.GetDateTime(7),
-                        NgayKetThuc = dr.GetDateTime(8),
-                        TietHoc = dr.GetString(9),
-                        Thu = dr.GetInt32(10),
-                        SiSo = dr.GetInt32(11),
-                        SoTinChi = dr.GetInt32(13),
-                    });
+                        CourseList.Add(new OpenCourseModel
+                        {
+                            IsSignUp = false,
+                            MaHocPhan = dr.GetString(0),
+                            TenMon = dr.GetString(1),
+                            TenGV = dr.GetString(2),
+                            Nam = dr.GetInt32(3),
+                            Ki = dr.GetInt32(4),
+                            NgayBatDau = dr.GetDateTime(7),
+                            NgayKetThuc = dr.GetDateTime(8),
+                            SiSo = dr.GetInt32(11),
+                            TietHoc = "0",
+                            SoTinChi = dr.GetInt32(13) * 2,
+                        });
+                    }
+                    else
+                    {
+                        CourseList.Add(new OpenCourseModel
+                        {
+                            IsSignUp = true,
+                            MaHocPhan = dr.GetString(0),
+                            TenMon = dr.GetString(1),
+                            TenGV = dr.GetString(2),
+                            Nam = dr.GetInt32(3),
+                            Ki = dr.GetInt32(4),
+                            SoPhong = dr.GetString(5),
+                            Toa = dr.GetString(6),
+                            NgayBatDau = dr.GetDateTime(7),
+                            NgayKetThuc = dr.GetDateTime(8),
+                            TietHoc = dr.GetString(9),
+                            Thu = dr.GetInt32(10),
+                            SiSo = dr.GetInt32(11),
+                            SoTinChi = dr.GetInt32(13),
+                        });
+                    }
                 }
                 int TC = 0;
                 foreach (OpenCourseModel item in CourseList)
@@ -218,7 +237,7 @@ namespace EasyTimeTable.ViewModel
                         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con.Open();
                         var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null " +
+                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null " +
                             "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
                         var dr = cmd.ExecuteReader();
                         while (dr.Read())
@@ -242,29 +261,49 @@ namespace EasyTimeTable.ViewModel
                             });
                         }
                         dr.Close();
-                        cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null " +
+                        cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
+                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null " +
                             "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con);
                         dr = cmd.ExecuteReader();
                         while (dr.Read())
                         {
-                            CourseList.Add(new OpenCourseModel
+                            if (dr.GetInt32(14) == 2)
                             {
-                                IsSignUp = true,
-                                MaHocPhan = dr.GetString(0),
-                                TenMon = dr.GetString(1),
-                                TenGV = dr.GetString(2),
-                                Nam = dr.GetInt32(3),
-                                Ki = dr.GetInt32(4),
-                                SoPhong = dr.GetString(5),
-                                Toa = dr.GetString(6),
-                                NgayBatDau = dr.GetDateTime(7),
-                                NgayKetThuc = dr.GetDateTime(8),
-                                TietHoc = dr.GetString(9),
-                                Thu = dr.GetInt32(10),
-                                SiSo = dr.GetInt32(11),
-                                SoTinChi = dr.GetInt32(13),
-                            });
+                                CourseList.Add(new OpenCourseModel
+                                {
+                                    IsSignUp = false,
+                                    MaHocPhan = dr.GetString(0),
+                                    TenMon = dr.GetString(1),
+                                    TenGV = dr.GetString(2),
+                                    Nam = dr.GetInt32(3),
+                                    Ki = dr.GetInt32(4),
+                                    NgayBatDau = dr.GetDateTime(7),
+                                    NgayKetThuc = dr.GetDateTime(8),
+                                    SiSo = dr.GetInt32(11),
+                                    TietHoc = "0",
+                                    SoTinChi = dr.GetInt32(13) * 2,
+                                });
+                            }
+                            else
+                            {
+                                CourseList.Add(new OpenCourseModel
+                                {
+                                    IsSignUp = true,
+                                    MaHocPhan = dr.GetString(0),
+                                    TenMon = dr.GetString(1),
+                                    TenGV = dr.GetString(2),
+                                    Nam = dr.GetInt32(3),
+                                    Ki = dr.GetInt32(4),
+                                    SoPhong = dr.GetString(5),
+                                    Toa = dr.GetString(6),
+                                    NgayBatDau = dr.GetDateTime(7),
+                                    NgayKetThuc = dr.GetDateTime(8),
+                                    TietHoc = dr.GetString(9),
+                                    Thu = dr.GetInt32(10),
+                                    SiSo = dr.GetInt32(11),
+                                    SoTinChi = dr.GetInt32(13),
+                                });
+                            }
                         }
                         int TC = 0;
                         foreach (OpenCourseModel item in CourseList)
@@ -277,7 +316,7 @@ namespace EasyTimeTable.ViewModel
                         SqlConnection con1 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con1.Open();
                         var cmd1 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is not null and daduyet = 0 " +
+                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is not null and daduyet = 0 " +
                             "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con1);
                         var dr1 = cmd1.ExecuteReader();
                         while (dr1.Read())
@@ -301,29 +340,49 @@ namespace EasyTimeTable.ViewModel
                             });
                         }
                         dr1.Close();
-                        cmd1 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is not null and daduyet = 0 " +
+                        cmd1 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth,hinhthuc FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
+                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is not null and daduyet = 0 " +
                             "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con1);
                         dr1 = cmd1.ExecuteReader();
                         while (dr1.Read())
                         {
-                            CourseList.Add(new OpenCourseModel
+                            if (dr1.GetInt32(14) == 2)
                             {
-                                IsSignUp = true,
-                                MaHocPhan = dr1.GetString(0),
-                                TenMon = dr1.GetString(1),
-                                TenGV = dr1.GetString(2),
-                                Nam = dr1.GetInt32(3),
-                                Ki = dr1.GetInt32(4),
-                                SoPhong = dr1.GetString(5),
-                                Toa = dr1.GetString(6),
-                                NgayBatDau = dr1.GetDateTime(7),
-                                NgayKetThuc = dr1.GetDateTime(8),
-                                TietHoc = dr1.GetString(9),
-                                Thu = dr1.GetInt32(10),
-                                SiSo = dr1.GetInt32(11),
-                                SoTinChi = dr1.GetInt32(13),
-                            });
+                                CourseList.Add(new OpenCourseModel
+                                {
+                                    IsSignUp = false,
+                                    MaHocPhan = dr1.GetString(0),
+                                    TenMon = dr1.GetString(1),
+                                    TenGV = dr1.GetString(2),
+                                    Nam = dr1.GetInt32(3),
+                                    Ki = dr1.GetInt32(4),
+                                    NgayBatDau = dr1.GetDateTime(7),
+                                    NgayKetThuc = dr1.GetDateTime(8),
+                                    SiSo = dr1.GetInt32(11),
+                                    TietHoc = "0",
+                                    SoTinChi = dr1.GetInt32(13) * 2,
+                                });
+                            }
+                            else
+                            {
+                                CourseList.Add(new OpenCourseModel
+                                {
+                                    IsSignUp = true,
+                                    MaHocPhan = dr1.GetString(0),
+                                    TenMon = dr1.GetString(1),
+                                    TenGV = dr1.GetString(2),
+                                    Nam = dr1.GetInt32(3),
+                                    Ki = dr1.GetInt32(4),
+                                    SoPhong = dr1.GetString(5),
+                                    Toa = dr1.GetString(6),
+                                    NgayBatDau = dr1.GetDateTime(7),
+                                    NgayKetThuc = dr1.GetDateTime(8),
+                                    TietHoc = dr1.GetString(9),
+                                    Thu = dr1.GetInt32(10),
+                                    SiSo = dr1.GetInt32(11),
+                                    SoTinChi = dr1.GetInt32(13),
+                                });
+                            }
                         }
                         int TC1 = 0;
                         foreach (OpenCourseModel item in CourseList)
@@ -336,7 +395,7 @@ namespace EasyTimeTable.ViewModel
                         SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con2.Open();
                         var cmd2 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is not null and daduyet = 1 " +
+                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is not null and daduyet = 1 " +
                             "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con2);
                         var dr2 = cmd2.ExecuteReader();
                         while (dr2.Read())
@@ -360,29 +419,49 @@ namespace EasyTimeTable.ViewModel
                             });
                         }
                         dr2.Close();
-                        cmd2 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is not null and daduyet = 1 " +
+                        cmd2 = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth,hinhthuc FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
+                            "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is not null and daduyet = 1 " +
                             "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con2);
                         dr2 = cmd2.ExecuteReader();
                         while (dr2.Read())
                         {
-                            CourseList.Add(new OpenCourseModel
+                            if (dr2.GetInt32(14) == 2)
                             {
-                                IsSignUp = true,
-                                MaHocPhan = dr2.GetString(0),
-                                TenMon = dr2.GetString(1),
-                                TenGV = dr2.GetString(2),
-                                Nam = dr2.GetInt32(3),
-                                Ki = dr2.GetInt32(4),
-                                SoPhong = dr2.GetString(5),
-                                Toa = dr2.GetString(6),
-                                NgayBatDau = dr2.GetDateTime(7),
-                                NgayKetThuc = dr2.GetDateTime(8),
-                                TietHoc = dr2.GetString(9),
-                                Thu = dr2.GetInt32(10),
-                                SiSo = dr2.GetInt32(11),
-                                SoTinChi = dr2.GetInt32(13),
-                            });
+                                CourseList.Add(new OpenCourseModel
+                                {
+                                    IsSignUp = false,
+                                    MaHocPhan = dr2.GetString(0),
+                                    TenMon = dr2.GetString(1),
+                                    TenGV = dr2.GetString(2),
+                                    Nam = dr2.GetInt32(3),
+                                    Ki = dr2.GetInt32(4),
+                                    NgayBatDau = dr2.GetDateTime(7),
+                                    NgayKetThuc = dr2.GetDateTime(8),
+                                    SiSo = dr2.GetInt32(11),
+                                    TietHoc = "0",
+                                    SoTinChi = dr2.GetInt32(13) * 2,
+                                });
+                            }
+                            else
+                            {
+                                CourseList.Add(new OpenCourseModel
+                                {
+                                    IsSignUp = true,
+                                    MaHocPhan = dr2.GetString(0),
+                                    TenMon = dr2.GetString(1),
+                                    TenGV = dr2.GetString(2),
+                                    Nam = dr2.GetInt32(3),
+                                    Ki = dr2.GetInt32(4),
+                                    SoPhong = dr2.GetString(5),
+                                    Toa = dr2.GetString(6),
+                                    NgayBatDau = dr2.GetDateTime(7),
+                                    NgayKetThuc = dr2.GetDateTime(8),
+                                    TietHoc = dr2.GetString(9),
+                                    Thu = dr2.GetInt32(10),
+                                    SiSo = dr2.GetInt32(11),
+                                    SoTinChi = dr2.GetInt32(13),
+                                });
+                            }
                         }
                         int TC2 = 0;
                         foreach (OpenCourseModel item in CourseList)
@@ -459,7 +538,7 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null and lanhoc = 1" +
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null and lanhoc = 1" +
                 "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -503,7 +582,7 @@ namespace EasyTimeTable.ViewModel
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
             var cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
-                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and ngaythanhtoan is null and lanhoc > 1" +
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null and lanhoc > 1" +
                 "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 9", con);
             var dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -523,8 +602,48 @@ namespace EasyTimeTable.ViewModel
                     TietHoc = dr.GetString(9),
                     Thu = dr.GetInt32(10),
                     SiSo = dr.GetInt32(11),
-                    SoTinChi = dr.GetInt32(12) + dr.GetInt32(13),
+                    SoTinChi = dr.GetInt32(12),
                 });
+            }
+            dr.Close();
+            cmd = new SqlCommand("SELECT lophocphansinhvien.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc FROM lophocphansinhvien, HOCPHAN,GIAOVIEN,MONHOC,thamso where " +
+                "HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv AND lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '" + LoginViewModel.mssv+ "' and ngaythanhtoan is null and lanhoc > 1" +
+                "and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and len(hocphan.mahocphan) = 11", con);
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                if (dr.GetInt32(14) == 2)
+                {
+                    CourseHocLai.Add(new OpenCourseModel
+                    {
+                        IsSignUp = true,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        SiSo = dr.GetInt32(11),
+                        SoTinChi = dr.GetInt32(13),
+                    });
+                }
+                else
+                {
+                    CourseHocLai.Add(new OpenCourseModel
+                    {
+                        IsSignUp = true,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        SiSo = dr.GetInt32(11),
+                        SoTinChi = dr.GetInt32(13) * 2,
+                    });
+                }
             }
             int TC = 0;
             foreach (var course in CourseHocLai)

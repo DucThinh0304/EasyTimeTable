@@ -31,69 +31,25 @@
         </EventTrigger>
     </Page.Triggers>
     <Grid>
-    <Grid Margin="20 20 40 160">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="20*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-            <Button HorizontalAlignment="Right" FontSize="20" Height="40" Width="100" Margin="20 0 20 0" Click="Thang_Click">Tháng</Button>
-            <Button HorizontalAlignment="Right" FontSize="20" Height="40" Width="100"  Margin="20 0 20 0" Click="Tuan_Click">Tuần</Button>
-        </StackPanel>
-        <TabControl Grid.Row="1" materialDesign:ColorZoneAssist.Mode="PrimaryLight" x:Name="tab"
-            SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Thời khóa biêu dự kiến" FontSize="30">
-            </TabItem>
-            <TabItem Header="Thời khóa biêu chính thức" FontSize="30">
-            </TabItem>
-        </TabControl>
-        <syncfusion:SfScheduler
-                            Margin="0 50 0 0"
+        <Grid Margin="20 20 40 160">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="20*"/>
+            </Grid.RowDefinitions>
+            <syncfusion:SfScheduler
+                            Margin="0 0 0 0"
                             Grid.Row="1"
                             x:Name="Schedule" 
                             ItemsSource="{Binding ScheduleAppointmentCollection}"
                             ViewType="Week" 
                             LoadOnDemandCommand="{Binding LoadOnDemandCommand}"
-                            AppointmentEditFlag="None"
+                            AppointmentEditFlag="Add"
                             Language="vi-VN"
                             ShowBusyIndicator ="{Binding IsLoading}"
-                            Background="Transparent">
-                <syncfusion:SfScheduler.DaysViewSettings>
-                <syncfusion:DaysViewSettings 
-                        TimeIntervalSize="96.1"
-                        StartHour="7.5"
-                        EndHour="17"/>
-            </syncfusion:SfScheduler.DaysViewSettings>
-        </syncfusion:SfScheduler>
-        <syncfusion:SfScheduler
-                        Margin="0 50 0 0"
-                        Grid.Row="1"
-                        Visibility="Hidden"
-                        x:Name="ScheduleReal"
-                        ShowBusyIndicator ="{Binding IsLoading}"
-                        ItemsSource="{Binding ScheduleAppointmentCollectionReal}"
-                        ViewType="Week" 
-                        Language="vi-VN"
-                        AppointmentEditFlag="None"
-                        Background="Transparent">
-                <syncfusion:SfScheduler.DaysViewSettings>
-                    <syncfusion:DaysViewSettings 
-                                TimeIntervalSize="96.1"
-                                StartHour="7.5"
-                                EndHour="17"/>
-                </syncfusion:SfScheduler.DaysViewSettings>
+                            Background="Transparent"
+                            
+                            FirstDayOfWeek="Monday">
             </syncfusion:SfScheduler>
-
         </Grid>
-        <Grid Grid.RowSpan="2"
-                  Background="Gray"
-                  Opacity="0.3"
-                  Visibility="{Binding Mask}" />
-        <ProgressBar Height="50"
-                            Width="50"
-                            Margin="0 -30 0 0"
-                            Style="{StaticResource MaterialDesignCircularProgressBar}"
-                            IsIndeterminate="{Binding IsLoading}">
-        </ProgressBar>
     </Grid>
 </Page>

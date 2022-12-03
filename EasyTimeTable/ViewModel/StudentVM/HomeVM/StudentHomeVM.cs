@@ -74,7 +74,7 @@ namespace EasyTimeTable.ViewModel
                 ColorTuition = new SolidColorBrush(Colors.Black);
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
-                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL and masv = '20520782'", con);
+                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL and masv = '"+ LoginViewModel.mssv + "'", con);
                 var dr = await cmd.ExecuteReaderAsync();
                 if (await dr.ReadAsync())
                 {
@@ -115,7 +115,7 @@ namespace EasyTimeTable.ViewModel
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT sum(sotclt) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
-                "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and len(hocphan.mahocphan) = 9", con);
+                "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '"+ LoginViewModel.mssv + "' and len(hocphan.mahocphan) = 9", con);
                 dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
@@ -130,7 +130,7 @@ namespace EasyTimeTable.ViewModel
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT sum(sotcth) from monhoc, lophocphansinhvien, HOCPHAN where HOCPHAN.mamon= MONHOC.mamon AND " +
-               "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '20520782' and len(hocphan.mahocphan) = 11", con);
+               "lophocphansinhvien.mahocphan = hocphan.mahocphan and masv = '"+ LoginViewModel.mssv + "' and len(hocphan.mahocphan) = 11", con);
                 dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {

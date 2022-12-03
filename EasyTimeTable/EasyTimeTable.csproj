@@ -17,6 +17,7 @@
     <None Remove="Assets\ETTlogo-large.ico" />
     <None Remove="Assets\ETTlogo-large.png" />
     <None Remove="Assets\Student.jpg" />
+    <None Remove="Assets\Student1.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,7 @@
     <Resource Include="Assets\ETT-logoflat.png" />
     <Resource Include="Assets\ETTlogo-large.ico" />
     <Resource Include="Assets\ETTlogo-large.png" />
+    <Resource Include="Assets\Student1.jpg" />
   </ItemGroup>
 
   <ItemGroup>

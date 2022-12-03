@@ -43,21 +43,8 @@ namespace EasyTimeTable.Views.Student.Tuition
         {
             if (current.MaHocPhan.Length == 9)
             {
-                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                con.Open();
-                var cmd = new SqlCommand("delete from lophocphansinhvien where mahocphan like @mahocphan and masv = @masv", con);
-                cmd.Parameters.Add("@mahocphan", System.Data.SqlDbType.VarChar);
-                cmd.Parameters["@mahocphan"].Value = current.MaHocPhan+"%";
-                cmd.Parameters.Add("@masv", System.Data.SqlDbType.VarChar);
-                cmd.Parameters["@masv"].Value = "20520782";
-                var dr = cmd.ExecuteNonQuery();
-                MessageBox.Show("Đã hủy đăng kí");
-                var viewModel = (TuitionViewModel)DataContext;
-                if (viewModel.LoadDB.CanExecute(null))
-                    viewModel.LoadDB.Execute(null);
-                if (viewModel.LoadListDB.CanExecute(null))
-                    viewModel.LoadListDB.Execute(null);
-                return;
+                CustomYesNoDialog customYesNoDialog = new CustomYesNoDialog(current.MaHocPhan, current.TenMon);
+                customYesNoDialog.ShowDialog();
             }
             else
             {

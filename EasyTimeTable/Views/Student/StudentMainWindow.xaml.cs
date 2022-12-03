@@ -27,6 +27,15 @@ namespace EasyTimeTable.Views.Student
         public StudentMainWindow()
         {
             InitializeComponent();
+            if (LoginViewModel.mssv == "20520621")
+            {
+                b1.Visibility = Visibility.Collapsed;
+                
+            }
+            else
+            {
+                b2.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void MainFrame_MouseDown(object sender, MouseButtonEventArgs e)

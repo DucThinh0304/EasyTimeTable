@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.UI.Xaml.Scheduler;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -28,30 +29,22 @@ namespace EasyTimeTable.Views.Student.Calendar
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
             CultureInfo culture = CultureInfo.CreateSpecificCulture("vi-vn");
             Thread.CurrentThread.CurrentCulture = culture;
+            this.Schedule.AppointmentEditorOpening += Schedule_AppointmentEditorOpening;
+
+            
         }
         private void Thang_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
-            ScheduleReal.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
         }
         private void Tuan_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
-            ScheduleReal.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
         }
-
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Schedule_AppointmentEditorOpening(object sender, AppointmentEditorOpeningEventArgs e)
         {
-            if (tab.SelectedIndex == 0)
-            {
-                Schedule.Visibility = Visibility.Visible;
-                ScheduleReal.Visibility = Visibility.Hidden; 
-            }
-            else
-            {
-                Schedule.Visibility = Visibility.Hidden;
-                ScheduleReal.Visibility = Visibility.Visible;
-            }
+            e.AppointmentEditorOptions = AppointmentEditorOptions.All | (~AppointmentEditorOptions.Background & ~AppointmentEditorOptions.Foreground & ~AppointmentEditorOptions.Reminder & ~AppointmentEditorOptions.Resource 
+                & ~AppointmentEditorOptions.TimeZone & ~AppointmentEditorOptions.Description);
         }
     }
 }

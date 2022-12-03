@@ -45,18 +45,7 @@ namespace EasyTimeTable.ViewModel
 
         public StudentViewModel()
         {
-
-            MSSV = LoginViewModel.mssv;
-            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-            con.Open();
-            var cmd = new SqlCommand("Select tensv from sinhvien where masv = '" + MSSV + "'", con);
-            var dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                CurrentUserName = dr.GetString(0);
-                Name = CurrentUserName.Split(' ').Last();
-            }
-            Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xin chào, " + Name));
+            
             LoadStudentTuitionCM = new RelayCommand<Frame>((p) =>
             {
                 if (StudentMainWindow.Slidebtn != null)
@@ -134,6 +123,22 @@ namespace EasyTimeTable.ViewModel
             });
 
 
+        }
+        [RelayCommand]
+        private void LoadDB()
+        {
+            MSSV = LoginViewModel.mssv;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Select tensv from sinhvien where masv = '" + MSSV + "'", con);
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                CurrentUserName = dr.GetString(0);
+                Name = CurrentUserName.Split(' ').Last();
+            }
+
+            Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xin chào, " + Name));
         }
 
     }
