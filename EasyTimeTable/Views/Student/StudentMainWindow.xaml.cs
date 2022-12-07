@@ -1,6 +1,9 @@
 ﻿using EasyTimeTable.ViewModel;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Window = System.Windows.Window;
 
 namespace EasyTimeTable.Views.Student
 {
@@ -27,14 +31,18 @@ namespace EasyTimeTable.Views.Student
         public StudentMainWindow()
         {
             InitializeComponent();
-            if (LoginViewModel.mssv == "20520621")
+            Uri uri;
+            string path = "../../../Assets/Student - " + LoginViewModel.mssv + ".jpg";
+            if (File.Exists(path))
             {
-                b1.Visibility = Visibility.Collapsed;
-                
+                NoAvt.Visibility = Visibility.Collapsed;
+                Avt.Visibility = Visibility.Visible;
+                imagebrush.ImageSource = new BitmapImage(new Uri("../../../Assets/Student - " + LoginViewModel.mssv + ".jpg", UriKind.Relative));
             }
             else
             {
-                b2.Visibility = Visibility.Collapsed;
+                Avt.Visibility = Visibility.Collapsed;
+                NoAvt.Visibility = Visibility.Visible;
             }
         }
 

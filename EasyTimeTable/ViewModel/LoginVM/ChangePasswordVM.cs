@@ -21,14 +21,20 @@ namespace EasyTimeTable.ViewModel
 
         private string Password;
 
+        private string ConfirmPassword;
+
         public SnackbarMessageQueue MessageQueueSnackBar { set; get; } = new(TimeSpan.FromSeconds(3));
 
         [ObservableProperty]
         private bool isPasswordFocus;
 
+        [ObservableProperty]
+        private bool isConfirmPasswordFocus;
+
         public ChangePasswordVM()
         {
             IsPasswordFocus = true;
+            IsConfirmPasswordFocus = false;
             PasswordChangedCM = new RelayCommand<PasswordBox>((p) =>
             {
                 Password = p.Password;
@@ -37,8 +43,9 @@ namespace EasyTimeTable.ViewModel
             ConfirmCM = new RelayCommand<object>(async (p) =>
             {
                 IsPasswordFocus = false;
+                IsConfirmPasswordFocus = false;
                 string AccountChange = ForgotPassViewModel.AccountChange;
-                if (Password.IsNullOrWhiteSpace() == false)
+                if (Password.IsNullOrWhiteSpace() == false && ConfirmPassword.IsNullOrWhiteSpace() == false)
                     if (Converter.Converter.IsValidPassword(Password))
                     {
                         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
@@ -85,15 +92,24 @@ namespace EasyTimeTable.ViewModel
                         IsPasswordFocus = true;
                         ChangePassword.pass.Clear();
                     }
-                else
+                else if (Password.IsNullOrWhiteSpace() == true)
                 {
                     IsPasswordFocus = true;
                     await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Mật khẩu không được để trống"));
                 }
+                else
+                {
+                    IsConfirmPasswordFocus = true;
+                    await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xác nhận mật khẩu không được để trống"));
+                }
             });
 
+        }
 
-
+        [RelayCommand]
+        public void ConfirmPasswordChanged(PasswordBox p)
+        {
+            ConfirmPassword = p.Password;
         }
 
     }

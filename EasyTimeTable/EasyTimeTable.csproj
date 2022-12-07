@@ -16,8 +16,8 @@
     <None Remove="Assets\ETT-logoflat.png" />
     <None Remove="Assets\ETTlogo-large.ico" />
     <None Remove="Assets\ETTlogo-large.png" />
-    <None Remove="Assets\Student.jpg" />
-    <None Remove="Assets\Student1.jpg" />
+    <None Remove="Assets\Student - 205206211.jpg" />
+    <None Remove="Assets\Student - 20520782.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,14 +47,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\Student.jpg" />
+    <Resource Include="Assets\Student - 20520782.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Background.jpg" />
     <Resource Include="Assets\BackgroundStaff.jpg" />
     <Resource Include="Assets\Cute_woman_teacher_character_cartoon_art_illustration [Converted].png" />
     <Resource Include="Assets\ETT-logoflat.png" />
     <Resource Include="Assets\ETTlogo-large.ico" />
     <Resource Include="Assets\ETTlogo-large.png" />
-    <Resource Include="Assets\Student1.jpg" />
+    <Resource Include="Assets\Student - 205206211.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

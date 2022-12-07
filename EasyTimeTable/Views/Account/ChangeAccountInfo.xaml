@@ -5,8 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyTimeTable.Views.Account"
         mc:Ignorable="d"
-        Title="ChangeAccountInfo" Height="450" Width="800">
+        ResizeMode="NoResize"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        WindowStartupLocation="CenterScreen"
+         WindowStyle="None"
+        Title="ChangeAccountInfo" Height="600" Width="1000">
+    <Window.Background>
+        <ImageBrush ImageSource="/Assets/Background.jpg"/>
+    </Window.Background>
     <Grid>
         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.12*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.75*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="THÔNG TIN TÀI KHOẢN" Grid.ColumnSpan="4" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top" 
+               FontSize="25"
+               Margin="15"
+               FontWeight="Black"/>
+        <StackPanel Grid.Column="0">
+            <materialDesign:PackIcon
+                Margin="10 50 0 0"
+                Width="40" Height="40" Kind="AccountOutline"/>
+            <materialDesign:PackIcon
+                Margin="10 12 0 0"
+                Width="40" Height="40" Kind="LockOutline"/>
+            <materialDesign:PackIcon
+                Margin="10 12 0 0"
+                Width="40" Height="40" Kind="Check"/>
+            <materialDesign:PackIcon
+                Margin="10 12 0 0"
+                Width="40" Height="40" Kind="Email"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <Label Margin="10 50 0 0" FontSize="25" FontWeight="Bold">Tài khoản:</Label>
+            <Label Margin="10 10 0 0" FontSize="25" FontWeight="Bold">Mật khẩu:</Label>
+            <Label Margin="10 10 0 0" FontSize="25" FontWeight="Bold">Xác nhận MK:</Label>
+            <Label Margin="10 10 0 0" FontSize="25" FontWeight="Bold">Email:</Label>
+        </StackPanel>
     </Grid>
 </Window>
