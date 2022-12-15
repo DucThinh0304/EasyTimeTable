@@ -46,7 +46,7 @@ namespace EasyTimeTable.ViewModel
                 IsConfirmPasswordFocus = false;
                 string AccountChange = ForgotPassViewModel.AccountChange;
                 if (Password.IsNullOrWhiteSpace() == false && ConfirmPassword.IsNullOrWhiteSpace() == false)
-                    if (Converter.Converter.IsValidPassword(Password))
+                    if (Converter.Converter.IsValidPassword(Password) && ConfirmPassword == Password)
                     {
                         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                         con.Open();
@@ -59,6 +59,7 @@ namespace EasyTimeTable.ViewModel
                                 await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Mật khẩu trùng với mật khẩu cũ, hãy chọn mật khẩu mới"));
                                 IsPasswordFocus = true;
                                 ChangePassword.pass.Clear();
+                                ChangePassword.conpass.Clear();
                                 return;
                             }
                         }
@@ -70,6 +71,12 @@ namespace EasyTimeTable.ViewModel
                         if (LoginWindow.funcTitle != null)
                             LoginWindow.funcTitle.Text = "Đăng nhập";
                         LoginViewModel.MainFrame.Content = new LoginPage();
+                    }
+                else if ( ConfirmPassword != Password)
+                    {
+                        ChangePassword.conpass.Clear();
+                        IsConfirmPasswordFocus = true;
+                        await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xác nhận mật khẩu phải giống mật khẩu"));
                     }
                     else
                     {
@@ -90,6 +97,7 @@ namespace EasyTimeTable.ViewModel
                             await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Mật khẩu phải có ít nhất 1 kí tự đặc biệt"));
                         }
                         IsPasswordFocus = true;
+                        ChangePassword.conpass.Clear();
                         ChangePassword.pass.Clear();
                     }
                 else if (Password.IsNullOrWhiteSpace() == true)
@@ -99,6 +107,7 @@ namespace EasyTimeTable.ViewModel
                 }
                 else
                 {
+                    ChangePassword.conpass.Clear();
                     IsConfirmPasswordFocus = true;
                     await Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xác nhận mật khẩu không được để trống"));
                 }

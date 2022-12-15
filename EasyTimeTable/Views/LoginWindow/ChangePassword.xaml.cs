@@ -21,6 +21,7 @@ namespace EasyTimeTable.Views.LoginWindow
     public partial class ChangePassword : Page
     {
         public static PasswordBox pass;
+        public static PasswordBox conpass;
         public ChangePassword()
         {
             InitializeComponent();
@@ -29,6 +30,11 @@ namespace EasyTimeTable.Views.LoginWindow
         private void FloatingPasswordBox_Loaded(object sender, RoutedEventArgs e)
         {
             pass = FloatingPasswordBox;
+        }
+
+        private void ConfirmPasswordBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            conpass = ConfirmPasswordBox;
         }
     }
 }

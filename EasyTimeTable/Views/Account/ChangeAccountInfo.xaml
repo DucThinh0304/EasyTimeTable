@@ -5,47 +5,343 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyTimeTable.Views.Account"
         mc:Ignorable="d"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        Name ="AccountInfo"
+        Background="Transparent"
+        AllowsTransparency="True"
         ResizeMode="NoResize"
+        DataContext="{StaticResource ChangeAccountInfo}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"
-         WindowStyle="None"
-        Title="ChangeAccountInfo" Height="600" Width="1000">
-    <Window.Background>
-        <ImageBrush ImageSource="/Assets/Background.jpg"/>
-    </Window.Background>
-    <Grid>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.12*"/>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="0.75*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="THÔNG TIN TÀI KHOẢN" Grid.ColumnSpan="4" 
+        WindowStyle="None"
+        Height="600" Width="1000">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="AccountInfo"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3" />
+
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDBCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Border BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="10">
+        <Border.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Assets/Background.jpg"/>
+        </Border.Background>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.12*"/>
+                <ColumnDefinition Width="0.43*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.12*"/>
+                <ColumnDefinition Width="0.75*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.ColumnSpan="5"
+                  Background="Gray"
+                  Opacity="0.3"
+                  Visibility="Collapsed"
+                  x:Name="ShadowMask" />
+            <ProgressBar Grid.ColumnSpan="5" 
+                         Height="100"
+                         Width="100"
+                            Margin="0 0 0 0"
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            IsIndeterminate="{Binding IsLoading}">
+            </ProgressBar>
+            <Label Content="THÔNG TIN TÀI KHOẢN" Grid.ColumnSpan="5" 
                HorizontalAlignment="Center"
                VerticalAlignment="Top" 
                FontSize="25"
                Margin="15"
                FontWeight="Black"/>
-        <StackPanel Grid.Column="0">
-            <materialDesign:PackIcon
-                Margin="10 50 0 0"
+            <StackPanel Grid.Column="0">
+                <materialDesign:PackIcon
+                Margin="10 70 0 0"
                 Width="40" Height="40" Kind="AccountOutline"/>
-            <materialDesign:PackIcon
-                Margin="10 12 0 0"
+                <materialDesign:PackIcon
+                Margin="10 20 0 0"
                 Width="40" Height="40" Kind="LockOutline"/>
-            <materialDesign:PackIcon
-                Margin="10 12 0 0"
-                Width="40" Height="40" Kind="Check"/>
-            <materialDesign:PackIcon
-                Margin="10 12 0 0"
+                <materialDesign:PackIcon
+                Margin="10 20 0 0"
+                Width="40" Height="40" Kind="RenameBox"/>
+                <materialDesign:PackIcon
+                Margin="10 20 0 0"
+                Width="40" Height="40" Kind="GoogleClassroom"/>
+                <materialDesign:PackIcon
+                Margin="10 20 0 0"
                 Width="40" Height="40" Kind="Email"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1">
-            <Label Margin="10 50 0 0" FontSize="25" FontWeight="Bold">Tài khoản:</Label>
-            <Label Margin="10 10 0 0" FontSize="25" FontWeight="Bold">Mật khẩu:</Label>
-            <Label Margin="10 10 0 0" FontSize="25" FontWeight="Bold">Xác nhận MK:</Label>
-            <Label Margin="10 10 0 0" FontSize="25" FontWeight="Bold">Email:</Label>
-        </StackPanel>
-    </Grid>
+                <materialDesign:PackIcon
+                Margin="10 20 0 0"
+                Width="40" Height="40" Kind="IdCard"/>
+                <materialDesign:PackIcon
+                Margin="10 20 0 0"
+                Width="40" Height="40" Kind="PhoneClassic"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Label Margin="10 70 0 0" FontSize="25" FontWeight="Bold">Tài khoản:</Label>
+                <Label Margin="10 18.7 0 0" FontSize="25" FontWeight="Bold">Mật khẩu:</Label>
+                <Label Margin="10 18.7 0 0" FontSize="25" FontWeight="Bold">Tên:</Label>
+                <Label Margin="10 18.7 0 0" FontSize="25" FontWeight="Bold">Lớp:</Label>
+                <Label Margin="10 18.7 0 0" FontSize="25" FontWeight="Bold">Email:</Label>
+                <Label Margin="10 18.7 0 0" FontSize="25" FontWeight="Bold">CMND/CCCD:</Label>
+                <Label Margin="10 18.7 0 0" FontSize="25" FontWeight="Bold">Số điện thoại:</Label>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Margin="15 0 60 0">
+                <TextBox Text="{Binding MSSV}" FontSize="25" HorizontalAlignment="Stretch" Margin="10 70 0 0" Name="TK_txt" IsEnabled="False"></TextBox>
+                <Button Width="225" Margin="10 22 0 -15.5" Height="45" HorizontalAlignment="Left" FontSize="20">Chỉnh sửa mật khẩu</Button>
+                <TextBox Text="{Binding UserName, Mode=TwoWay}" Margin="10 18.5 0 0" FontSize="25" Name="Ten_txt" IsEnabled="False"></TextBox>
+                <ComboBox SelectedItem="{Binding LopHoc}" ItemsSource="{Binding ListLop}" Margin="10 18.5 0 0" FontSize="25" Name="Lop_txt" IsEnabled="False"></ComboBox>
+                <TextBox Text="{Binding Email}"  Margin="10 18.5 0 0" FontSize="25" Name="Email_txt" IsEnabled="False"></TextBox>
+                <TextBox Text="{Binding CMND}"  Margin="10 18.5 0 0" FontSize="25" Name="CMND_txt" IsEnabled="False"></TextBox>
+                <TextBox Text="{Binding Sdt}" Margin="10 18.5 0 0" FontSize="25" Name="SDT_txt" IsEnabled="False"></TextBox>
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Name="Tenxoa_btn"
+                        Width="40"
+                        Click="Tenxoa_btn_Click"
+                        Visibility="Collapsed"
+                        Background="Crimson"
+                        Margin="-50 190 10 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="Tenxoa_icon"
+                        Kind="WindowClose"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Click="Ten_btn_Click"
+                        Name="Ten_btn"
+                        Width="40"
+                        Margin="0 190 0 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="Ten_icon"
+                        Kind="Edit"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Name="Lopxoa_btn"
+                        Width="40"
+                            Click="Lopxoa_btn_Click"
+                        Visibility="Collapsed"
+                        Background="Crimson"
+                        Margin="-50 20 10 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="Lopxoa_icon"
+                        Kind="WindowClose"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                            Click="Lop_btn_Click"
+                        Name="Lop_btn"
+                        Width="40"
+                        Margin="0 20 0 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="Lop_icon"
+                        Kind="Edit"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Name="Emailxoa_btn"
+                        Width="40"
+                            Click="Emailxoa_btn_Click"
+                        Visibility="Collapsed"
+                        Background="Crimson"
+                        Margin="-50 20 10 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="Emailxoa_icon"
+                        Kind="WindowClose"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Click="Email_btn_Click"
+                        Name="Email_btn"
+                        Width="40"
+                        Margin="0 20 0 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="Email_icon"
+                        Kind="Edit"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Name="CMNDxoa_btn"
+                        Width="40"
+                            Click="CMNDxoa_btn_Click"
+                        Visibility="Collapsed"
+                        Background="Crimson"
+                        Margin="-50 20 10 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="CMNDxoa_icon"
+                        Kind="WindowClose"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                            Click="CMND_btn_Click"
+                        Name="CMND_btn"
+                        Width="40"
+                        Margin="0 20 0 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="CMND_icon"
+                        Kind="Edit"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                        Name="SDTxoa_btn"
+                        Width="40"
+                            Click="SDTxoa_btn_Click"
+                        Visibility="Collapsed"
+                        Background="Crimson"
+                        Margin="-50 20 10 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="SDTxoa_icon"
+                        Kind="WindowClose"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        materialDesign:HintAssist.Hint="Chỉnh sửa"
+                            Click="SDT_btn_Click"
+                        Name="SDT_btn"
+                        Width="40"
+                        Margin="0 20 0 0"
+                        Height="40">
+                        <materialDesign:PackIcon
+                        Name="SDT_icon"
+                        Kind="Edit"
+                        Height="25"
+                        Width="25"/>
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+            <StackPanel Grid.Column="4">
+                <Border CornerRadius="5" BorderThickness="2" Loaded="Avt_bor_Loaded" Margin="15 100 15 0" BorderBrush="Black" Height="300" Name="Avt_bor">
+                    <Border.Background>
+                        <ImageBrush       
+                            Stretch="Fill" 
+                            x:Name="imagebrush" 
+                            Changed="imagebrush_Changed">
+                        </ImageBrush>
+                    </Border.Background>
+                    <Grid>
+                        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                            Name="Avt_btn"
+                                Command="{Binding AddAVTCommand}"
+                                Visibility="{Binding Btn_Visible}"
+                            materialDesign:HintAssist.Hint="Chọn ảnh đại diện">
+                            <materialDesign:PackIcon
+                            Kind="Plus"
+                            Height="50"
+                            Width="50"/>
+                        </Button>
+                    <Grid 
+                          Background="Gray"
+                          Opacity="0.3"
+                          Visibility="Collapsed"
+                          x:Name="AvtMask" />
+                        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                            Name="AvtChange_btn"
+                            Visibility="Collapsed"
+                                Command="{Binding ChangeAVTCommand}"
+                            Margin="100 0 0 0"
+                            materialDesign:HintAssist.Hint="Đổi ảnh đại diện">
+                            <materialDesign:PackIcon
+                            Kind="Exchange"
+                            Height="50"
+                            Width="50"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                            Name="AvtDelete_btn"
+                                Command="{Binding DeleteAVTCommand}"
+                            Visibility="Collapsed"
+                                 Margin="-100 0 0 0"
+                            Background="Crimson"
+                            materialDesign:HintAssist.Hint="Đổi ảnh đại diện">
+                            <materialDesign:PackIcon
+                            Kind="Delete"
+                            Height="50"
+                            Width="50"/>
+                        </Button>
+                    </Grid>
+                   
+
+                </Border>
+                <Label VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="25" FontWeight="Bold">Ảnh đại diện</Label>
+
+
+            </StackPanel>
+            <Grid Grid.ColumnSpan="5" Margin="0 500 0 0 ">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Margin="50 0 50 0" Width="200" Grid.Column="0" FontSize="20" Height="45"
+                        Click="Button_Click"
+                        Name="Dong_btn"
+                        Command="{Binding QuitCommand}"
+                        CommandParameter="{Binding ElementName=AccountInfo}">
+                    Đóng</Button>
+                <Button Margin="50 0 50 0" Width="200" FontSize="20" Height="45" Grid.Column="2"
+                        Command="{Binding SaveCommand}"
+                        Name="Luu_btn"
+                        Click="Button_Click"
+                        CommandParameter="{Binding ElementName=AccountInfo}">Lưu</Button>
+                <Button Margin="50 0 50 0" Width="200" Grid.Column="1" FontSize="20" Height="45"
+                        Command="{Binding CancelCommand}"
+                        Click="Button_Click"
+                        Name="Huy_btn"
+                        CommandParameter="{Binding ElementName=AccountInfo}">
+                    Hủy thay đổi</Button>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

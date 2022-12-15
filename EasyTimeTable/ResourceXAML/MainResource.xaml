@@ -16,4 +16,5 @@
     <viewmodel:HomeStaffVM x:Key="HomeStaffVM"/>
     <viewmodel:OpenCourseVM x:Key="OpenCourseVM"/>
     <viewmodel:ListRequestVM x:Key="ListReVM"/>
+    <viewmodel:ChangeAccountInfoVM x:Key="ChangeAccountInfo"/>
 </ResourceDictionary>

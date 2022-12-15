@@ -31,19 +31,6 @@ namespace EasyTimeTable.Views.Student
         public StudentMainWindow()
         {
             InitializeComponent();
-            Uri uri;
-            string path = "../../../Assets/Student - " + LoginViewModel.mssv + ".jpg";
-            if (File.Exists(path))
-            {
-                NoAvt.Visibility = Visibility.Collapsed;
-                Avt.Visibility = Visibility.Visible;
-                imagebrush.ImageSource = new BitmapImage(new Uri("../../../Assets/Student - " + LoginViewModel.mssv + ".jpg", UriKind.Relative));
-            }
-            else
-            {
-                Avt.Visibility = Visibility.Collapsed;
-                NoAvt.Visibility = Visibility.Visible;
-            }
         }
 
         private void MainFrame_MouseDown(object sender, MouseButtonEventArgs e)

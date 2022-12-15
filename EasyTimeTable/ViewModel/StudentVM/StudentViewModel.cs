@@ -17,12 +17,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Runtime.CompilerServices;
+using EasyTimeTable.Views.Account;
+using System.Runtime.Intrinsics.X86;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.IO;
 
 namespace EasyTimeTable.ViewModel
 {
     [ObservableObject]
     public partial class StudentViewModel
     {
+
+        [ObservableProperty]
+        private Visibility mask;
         public ICommand LoadStudentHomeCM { get; set; }
         public ICommand LoadStudentTuitionCM { get; set; }
         public ICommand LoadOpenCourseListCM { get; set; }
@@ -35,6 +44,12 @@ namespace EasyTimeTable.ViewModel
 
         [ObservableProperty]
         private string currentUserName;
+        [ObservableProperty]
+        private Visibility noAvt;
+        [ObservableProperty]
+        private Visibility avt;
+        [ObservableProperty]
+        private ImageSource img;
 
         private string Name;
 
@@ -45,7 +60,7 @@ namespace EasyTimeTable.ViewModel
 
         public StudentViewModel()
         {
-            
+            Mask = Visibility.Collapsed;
             LoadStudentTuitionCM = new RelayCommand<Frame>((p) =>
             {
                 if (StudentMainWindow.Slidebtn != null)
@@ -102,13 +117,13 @@ namespace EasyTimeTable.ViewModel
             FrameworkElement GetParentWindow(FrameworkElement p)
             {
                 FrameworkElement parent = p;
-
                 while (parent.Parent != null)
                 {
                     parent = parent.Parent as FrameworkElement;
                 }
                 return parent;
             }
+
             SignoutCM = new RelayCommand<FrameworkElement>((p) =>
             {
                 FrameworkElement window = GetParentWindow(p);
@@ -121,9 +136,9 @@ namespace EasyTimeTable.ViewModel
                     w.Close();
                 }
             });
-
-
         }
+        
+
         [RelayCommand]
         private void LoadDB()
         {
@@ -138,7 +153,84 @@ namespace EasyTimeTable.ViewModel
                 Name = CurrentUserName.Split(' ').Last();
             }
 
+            string path = "../../../Assets/Student - " + LoginViewModel.mssv + ".jpg";
+            if (File.Exists(path))
+            {
+                NoAvt = Visibility.Collapsed;
+                Avt = Visibility.Visible;
+                BitmapImage result = new BitmapImage();
+                string ImageURL = "../../../Assets/Student - " + LoginViewModel.mssv + ".jpg";
+                if (!string.IsNullOrEmpty(ImageURL) && File.Exists(ImageURL))
+                {
+                    using (var stream = File.OpenRead(ImageURL))
+                    {
+                        var image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = stream;
+                        image.EndInit();
+                        result = image;
+                    }
+                }
+                Img = result;
+            }
+            else
+            {
+                Avt = Visibility.Collapsed;
+                NoAvt = Visibility.Visible;
+            }
+
             Task.Factory.StartNew(() => MessageQueueSnackBar.Enqueue("Xin chào, " + Name));
+        }
+
+        [RelayCommand]
+        private void ChangeInfo()
+        {
+            Mask = Visibility.Visible;
+            ChangeAccountInfo changeAccountInfo = new ChangeAccountInfo();
+            changeAccountInfo.ShowDialog();
+            LoadDBInfo();
+            Mask = Visibility.Collapsed;
+        }
+
+        private void LoadDBInfo()
+        {
+            MSSV = LoginViewModel.mssv;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Select tensv from sinhvien where masv = '" + MSSV + "'", con);
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                CurrentUserName = dr.GetString(0);
+            }
+            string path = "../../../Assets/Student - " + LoginViewModel.mssv + ".jpg";
+            if (File.Exists(path))
+            {
+                NoAvt = Visibility.Collapsed;
+                Avt = Visibility.Visible;
+                BitmapImage result = new BitmapImage();
+                string ImageURL = "../../../Assets/Student - " + LoginViewModel.mssv + ".jpg";
+                if (!string.IsNullOrEmpty(ImageURL) && File.Exists(ImageURL))
+                {
+                    using (var stream = File.OpenRead(ImageURL))
+                    {
+                        var image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = stream;
+                        image.EndInit();
+                        result = image;
+                    }
+                }
+                Img = result;
+            }
+            else
+            {
+                Avt = Visibility.Collapsed;
+                NoAvt = Visibility.Visible;
+            }
+
         }
 
     }

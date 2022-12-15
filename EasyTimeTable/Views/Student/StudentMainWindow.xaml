@@ -39,7 +39,8 @@
             <Grid Grid.RowSpan="2"
                   Background="Gray"
                   Opacity="0.3"
-                  Visibility="Collapsed"
+                  
+                  Visibility="{Binding Mask}"
                   x:Name="shadow">
             </Grid>
             <materialDesign:Snackbar MessageQueue="{Binding MessageQueueSnackBar}" 
@@ -259,23 +260,24 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Margin="0,10,0,0">
-                    <Border  BorderBrush="Purple"
+                    <Border BorderBrush="Purple"
                             Margin="0 -5 0 0 "
-                             x:Name="Avt"
-                        BorderThickness="2"
+                            Visibility="{Binding Avt}"
+                            BorderThickness="2"
                             Width="50"
                             Height="50"
                         CornerRadius="25">
                         <Border.Background>
                             <ImageBrush                 
                                         Stretch="Fill" 
-                                        x:Name="imagebrush">
+                                        ImageSource="{Binding Img}">
                             </ImageBrush>
                         </Border.Background>
                     </Border>
-                    <materialDesign:PackIcon Margin="0 -2.5 0 0" Kind="AccountCircle" 
+                    <materialDesign:PackIcon Margin="0 -2.5 0 0" 
+                                             Kind="AccountCircle" 
                                              Height="50" Width="50" 
-                                             x:Name="NoAvt"/>
+                                             Visibility="{Binding NoAvt}"/>
                         <Label x:Name="CurrentUserName"
                            Content="{Binding CurrentUserName}"
                            VerticalAlignment="Center"
@@ -287,8 +289,7 @@
                         Foreground="White"
                         PlacementMode="BottomAndAlignRightEdges">
                         <StackPanel>
-                            <Button Command="{Binding SignoutCM}" Height="45" 
-                                    CommandParameter="{Binding ElementName=Main_Student}">
+                            <Button Command="{Binding ChangeInfoCommand}" Height="45" >
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="AccountEdit"
                                              VerticalAlignment="Center"
