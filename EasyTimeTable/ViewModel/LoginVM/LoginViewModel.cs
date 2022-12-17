@@ -114,6 +114,7 @@ namespace EasyTimeTable.ViewModel
                                 Login.Hide();
                                 mssv = Username;
                                 StudentMainWindow studentMainWindow = new StudentMainWindow();
+                                studentMainWindow.Tag = "studentMainWindow";
                                 studentMainWindow.Show();
                                 Login.Close();
                             }

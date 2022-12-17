@@ -100,7 +100,7 @@
             </StackPanel>
             <StackPanel Grid.Column="2" Margin="15 0 60 0">
                 <TextBox Text="{Binding MSSV}" FontSize="25" HorizontalAlignment="Stretch" Margin="10 70 0 0" Name="TK_txt" IsEnabled="False"></TextBox>
-                <Button Width="225" Margin="10 22 0 -15.5" Height="45" HorizontalAlignment="Left" FontSize="20">Chỉnh sửa mật khẩu</Button>
+                <Button Width="225" Margin="10 22 0 -15.5" Height="45" HorizontalAlignment="Left" FontSize="20" Command="{Binding ChangePasswordButtonCommand}">Chỉnh sửa mật khẩu</Button>
                 <TextBox Text="{Binding UserName, Mode=TwoWay}" Margin="10 18.5 0 0" FontSize="25" Name="Ten_txt" IsEnabled="False"></TextBox>
                 <ComboBox SelectedItem="{Binding LopHoc}" ItemsSource="{Binding ListLop}" Margin="10 18.5 0 0" FontSize="25" Name="Lop_txt" IsEnabled="False"></ComboBox>
                 <TextBox Text="{Binding Email}"  Margin="10 18.5 0 0" FontSize="25" Name="Email_txt" IsEnabled="False"></TextBox>
@@ -108,7 +108,6 @@
                 <TextBox Text="{Binding Sdt}" Margin="10 18.5 0 0" FontSize="25" Name="SDT_txt" IsEnabled="False"></TextBox>
             </StackPanel>
             <StackPanel Grid.Column="3">
-
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                         materialDesign:HintAssist.Hint="Chỉnh sửa"
@@ -281,7 +280,7 @@
                             Height="50"
                             Width="50"/>
                         </Button>
-                    <Grid 
+                        <Grid 
                           Background="Gray"
                           Opacity="0.3"
                           Visibility="Collapsed"
@@ -310,7 +309,7 @@
                             Width="50"/>
                         </Button>
                     </Grid>
-                   
+
 
                 </Border>
                 <Label VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -342,6 +341,12 @@
                         CommandParameter="{Binding ElementName=AccountInfo}">
                     Hủy thay đổi</Button>
             </Grid>
+            <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" 
+                                     x:Name="Snackbar"
+                                     Grid.ColumnSpan="5"
+                                     Margin="10 0" FontSize="25" 
+                                     HorizontalAlignment="Stretch">
+            </materialDesign:Snackbar>
         </Grid>
     </Border>
 </Window>

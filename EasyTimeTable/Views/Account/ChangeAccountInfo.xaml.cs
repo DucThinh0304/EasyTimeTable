@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using Syncfusion.Windows.Shared;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using Window = System.Windows.Window;
 
@@ -39,8 +40,19 @@ namespace EasyTimeTable.Views.Account
             }
             else
             {
-                EnableButton();
-                CloseAll();
+                if (!Ten_txt.Text.IsNullOrWhiteSpace())
+                {
+                    EnableButton();
+                    CloseAll();
+                }
+                else
+                {
+                    if (Snackbar.MessageQueue is { } messageQueue)
+                    {
+                        var message = "Không được để trống";
+                        Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+                    }
+                }
             }
         }
 
@@ -81,8 +93,19 @@ namespace EasyTimeTable.Views.Account
             }
             else
             {
-                EnableButton();
-                CloseAll();
+                if (!Email_txt.Text.IsNullOrWhiteSpace())
+                {
+                    EnableButton();
+                    CloseAll();
+                }
+                else
+                {
+                    if (Snackbar.MessageQueue is { } messageQueue)
+                    {
+                        var message = "Không được để trống";
+                        Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+                    }
+                }
             }
         }
         private void CMND_btn_Click(object sender, RoutedEventArgs e)
@@ -101,8 +124,19 @@ namespace EasyTimeTable.Views.Account
             }
             else
             {
-                EnableButton();
-                CloseAll();
+                if (!CMND_txt.Text.IsNullOrWhiteSpace())
+                {
+                    EnableButton();
+                    CloseAll();
+                }
+                else
+                {
+                    if (Snackbar.MessageQueue is { } messageQueue)
+                    {
+                        var message = "Không được để trống";
+                        Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+                    }
+                }
             }
         }
 
@@ -122,8 +156,19 @@ namespace EasyTimeTable.Views.Account
             }
             else
             {
-                EnableButton();
-                CloseAll();
+                if (!SDT_txt.Text.IsNullOrWhiteSpace())
+                {
+                    EnableButton();
+                    CloseAll();
+                }
+                else
+                {
+                    if (Snackbar.MessageQueue is { } messageQueue)
+                    {
+                        var message = "Không được để trống";
+                        Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+                    }
+                }
             }
         }
 
@@ -164,6 +209,7 @@ namespace EasyTimeTable.Views.Account
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
             CloseAll();
         }
 

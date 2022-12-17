@@ -188,6 +188,7 @@ namespace EasyTimeTable.ViewModel
         {
             Mask = Visibility.Visible;
             ChangeAccountInfo changeAccountInfo = new ChangeAccountInfo();
+            changeAccountInfo.Tag = "changeAccountInfo";
             changeAccountInfo.ShowDialog();
             LoadDBInfo();
             Mask = Visibility.Collapsed;

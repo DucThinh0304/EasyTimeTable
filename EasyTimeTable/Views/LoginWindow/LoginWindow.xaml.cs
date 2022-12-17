@@ -26,6 +26,7 @@ namespace EasyTimeTable.Views.LoginWindow
         {
             InitializeComponent();
         }
+
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             Button btn = sender as Button;

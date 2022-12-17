@@ -65,6 +65,7 @@
             </Grid>
             <materialDesign:Card Margin="20 20 40 20" Background="Transparent">
                 <DataGrid Height="600" FontSize="20" 
+                          
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           Background="Transparent"
