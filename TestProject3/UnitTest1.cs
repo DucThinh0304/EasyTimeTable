@@ -573,7 +573,292 @@ namespace TestProject3
             Assert.AreEqual(expected, actual);
 
         }
-
-
+        [Test]
+        public void TestTaoMaHocPhan1()
+        {
+            string expected = "SE114.N13", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("SE114.N", "SE114.N12");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan2()
+        {
+            string expected = "SE114.N1", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("SE114.N", "SE114.N0");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan3()
+        {
+            string expected = "SE114.N0", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("SE114.N", "");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan4()
+        {
+            string expected = "", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("", "SE114.N12");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan5()
+        {
+            string expected = "", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("", "SE114.N0");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan6()
+        {
+            string expected = "", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("", "");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan7()
+        {
+            string expected = "KNM1029GMH.N13", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("KNM1029GMH.N", "SE114.N12");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan8()
+        {
+            string expected = "KNM1029GMH.N1", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("KNM1029GMH.N", "SE114.N0");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTaoMaHocPhan9()
+        {
+            string expected = "KNM1029GMH.N0", actual;
+            actual = EasyTimeTable.Converter.Converter.TaoMaHocPhan("KNM1029GMH.N", "");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTextToCurrency1()
+        {
+            string expected = "0 VND", actual;
+            actual = EasyTimeTable.Converter.Converter.TextToCurrency("00000000000000000000");
+            Assert.AreEqual(expected,actual);
+        }
+        [Test]
+        public void TestTextToCurrency2()
+        {
+            string expected = "100 VND", actual;
+            actual = EasyTimeTable.Converter.Converter.TextToCurrency("100");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTextToCurrency3()
+        {
+            string expected = "-100 VND", actual;
+            actual = EasyTimeTable.Converter.Converter.TextToCurrency("-100");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTextToCurrency4()
+        {
+            string expected = "-1,000 VND", actual;
+            actual = EasyTimeTable.Converter.Converter.TextToCurrency("-1000");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTextToCurrency5()
+        {
+            string expected = "12,000 VND", actual;
+            actual = EasyTimeTable.Converter.Converter.TextToCurrency("12000");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestTextToCurrency6()
+        {
+            string expected = "", actual;
+            actual = EasyTimeTable.Converter.Converter.TextToCurrency("abc");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsDigit1()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsDigit('1');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsDigit2()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsDigit('0');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsDigit3()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsDigit('9');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsDigit4()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsDigit('\0');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsDigit5()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsDigit('$');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsDigit6()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsDigit('a');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsSymbol1()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsSymbol('1');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsSymbol2()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsSymbol('z');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsSymbol3()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsSymbol('\t');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsSymbol4()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsSymbol('\0');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsSymbol5()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsSymbol('#');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsSymbol6()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsSymbol('a');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsLetter1()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsLetter('1');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsLetter2()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsLetter('z');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsLetter3()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsLetter('\t');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsLetter4()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsLetter('\0');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsLetter5()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsLetter('#');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void TestIsLetter6()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsLetter('a');
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword1()
+        {
+            bool expected = true, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("Thinh@123");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword2()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("thinh@123");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword3()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("thinh123");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword4()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("thinh#");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword5()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("Thinh#");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword6()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("#123");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword7()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("THINH#123");
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void IsValidPassword8()
+        {
+            bool expected = false, actual;
+            actual = EasyTimeTable.Converter.Converter.IsValidPassword("");
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
