@@ -50,9 +50,10 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <ComboBoxItem Content="Tự động"/>
-                    <ComboBoxItem Content="Môn chính trị"/>
-                    <ComboBoxItem Content="Lý thuyết"/>
-                    <ComboBoxItem Content="Thực hành"/>
+                    <ComboBoxItem Content="Môn đại cương"/>
+                    <ComboBoxItem Content="Môn cơ sở ngành - chuyên ngành"/>
+                    <ComboBoxItem Content="Môn tự chọn"/>
+                    <ComboBoxItem Content="Tất cả"/>
                 </ComboBox>
                 <DockPanel Grid.Column="1">
                     <materialDesign:PackIcon Kind="Search" Width="40" Height="40"></materialDesign:PackIcon>
