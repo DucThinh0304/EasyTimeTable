@@ -1,16 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Syncfusion.UI.Xaml.Scheduler;
-using Syncfusion.Windows.Shared;
 using System;
 using System.Collections;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace EasyTimeTable.ViewModel
 {
@@ -23,140 +20,155 @@ namespace EasyTimeTable.ViewModel
         [ObservableProperty]
         private IEnumerable events;
 
-        public ICommand LoadOnDemandCommand { get; set; }
 
         [ObservableProperty]
         private Visibility mask;
 
+        private int i = 0;
+
+        [ObservableProperty]
+        private string countToday;
+
+        private int count = 0;
+
         [ObservableProperty]
         private bool isLoading;
 
-        public SchedulerViewModel()
+        SolidColorBrush[] listColor = new SolidColorBrush[]
         {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                this.LoadOnDemandCommand = new DelegateCommand(ExecuteOnDemandLoading, CanExecuteOnDemandLoading);
-            }
-            IsLoading = false;
-            Mask = Visibility.Collapsed;
-        }
+            new SolidColorBrush(Colors.MediumOrchid),
+            new SolidColorBrush(Colors.ForestGreen),
+            new SolidColorBrush(Colors.DodgerBlue),
+            new SolidColorBrush(Colors.DarkOrange),
+            new SolidColorBrush(Colors.Teal),
+            new SolidColorBrush(Colors.YellowGreen),
+            new SolidColorBrush(Colors.Firebrick),
+            new SolidColorBrush(Colors.MediumBlue),
+            new SolidColorBrush(Colors.SlateGray),
+            new SolidColorBrush(Colors.BlueViolet),
+            new SolidColorBrush(Colors.DarkSlateBlue),
+            new SolidColorBrush(Colors.DeepPink)
+        };
 
-        private bool CanExecuteOnDemandLoading(object sender)
-        {
-            return true;
-        }
-
-        // Random Brush
-        private Brush PickBrush(int i)
-        {
-            switch (i)
-            {
-                case 1:
-                    return Brushes.Crimson;
-                case 2:
-                    return Brushes.Blue;
-                case 3:
-                    return Brushes.Purple;
-                case 4:
-                    return Brushes.Orange;
-                case 5:
-                    return Brushes.Yellow;
-                case 6:
-                    return Brushes.SpringGreen;
-                case 7:
-                    return Brushes.Pink;
-                default:
-                    return Brushes.Black;
-
-            }
-        }
-
-        public async void ExecuteOnDemandLoading(object parameter)
-        {
-            if (parameter == null)
-            {
-                return;
-            }
-
-            IsLoading = true;
-            Mask = Visibility.Visible;
-            await Task.Delay(500);
-            await Application.Current.MainWindow.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(async () =>
-            {
-                await GenerateSchedulerAppointments();
-            }));
-            IsLoading = false;
-            Mask = Visibility.Collapsed;
-        }
-
-        private async Task GenerateSchedulerAppointments()
+        [RelayCommand]
+        private async Task Load()
         {
             ScheduleAppointmentCollection = new ScheduleAppointmentCollection();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu, sophong, toa from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
-                "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '" + LoginViewModel.mssv+ "' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and lanhoc=1", con);
+            var cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu, sophong, toa, lophocphansinhvien.mahocphan from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
+                "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '" + LoginViewModel.mssv + "' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and lanhoc=1", con);
             var dr = await cmd.ExecuteReaderAsync();
-            int i = 0;
             while (await dr.ReadAsync())
             {
                 if (await dr.IsDBNullAsync(5) == false)
                 {
-                    i++;
-                    DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
-                    DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
-                    datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
-                    dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
-                    var scheduleAppointment = new ScheduleAppointment()
+                    if (dr.GetString(6).Length == 9)
                     {
-                        Id = i,
-                        StartTime = datestart,
-                        EndTime = dateend,
-                        Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) +"\nSố phòng: " + dr.GetString(7) +"."+dr.GetString(6) + "\nBuổi 11",
-                        AppointmentBackground = PickBrush(2),
-                        Foreground = Brushes.White,
-                    };
-                    scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=15";
-                    ScheduleAppointmentCollection.Add(scheduleAppointment);
+                        for (int x = 0; x <= 11; x++)
+                        {
+                            i++;
+                            DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                            dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                            var scheduleAppointment = new ScheduleAppointment()
+                            {
+                                Id = i,
+                                StartTime = datestart,
+                                EndTime = dateend,
+                                Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
+                                AppointmentBackground = listColor[(i - 1) / 12],
+                                Foreground = Brushes.White,
+                            };
+                            scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=1";
+                            ScheduleAppointmentCollection.Add(scheduleAppointment);
+                        }
+                    }
+                    else
+                    {
+                        for (int x = 0; x <= 11; x++)
+                        {
+                            i++;
+                            DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                            dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                            var scheduleAppointment = new ScheduleAppointment()
+                            {
+                                Id = i,
+                                StartTime = datestart,
+                                EndTime = dateend,
+                                Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
+                                AppointmentBackground = listColor[(i - 1) / 12],
+                                Foreground = Brushes.White,
+                            };
+                            scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=1";
+                            ScheduleAppointmentCollection.Add(scheduleAppointment);
+                        }
+                    }
                 }
             }
             dr.Close();
-            cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu, sophong, toa from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
-                "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '" + LoginViewModel.mssv+ "' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and lanhoc>1", con);
+            cmd = new SqlCommand("Select ngaybatdau, ngayketthuc, tenmon, tengv, tiethoc, thu, sophong, toa, lophocphansinhvien.mahocphan from hocphan, lophocphansinhvien, monhoc, giaovien, thamso where  " +
+                "lophocphansinhvien.mahocphan = hocphan.mahocphan and giaovien.magv = hocphan.magv and hocphan.mamon = monhoc.mamon and masv = '" + LoginViewModel.mssv + "' and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam and lanhoc>1", con);
             dr = await cmd.ExecuteReaderAsync();
             while (await dr.ReadAsync())
             {
                 if (await dr.IsDBNullAsync(5) == false)
                 {
-                    i++;
-                    DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
-                    DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2);
-                    datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
-                    dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
-                    var scheduleAppointment = new ScheduleAppointment()
+                    if (dr.GetString(6).Length == 9)
                     {
-                        Id = i,
-                        StartTime = datestart,
-                        EndTime = dateend,
-                        Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi 11",
-                        AppointmentBackground = Brushes.Crimson,
-                        Foreground = Brushes.White,
-                    };
-                    scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=15";
-                    ScheduleAppointmentCollection.Add(scheduleAppointment);
+                        for (int x = 0; x <= 11; x++)
+                        {
+                            i++;
+                            DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                            dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                            var scheduleAppointment = new ScheduleAppointment()
+                            {
+                                Id = i,
+                                StartTime = datestart,
+                                EndTime = dateend,
+                                Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
+                                AppointmentBackground = listColor[(i - 1) / 12],
+                                Foreground = Brushes.White,
+                            };
+                            scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=1";
+                            ScheduleAppointmentCollection.Add(scheduleAppointment);
+                        }
+                    }
+                    else
+                    {
+                        for (int x = 0; x <= 11; x++)
+                        {
+                            i++;
+                            DateTime datestart = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            DateTime dateend = dr.GetDateTime(0).AddDays(dr.GetInt32(5) - 2 + x * 7);
+                            datestart += Converter.Converter.StartTime(dr.GetString(4)).ToTimeSpan();
+                            dateend += Converter.Converter.EndTime(dr.GetString(4)).ToTimeSpan();
+                            var scheduleAppointment = new ScheduleAppointment()
+                            {
+                                Id = i,
+                                StartTime = datestart,
+                                EndTime = dateend,
+                                Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
+                                AppointmentBackground = listColor[(i - 1) / 12],
+                                Foreground = Brushes.OrangeRed,
+                            };
+                            scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=1";
+                            ScheduleAppointmentCollection.Add(scheduleAppointment);
+                        }
+                    }
                 }
             }
-            var a = new ScheduleAppointment()
+            foreach (var scheduleAppointment in ScheduleAppointmentCollection)
             {
-                Id = i+1,
-                StartTime = new DateTime(2022,11,5,19,30,0),
-                EndTime = new DateTime(2022, 11, 5, 21,0,0),
-                Subject = "Học Tiếng anh ở Mrs.Duyên",
-                AppointmentBackground = Brushes.Yellow,
-                Foreground = Brushes.Black,
-            };
-            a.RecurrenceRule = "FREQ=DAILY;INTERVAL=2;COUNT=15";
-            ScheduleAppointmentCollection.Add(a);
+                if (scheduleAppointment.StartTime > DateTime.Today & scheduleAppointment.EndTime < DateTime.Today.AddDays(1))
+                    count++;
+            }
+            CountToday = "Số sự kiện hôm nay: " + count + " sự kiện";
         }
     }
 }

@@ -10,8 +10,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       d:DesignHeight="960" d:DesignWidth="1440"
-      Title="OpenCoursePage">
-
+      Title="OpenCourse">
     <Page.Background>
         <ImageBrush ImageSource="/Assets/Background.jpg" />
     </Page.Background>
@@ -21,9 +20,8 @@
                                    CommandParameter="{Binding ElementName=ShadowMask}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Page.Triggers>
-      
-            <EventTrigger RoutedEvent="Page.Loaded">
+<Page.Triggers>
+    <EventTrigger RoutedEvent="Page.Loaded">
             <BeginStoryboard>
                 <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="mainPage"
@@ -53,7 +51,6 @@
                     <ComboBoxItem Content="Môn đại cương"/>
                     <ComboBoxItem Content="Môn cơ sở ngành - chuyên ngành"/>
                     <ComboBoxItem Content="Môn tự chọn"/>
-                    <ComboBoxItem Content="Tất cả"/>
                 </ComboBox>
                 <DockPanel Grid.Column="1">
                     <materialDesign:PackIcon Kind="Search" Width="40" Height="40"></materialDesign:PackIcon>
@@ -67,34 +64,6 @@
                 <Border BorderBrush="Black" BorderThickness="1 1 1 1" Grid.Column="2" CornerRadius="5" Margin="0 -5 10 -5" Background="#d39ddb" Padding="5">
                     <Label FontSize="20" Content="{Binding SoTinChi, StringFormat=Số tín chỉ: {0}}" FontWeight="Bold"/>
                 </Border>
-                <!--<materialDesign:Badged Grid.Column="3"
-                    Badge="{Binding NumberError}">
-                <materialDesign:PopupBox  Margin="10 -10 0 -10"
-                      PlacementMode="BottomAndAlignRightEdges">
-                    <materialDesign:PopupBox.ToggleContent>
-                        <materialDesign:PackIcon
-                        Foreground="Crimson"
-                        Kind="AlertCircle"
-                        Height="60"
-                        Width="60" />
-                    </materialDesign:PopupBox.ToggleContent>
-                    <materialDesign:PopupBox.ToggleCheckedContent>
-                        <materialDesign:PackIcon
-                            Foreground="#d39ddb"
-                            Kind="AlertCircle"
-                            Height="60"
-                            Width="60" />
-                    </materialDesign:PopupBox.ToggleCheckedContent>
-                    <StackPanel Margin="0 0 0 0" MaxHeight="500">
-                            <ListView ItemsSource="{Binding ListError}" 
-                                      FontSize="20"
-                                      ScrollViewer.CanContentScroll="False"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Hidden">  
-
-                            </ListView>
-                    </StackPanel>
-                </materialDesign:PopupBox>
-                </materialDesign:Badged>-->
             </Grid>
             <TabControl Grid.Row="1" materialDesign:ColorZoneAssist.Mode="PrimaryLight" x:Name="tab" SelectionChanged="tab_SelectionChanged">
                 <TabItem Header="Đăng kí môn" FontSize="30">

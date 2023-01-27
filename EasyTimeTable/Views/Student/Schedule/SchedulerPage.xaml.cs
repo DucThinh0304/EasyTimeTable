@@ -30,21 +30,32 @@ namespace EasyTimeTable.Views.Student.Calendar
             CultureInfo culture = CultureInfo.CreateSpecificCulture("vi-vn");
             Thread.CurrentThread.CurrentCulture = culture;
             this.Schedule.AppointmentEditorOpening += Schedule_AppointmentEditorOpening;
-
             
-        }
-        private void Thang_Click(object sender, RoutedEventArgs e)
-        {
-            Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
-        }
-        private void Tuan_Click(object sender, RoutedEventArgs e)
-        {
-            Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
         }
         private void Schedule_AppointmentEditorOpening(object sender, AppointmentEditorOpeningEventArgs e)
         {
-            e.AppointmentEditorOptions = AppointmentEditorOptions.All | (~AppointmentEditorOptions.Background & ~AppointmentEditorOptions.Foreground & ~AppointmentEditorOptions.Reminder & ~AppointmentEditorOptions.Resource 
+            e.AppointmentEditorOptions = AppointmentEditorOptions.All | (~AppointmentEditorOptions.Reminder & ~AppointmentEditorOptions.Resource
                 & ~AppointmentEditorOptions.TimeZone & ~AppointmentEditorOptions.Description);
         }
+
+
+
+        private void ChangeType(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as RadioButton).Name)   
+            {
+                case "Week":
+                    {
+                        Schedule.ViewType = SchedulerViewType.Week;
+                        break;
+                    }
+                case "Month":
+                    {
+                        Schedule.ViewType = SchedulerViewType.Month;
+                        break;
+                    }
+            }
+        }
+        
     }
 }
