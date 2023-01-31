@@ -43,7 +43,7 @@ namespace EasyTimeTable.Views.Student.Tuition
         {
             if (current.MaHocPhan.Length == 9)
             {
-                CustomYesNoDialog customYesNoDialog = new CustomYesNoDialog(current.MaHocPhan, current.TenMon);
+                CustomYesNoDialog customYesNoDialog = new CustomYesNoDialog(current.MaHocPhan, current.TenMon, true);
                 customYesNoDialog.ShowDialog();
             }
             else

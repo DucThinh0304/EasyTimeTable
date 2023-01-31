@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasyTimeTable.Model;
+using EasyTimeTable.Views.Student.Tuition;
 using System;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -480,16 +481,8 @@ namespace EasyTimeTable.ViewModel
 
             ThanhToanCM = new RelayCommand<object>((p) =>
             {
-                foreach (OpenCourseModel item in CourseList)
-                {
-                    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                    con.Open();
-                    var cmd = new SqlCommand("update lophocphansinhvien set ngaythanhtoan = @ngaythanhtoan where mahocphan = '" + item.MaHocPhan + "'", con);
-                    cmd.Parameters.Add("@ngaythanhtoan", System.Data.SqlDbType.DateTime);
-                    cmd.Parameters["@ngaythanhtoan"].Value = DateTime.Now;
-                    cmd.ExecuteNonQuery();
-                }
-                MessageBox.Show("Đã thanh toán thành công");
+                CustomYesNoDialog customYesNoDialog = new CustomYesNoDialog(null, null, false);
+                customYesNoDialog.ShowDialog();
                 if (LoadDB.CanExecute(null))
                     LoadDB.Execute(null);
                 if (LoadListDB.CanExecute(null))

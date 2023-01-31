@@ -51,6 +51,7 @@
 
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Xác nhận hủy" Grid.ColumnSpan="2"
+                               x:Name="Title"
                                FontSize="25"
                                FontWeight="Bold"         
                                Margin="10,0,0,0" 

@@ -50,12 +50,15 @@ namespace EasyTimeTable.ViewModel
             new SolidColorBrush(Colors.SlateGray),
             new SolidColorBrush(Colors.BlueViolet),
             new SolidColorBrush(Colors.DarkSlateBlue),
-            new SolidColorBrush(Colors.DeepPink)
+            new SolidColorBrush(Colors.DeepPink),
+            new SolidColorBrush(Colors.Pink)
         };
 
         [RelayCommand]
         private async Task Load()
         {
+            i = 0;
+            count = 0;
             Mask = Visibility.Visible;
             IsLoading = true;
             ScheduleAppointmentCollection = new ScheduleAppointmentCollection();
@@ -68,7 +71,7 @@ namespace EasyTimeTable.ViewModel
             {
                 if (await dr.IsDBNullAsync(5) == false)
                 {
-                    if (dr.GetString(6).Length == 9)
+                    if (dr.GetString(8).Length == 9)
                     {
                         for (int x = 0; x <= 11; x++)
                         {
@@ -104,7 +107,7 @@ namespace EasyTimeTable.ViewModel
                                 Id = i,
                                 StartTime = datestart,
                                 EndTime = dateend,
-                                Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
+                                Subject = "Môn học: " + dr.GetString(2) + " (thực hành)\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
                                 AppointmentBackground = listColor[(i - 1) / 12],
                                 Foreground = Brushes.White,
                             };
@@ -122,7 +125,7 @@ namespace EasyTimeTable.ViewModel
             {
                 if (await dr.IsDBNullAsync(5) == false)
                 {
-                    if (dr.GetString(6).Length == 9)
+                    if (dr.GetString(8).Length == 9)
                     {
                         for (int x = 0; x <= 11; x++)
                         {
@@ -138,7 +141,7 @@ namespace EasyTimeTable.ViewModel
                                 EndTime = dateend,
                                 Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
                                 AppointmentBackground = listColor[(i - 1) / 12],
-                                Foreground = Brushes.White,
+                                Foreground = Brushes.OrangeRed,
                                 
                             };
                             scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=1";
@@ -159,7 +162,7 @@ namespace EasyTimeTable.ViewModel
                                 Id = i,
                                 StartTime = datestart,
                                 EndTime = dateend,
-                                Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
+                                Subject = "Môn học: " + dr.GetString(2) + " (thực hành)\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
                                 AppointmentBackground = listColor[(i - 1) / 12],
                                 Foreground = Brushes.OrangeRed,
                             };
