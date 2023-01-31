@@ -860,72 +860,6 @@ namespace EasyTimeTable.ViewModel
             dr.Close();
         }
 
-        ////Refesh tất cả
-        //public async Task RefreshDBAll(ObservableCollection<Course> list)
-        //{
-        //    list.Clear();
-        //    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-        //    con.Open();
-        //    var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc " +
-        //        "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-        //        " and len(hocphan.mahocphan) = 9", con);
-        //    var dr = await cmd.ExecuteReaderAsync();
-        //    while (await dr.ReadAsync())
-        //    {
-        //        list.Add(new Course
-        //        {
-        //            IsSignUp = false,
-        //            MaHocPhan = dr.GetString(0),
-        //            TenMon = dr.GetString(1),
-        //            TenGV = dr.GetString(2),
-        //            Nam = dr.GetInt32(3),
-        //            Ki = dr.GetInt32(4),
-        //            SoPhong = dr.GetString(5),
-        //            Toa = dr.GetString(6),
-        //            NgayBatDau = dr.GetDateTime(7),
-        //            NgayKetThuc = dr.GetDateTime(8),
-        //            TietHoc = dr.GetString(9),
-        //            Thu = dr.GetInt32(10),
-        //            SiSo = dr.GetInt32(11),
-        //            SoTinChi = dr.GetInt32(12),
-        //            LanHoc = CountLanHoc(dr.GetString(1)).ToString(),
-        //            SDK = DemSNDK(dr.GetString(0))
-        //        });
-        //    }
-        //    dr.Close();
-
-        //    cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc " +
-        //        "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
-        //        "and len(hocphan.mahocphan) = 11", con);
-        //    dr = await cmd.ExecuteReaderAsync();
-        //    while (await dr.ReadAsync())
-        //    {
-        //        if (dr.GetInt32(14) == 1)
-        //        {
-        //            list.Add(new Course
-        //            {
-        //                IsSignUp = false,
-        //                MaHocPhan = dr.GetString(0),
-        //                TenMon = dr.GetString(1),
-        //                TenGV = dr.GetString(2),
-        //                Nam = dr.GetInt32(3),
-        //                Ki = dr.GetInt32(4),
-        //                SoPhong = dr.GetString(5),
-        //                Toa = dr.GetString(6),
-        //                NgayBatDau = dr.GetDateTime(7),
-        //                NgayKetThuc = dr.GetDateTime(8),
-        //                TietHoc = dr.GetString(9),
-        //                Thu = dr.GetInt32(10),
-        //                SiSo = dr.GetInt32(11),
-        //                SoTinChi = dr.GetInt32(13),
-        //                LanHoc = "_",
-        //                SDK = DemSNDK(dr.GetString(0))
-        //            });
-        //        }
-        //    }
-        //}
-
-
 
         public ObservableCollection<Course> OpenCourseSelecttemp { get; }
         // Custom ObservableCollection
@@ -1043,12 +977,13 @@ namespace EasyTimeTable.ViewModel
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
-            var cmd = new SqlCommand("SELECT Count(*) from yeucaumolop where mayeucau not in (Select mayeucau from sinhvienyeucau where masinhvien = '" + MSSV + "')", con);
+            var cmd = new SqlCommand("SELECT Count(*) from yeucaumolop where mayeucau not in (Select MAYC from sinhvienyeucau where MASV = '" + MSSV + "')", con);
             var dr = cmd.ExecuteReader();
             if (dr.Read())
             {
                 NumberRequest = dr.GetInt32(0);
             }
+            else NumberRequest = 0;
         }
 
     }

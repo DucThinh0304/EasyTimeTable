@@ -486,7 +486,7 @@
             <Button  Height="45" FontSize="25" DockPanel.Dock="Top" materialDesign:ButtonAssist.CornerRadius="5" VerticalAlignment="Bottom" Margin="50" IsEnabled="{Binding EnableThanhToan}" Command="{Binding ThanhToanCM}" Click="Button_Click_1">
                 Thanh toán
             </Button>
-                <TextBlock Margin="0 0 0 20" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="17" Foreground="Crimson">Hạn đóng: 31/12/2022</TextBlock>
+                <TextBlock Margin="0 0 0 20" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="17" Foreground="Crimson">Hạn đóng: 04/02/2023</TextBlock>
             </Grid>
     </Grid>
         <Grid Grid.RowSpan="2"

@@ -19,6 +19,6 @@ namespace EasyTimeTable.Model
         public int Thu { get; set; }    
 
         public string TenGV { get; set; }
-        public int SiSo { get; set; }
+        public string SiSo { get; set; }
     }
 }

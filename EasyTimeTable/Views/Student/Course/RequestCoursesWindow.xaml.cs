@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -81,7 +80,7 @@ namespace EasyTimeTable.Views.Student.Course
             foreach (var item in listMon)
             {
                 comboMon.Items.Add(item.MaMon + " - " + item.TenMon);
-            }  
+            }
         }
 
         private void comboMon_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -99,6 +98,7 @@ namespace EasyTimeTable.Views.Student.Course
                     TenGV = dr.GetString(1)
                 });
             }
+            ComboBoxGiaoVien.Items.Clear();
             foreach (var item in listGiaoVien)
             {
                 ComboBoxGiaoVien.Items.Add(item.MaGV + " - " + item.TenGV);
@@ -117,39 +117,56 @@ namespace EasyTimeTable.Views.Student.Course
             var cmd = new SqlCommand("SELECT COUNT(*) FROM YEUCAUMOLOP", con);
             var dr = cmd.ExecuteReader();
             int t = 0;
-            if (dr.Read()) t = dr.GetInt32(0);
+            if (dr.Read())
+            {
+                t = dr.GetInt32(0);
+            }
+            dr.Close();
             YeuCauModel yeucau = new YeuCauModel();
-            yeucau.MaYeuCau = "YC" + t.ToString();
+
             yeucau.MaMon = listMon[comboMon.SelectedIndex].MaMon;
-            yeucau.SiSo = 0;
             yeucau.MaGV = listGiaoVien[ComboBoxGiaoVien.SelectedIndex].MaGV;
             yeucau.LyDo = textLyDo.Text;
-            yeucau.listBuoi = new List<Buoi>();
-            if (Thu.Text != "" && Buoi.Text != "") yeucau.listBuoi.Add(new Model.Buoi
+            if (Thu.Text != "" && Buoi.Text != "")
             {
-                Thu = Convert.ToInt32(Thu.Text),
-                BuoiHoc = Buoi.SelectedIndex + 1
-            });
-            if (Thu1.Text != "" && Buoi1.Text != "") yeucau.listBuoi.Add(new Model.Buoi
-            {
-                Thu = Convert.ToInt32(Thu1.Text),
-                BuoiHoc = Buoi1.SelectedIndex + 1
-            });
-            if (Thu2.Text != "" && Buoi2.Text != "") yeucau.listBuoi.Add(new Model.Buoi
-            {
-                Thu = Convert.ToInt32(Thu2.Text),
-                BuoiHoc = Buoi2.SelectedIndex + 1
-            });
-            dr.Close();
-            cmd.CommandText = "INSERT INTO YEUCAUMOLOP VALUES ('" + yeucau.MaYeuCau + "', '" + yeucau.MaMon + "', " + yeucau.SiSo.ToString() + ", '" + yeucau.MaGV + "', N'" + yeucau.LyDo + "')";
-            cmd.ExecuteNonQuery();
-            foreach (Model.Buoi buoi in yeucau.listBuoi)
-            {
-                cmd.CommandText = "INSERT INTO BUOIYEUCAU VALUES ('" + yeucau.MaYeuCau + "', " + buoi.Thu.ToString() + ", " + buoi.BuoiHoc.ToString() + ")";
+                t++;
+                yeucau.MaYeuCau = t;
+                yeucau.Thu = Convert.ToInt32(Thu.Text);
+                yeucau.Buoi = (Buoi.Text == "Sáng") ? 0 : 1;
+                cmd.CommandText = "INSERT INTO YEUCAUMOLOP VALUES ('" + yeucau.MaYeuCau + "', '" + yeucau.MaMon + "', 60, '" + yeucau.MaGV + "', N'" + yeucau.LyDo + "', " + yeucau.Thu + "," + yeucau.Buoi + ")";
                 cmd.ExecuteNonQuery();
+                dr.Close();
+                cmd.CommandText = "Insert into sinhvienyeucau values ('" + yeucau.MaYeuCau + "', '" + MSSV + "')";
+                cmd.ExecuteNonQuery();
+                dr.Close();
             }
-            cmd.CommandText = "INSERT INTO SINHVIENYEUCAU VALUES ('" + yeucau.MaYeuCau + "', '" + MSSV + "')";
-            cmd.ExecuteNonQuery();
+            if (Thu1.Text != "" && Buoi1.Text != "")
+            {
+                t++;
+                yeucau.MaYeuCau = t;
+                yeucau.Thu = Convert.ToInt32(Thu1.Text);
+                yeucau.Buoi = (Buoi1.Text == "Sáng") ? 0 : 1;
+                cmd.CommandText = "INSERT INTO YEUCAUMOLOP VALUES ('" + yeucau.MaYeuCau + "', '" + yeucau.MaMon + "', 60, '" + yeucau.MaGV + "', N'" + yeucau.LyDo + "', " + yeucau.Thu + "," + yeucau.Buoi + ")";
+                cmd.ExecuteNonQuery();
+                dr.Close();
+                cmd.CommandText = "Insert into sinhvienyeucau values ('" + yeucau.MaYeuCau + "', '" + MSSV + "')";
+                cmd.ExecuteNonQuery();
+                dr.Close();
+            }
+            if (Thu2.Text != "" && Buoi2.Text != "")
+            {
+                t++;
+                yeucau.MaYeuCau = t;
+                yeucau.Thu = Convert.ToInt32(Thu2.Text);
+                yeucau.Buoi = (Buoi2.Text == "Sáng") ? 0 : 1;
+                cmd.CommandText = "INSERT INTO YEUCAUMOLOP VALUES ('" + yeucau.MaYeuCau + "', '" + yeucau.MaMon + "', 60, '" + yeucau.MaGV + "', N'" + yeucau.LyDo + "', " + yeucau.Thu + "," + yeucau.Buoi + ")";
+                cmd.ExecuteNonQuery();
+                dr.Close();
+                cmd.CommandText = "Insert into sinhvienyeucau values ('" + yeucau.MaYeuCau + "', '" + MSSV + "')";
+                cmd.ExecuteNonQuery();
+                dr.Close();
+            }
+
             this.Close();
         }
     }

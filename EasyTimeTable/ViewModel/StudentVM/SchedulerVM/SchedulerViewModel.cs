@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Syncfusion.UI.Xaml.Scheduler;
+using Syncfusion.Windows.Shared;
 using System;
 using System.Collections;
 using System.Configuration;
@@ -25,9 +26,11 @@ namespace EasyTimeTable.ViewModel
         private Visibility mask;
 
         private int i = 0;
+        static public int j = 0;
 
         [ObservableProperty]
         private string countToday;
+
 
         private int count = 0;
 
@@ -53,6 +56,8 @@ namespace EasyTimeTable.ViewModel
         [RelayCommand]
         private async Task Load()
         {
+            Mask = Visibility.Visible;
+            IsLoading = true;
             ScheduleAppointmentCollection = new ScheduleAppointmentCollection();
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
             con.Open();
@@ -134,6 +139,7 @@ namespace EasyTimeTable.ViewModel
                                 Subject = "Môn học: " + dr.GetString(2) + "\nGiáo viên: " + dr.GetString(3) + "\nSố phòng: " + dr.GetString(7) + "." + dr.GetString(6) + "\nBuổi: " + (x + 1),
                                 AppointmentBackground = listColor[(i - 1) / 12],
                                 Foreground = Brushes.White,
+                                
                             };
                             scheduleAppointment.RecurrenceRule = "FREQ=DAILY;INTERVAL=7;COUNT=1";
                             ScheduleAppointmentCollection.Add(scheduleAppointment);
@@ -163,12 +169,36 @@ namespace EasyTimeTable.ViewModel
                     }
                 }
             }
+            j = i;
+            dr.Close();
+            cmd = new SqlCommand("Select * from lich", con);
+            dr = await cmd.ExecuteReaderAsync();
+            while (await dr.ReadAsync())
+            {
+                var scheduleAppointment = new ScheduleAppointment()
+                {
+                    Id = dr.GetInt32(0),
+                    StartTime = dr.GetDateTime(2),
+                    EndTime = dr.GetDateTime(3),
+                    Subject = dr.GetString(6),
+                    AppointmentBackground = (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(4)),
+                    Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom(dr.GetString(5)),
+                    Location = dr.GetString(7),
+                    IsAllDay = (dr.GetInt32(8) == 0) ? false : true,
+                };
+                scheduleAppointment.RecurrenceRule = dr.GetString(1);
+                ScheduleAppointmentCollection.Add(scheduleAppointment);
+            }
+
             foreach (var scheduleAppointment in ScheduleAppointmentCollection)
             {
                 if (scheduleAppointment.StartTime > DateTime.Today & scheduleAppointment.EndTime < DateTime.Today.AddDays(1))
                     count++;
             }
             CountToday = "Số sự kiện hôm nay: " + count + " sự kiện";
+            Mask = Visibility.Collapsed;
+            IsLoading = false;
+
         }
     }
 }

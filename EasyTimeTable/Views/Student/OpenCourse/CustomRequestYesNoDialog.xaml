@@ -36,7 +36,8 @@
                         <ColumnDefinition Width="1*"/>
 
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Xác nhận đăng kí" Grid.ColumnSpan="2"
+                    <TextBlock Text="Xác nhận ghi danh" Grid.ColumnSpan="2"
+                               x:Name="Titlee"
                                FontSize="25"
                                FontWeight="Bold"         
                                Margin="10,0,0,0" 

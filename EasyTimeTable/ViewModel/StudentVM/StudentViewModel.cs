@@ -94,12 +94,23 @@ namespace EasyTimeTable.ViewModel
 
             LoadOpenCourseCM = new RelayCommand<Frame>((p) =>
             {
-                if (StudentMainWindow.Slidebtn != null)
-                    StudentMainWindow.Slidebtn.IsChecked = false;
-                if (StudentMainWindow.funcTitle != null)
-                    StudentMainWindow.funcTitle.Text = "Danh sách học phần";
-                if (p != null)
-                    p.Content = new OpenCoursePage();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("Select ngaythanhtoan from lophocphansinhvien where masv = '" + MSSV + "' and ngaythanhtoan is not null" , con);
+                var dr = cmd.ExecuteReader();
+                if (!dr.Read())
+                {
+                    if (StudentMainWindow.Slidebtn != null)
+                        StudentMainWindow.Slidebtn.IsChecked = false;
+                    if (StudentMainWindow.funcTitle != null)
+                        StudentMainWindow.funcTitle.Text = "Danh sách học phần";
+                    if (p != null)
+                        p.Content = new OpenCoursePage();
+                }
+                else
+                {
+                    MessageBox.Show("Bạn đã thanh toán học phí");
+                }
             });
 
             LoadSchedulerCM = new RelayCommand<Frame>((p) =>

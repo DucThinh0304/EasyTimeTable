@@ -40,11 +40,24 @@ namespace EasyTimeTable.Views.Student.OpenCourse
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            CustomRequestYesNoDialog customRequestYesNoDialog = new CustomRequestYesNoDialog(current.MaYeuCau, current.MaMon, current.TenMon);
+            CustomRequestYesNoDialog customRequestYesNoDialog = new CustomRequestYesNoDialog(current.MaYeuCau, current.MaMon, current.TenMon, false);
             customRequestYesNoDialog.ShowDialog();
             var viewModel = (ListRequestVM)DataContext;
             if (viewModel.LoadListCommand.CanExecute(null))
                 viewModel.LoadListCommand.Execute(null);
+            if (viewModel.LoadRequestCommand.CanExecute(null))
+                viewModel.LoadRequestCommand.Execute(null);
+        }
+
+        private void ButtonHuy_Click(object sender, RoutedEventArgs e)
+        {
+            CustomRequestYesNoDialog customRequestYesNoDialog = new CustomRequestYesNoDialog(current.MaYeuCau, current.MaMon, current.TenMon, true);
+            customRequestYesNoDialog.ShowDialog();
+            var viewModel = (ListRequestVM)DataContext;
+            if (viewModel.LoadListCommand.CanExecute(null))
+                viewModel.LoadListCommand.Execute(null);
+            if (viewModel.LoadRequestCommand.CanExecute(null))
+                viewModel.LoadRequestCommand.Execute(null);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
