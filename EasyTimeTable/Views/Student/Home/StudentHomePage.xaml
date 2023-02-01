@@ -72,7 +72,7 @@
 											    Kind="BookOpenVariant" Width="80" Height="80"/>
                             <TextBlock HorizontalAlignment="Stretch" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Year}" Margin="0,12,0,0"/>
                             <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding Semester}" HorizontalAlignment="Center"/>
-                            <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}"/>
+                            <Button Height="40" FontSize="18" FontWeight="Bold" Width="250" Margin="0,12,0,0" Content="Xem danh sách học phần"  HorizontalAlignment="Center" Command="{Binding CoursePageCM}" IsEnabled="{Binding DaDongHocPhi}"/>
                         </StackPanel>
                     </StackPanel>
                 </materialDesign:Card>

@@ -96,7 +96,7 @@ namespace EasyTimeTable.ViewModel
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
-                var cmd = new SqlCommand("Select ngaythanhtoan from lophocphansinhvien where masv = '" + MSSV + "' and ngaythanhtoan is not null" , con);
+                var cmd = new SqlCommand("Select * from lophocphansinhvien where masv = '" + MSSV + "' and ngaythanhtoan is not null and daduyet <> 1" , con);
                 var dr = cmd.ExecuteReader();
                 if (!dr.Read())
                 {

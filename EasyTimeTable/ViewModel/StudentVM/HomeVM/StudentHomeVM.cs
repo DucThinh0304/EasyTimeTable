@@ -46,6 +46,9 @@ namespace EasyTimeTable.ViewModel
         private bool isEnable;
 
         [ObservableProperty]
+        private bool daDongHocPhi;
+
+        [ObservableProperty]
         private int hocPhi;
 
         private int namhoc = 0;
@@ -70,16 +73,21 @@ namespace EasyTimeTable.ViewModel
             {
                 Mask = Visibility.Visible;
                 IsLoading = true;
-                TuitionCheck = "(đã đóng học phí)";
-                ColorTuition = new SolidColorBrush(Colors.Black);
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 con.Open();
-                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS NULL and masv = '"+ LoginViewModel.mssv + "'", con);
+                var cmd = new SqlCommand("select * from lophocphansinhvien where ngaythanhtoan IS not NULL and masv = '"+ LoginViewModel.mssv + "' and daduyet <> 1", con);
                 var dr = await cmd.ExecuteReaderAsync();
-                if (await dr.ReadAsync())
+                if (!dr.Read())
                 {
                     TuitionCheck = "(chưa đóng học phí)";
                     ColorTuition = new SolidColorBrush(Colors.Red);
+                    DaDongHocPhi = true;
+                }
+                else
+                {
+                    TuitionCheck = "(đã đóng học phí)";
+                    ColorTuition = new SolidColorBrush(Colors.Black);
+                    DaDongHocPhi = false;
                 }
                 dr.Close();
                 cmd = new SqlCommand("SELECT ki from thamso", con);

@@ -16,7 +16,7 @@
     <None Remove="Assets\ETT-logoflat.png" />
     <None Remove="Assets\ETTlogo-large.ico" />
     <None Remove="Assets\ETTlogo-large.png" />
-    <None Remove="Assets\Student - 205206211.jpg" />
+    <None Remove="Assets\Student - 20520621.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,7 +52,7 @@
     <Resource Include="Assets\ETT-logoflat.png" />
     <Resource Include="Assets\ETTlogo-large.ico" />
     <Resource Include="Assets\ETTlogo-large.png" />
-    <Resource Include="Assets\Student - 205206211.jpg">
+    <Resource Include="Assets\Student - 20520621.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
