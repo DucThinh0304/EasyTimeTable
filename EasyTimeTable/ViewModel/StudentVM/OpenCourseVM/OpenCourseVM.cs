@@ -14,11 +14,15 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using Window = System.Windows.Window;
+
 namespace EasyTimeTable.ViewModel
 {
     [ObservableObject]
@@ -32,8 +36,6 @@ namespace EasyTimeTable.ViewModel
         [ObservableProperty]
         private string soTinChi;
         [ObservableProperty]
-        private OpenCourseModel selectedCourse;
-        [ObservableProperty]
         private string buttonContent;
         [ObservableProperty]
         private ComboBoxItem selectedCombobox;
@@ -43,11 +45,26 @@ namespace EasyTimeTable.ViewModel
         private string dangKiNhanhText;
         [ObservableProperty]
         private int numberRequest;
+        [ObservableProperty]
+        private Course selectedItem;
+        [ObservableProperty]
+        private Course selectedChangeItem;
+        private Course lockCourse;
+        private Course lockSelectedChangeItem;
+        [ObservableProperty]
+        private bool isLoadingSwap;
+
+        [ObservableProperty]
+        private Visibility visibility;
+
+        [ObservableProperty]
+        private string monDoi;
 
         private bool confirm;
 
         private string MSSV;
         private string MaKhoa;
+        private bool flag = false;
 
         public static Grid? MaskName { get; set; }
         public ICommand RequestCM { get; set; }
@@ -71,7 +88,36 @@ namespace EasyTimeTable.ViewModel
         [ObservableProperty]
         private string dialogTitle;
 
+        [ObservableProperty]
+        private string mon1;
+        [ObservableProperty]
+        private string tiet1;
+        [ObservableProperty]
+        private string thu1;
+        [ObservableProperty]
+        private string giangVien1;
+        [ObservableProperty]
+        private string siSo1;
+        [ObservableProperty]
+        private DateTime ngayBatDau1;
+        [ObservableProperty]
+        private DateTime ngayKetThuc1;
 
+
+        [ObservableProperty]
+        private string mon2;
+        [ObservableProperty]
+        private string tiet2;
+        [ObservableProperty]
+        private string thu2;
+        [ObservableProperty]
+        private string giangVien2;
+        [ObservableProperty]
+        private string siSo2;
+        [ObservableProperty]
+        private DateTime ngayBatDau2;
+        [ObservableProperty]
+        private DateTime ngayKetThuc2;
 
         // Search Textbox
         private bool Filter(Course c)
@@ -84,6 +130,7 @@ namespace EasyTimeTable.ViewModel
 
         public OpenCourseVM()
         {
+            Visibility = Visibility.Collapsed;
             ListResult = new List<string>();
             ListError = new List<string>();
             ListSelect = new List<string>();
@@ -99,6 +146,7 @@ namespace EasyTimeTable.ViewModel
             OpenCourse = new ObservableCollection<Course>();
             OpenCourseSelect = new ObservableCollection<Course>();
             OpenCourseSelecttemp = new ObservableCollection<Course>();
+            ChangeCourseList = new ObservableCollection<Course>();
             LoadDataGrid = new RelayCommand<object>(async (p) =>
             {
                 CountNumberRequest();
@@ -508,10 +556,6 @@ namespace EasyTimeTable.ViewModel
                         dangKiThanhCongDialog.ShowDialog();
                     }
                 }
-                else
-                {
-
-                }
             }
         }
         public int TongTC()
@@ -865,6 +909,7 @@ namespace EasyTimeTable.ViewModel
         // Custom ObservableCollection
         public ObservableCollection<Course> OpenCourse { get; }
         public ObservableCollection<Course> OpenCourseSelect { get; }
+        public ObservableCollection<Course> ChangeCourseList { get; }
 
         private ICollectionView filteredOpenCourse;
         public ICollectionView FilteredOpenCourse
@@ -985,6 +1030,298 @@ namespace EasyTimeTable.ViewModel
             }
             else NumberRequest = 0;
         }
+        [RelayCommand]
+        private async Task Swap(Window p)
+        {
+            IsLoading = true;
+            MaskName.Visibility = Visibility.Visible;
+            lockCourse = SelectedItem;
+            MonDoi = lockCourse.MaHocPhan + " - " + lockCourse.TenGV + " - Thứ " + lockCourse.Thu + ", Tiết: " + lockCourse.TietHoc;
+            if (lockCourse.MaHocPhan.Length == 9)
+            {
+                ChangeCourseList.Clear();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc " +
+                    "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv=GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
+                    "AND HOCPHAN.mahocphan not in (select mahocphan from lophocphansinhvien where masv = '" + MSSV + "') and len(hocphan.mahocphan) = 9 and hocphan.mamon = '" + lockCourse.MaHocPhan.Substring(0,5) +"' " +
+                    "and hocphan.mahocphan <>'" + lockCourse.MaHocPhan + "'" , con);
+                var dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    ChangeCourseList.Add(new Course
+                    {
+                        IsSignUp = false,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        SoPhong = dr.GetString(5),
+                        Toa = dr.GetString(6),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        TietHoc = dr.GetString(9),
+                        Thu = dr.GetInt32(10),
+                        SiSo = dr.GetInt32(11),
+                        SoTinChi = dr.GetInt32(12),
+                        LanHoc = CountLanHoc(dr.GetString(1)).ToString(),
+                        SDK = DemSNDK(dr.GetString(0))
+                    });
+                }
+                dr.Close();
+            }
+            else
+            {
+                ChangeCourseList.Clear();
+                int a = Convert.ToInt32(lockCourse.MaHocPhan.Substring(10, 1));
+                if (a == 1) a = 2; else a = 1;
+                string s = lockCourse.MaHocPhan.Substring(0, 10) + a.ToString();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("SELECT HOCPHAN.mahocphan, tenmon, tengv, nam, ky, sophong,toa,ngaybatdau,ngayketthuc,tiethoc,thu,siso,sotclt,sotcth, hinhthuc " +
+                    "FROM HOCPHAN,GIAOVIEN,MONHOC, thamso where HOCPHAN.mamon= MONHOC.mamon AND HOCPHAN.magv = GIAOVIEN.Magv and thamso.ki = hocphan.ky and thamso.namhoc = hocphan.nam " +
+                    "AND hocphan.mahocphan ='" + s + "'", con);
+                var dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    ChangeCourseList.Add(new Course
+                    {
+                        IsSignUp = false,
+                        MaHocPhan = dr.GetString(0),
+                        TenMon = dr.GetString(1),
+                        TenGV = dr.GetString(2),
+                        Nam = dr.GetInt32(3),
+                        Ki = dr.GetInt32(4),
+                        SoPhong = dr.GetString(5),
+                        Toa = dr.GetString(6),
+                        NgayBatDau = dr.GetDateTime(7),
+                        NgayKetThuc = dr.GetDateTime(8),
+                        TietHoc = dr.GetString(9),
+                        Thu = dr.GetInt32(10),
+                        SiSo = dr.GetInt32(11),
+                        SoTinChi = dr.GetInt32(13),
+                        LanHoc = "_",
+                        SDK = DemSNDK(dr.GetString(0))
+                    });
+                }
+                dr.Close();
+            }
+            ChangeCourseWindow changeCourseWindow = new ChangeCourseWindow();
+            changeCourseWindow.ShowDialog();
+            OpenCourseSelect.Clear();
+            await LoadDBDK(OpenCourseSelect);
+            IsLoading = false;
+            MaskName.Visibility = Visibility.Collapsed;
+        }
+        [RelayCommand]
+        private async Task ChangeCourse(FrameworkElement p)
+        {
+            isLoadingSwap = true;
+            Visibility = Visibility.Visible;
+            if (lockCourse.MaHocPhan.Length == 9)
+            {
+                await ChangeCourseLT(p);
+            }
+            else await ChangeCourseTH(p);
+            Visibility = Visibility.Collapsed;
+            isLoadingSwap = false;
+            
+        }
+        
+        private async Task ChangeCourseLT(FrameworkElement p)
+        {
+            lockSelectedChangeItem = SelectedChangeItem;
+            foreach (Course s in OpenCourseSelect)
+            {
+                if (s.MaHocPhan == lockCourse.MaHocPhan) continue;
+                if (s.MaHocPhan == (lockCourse.MaHocPhan + ".1")) continue;
+                if (s.MaHocPhan == (lockCourse.MaHocPhan + ".2")) continue;
+                if (Converter.Converter.Compare(lockSelectedChangeItem.TietHoc, s.TietHoc, lockSelectedChangeItem.Thu, s.Thu) == false)
+                {
+                    MessageBox.Show(lockSelectedChangeItem.TenMon + " - " + lockSelectedChangeItem.MaHocPhan + ": Bị trùng lịch với môn " + s.TenMon + " - " + s.MaHocPhan);
+                    return;
+                }
+            }
+            if (CheckCoTHkhong())
+            {
+                ChoosePraticeCourse choosePraticeCourse = new ChoosePraticeCourse();
+                LoadChoose();
+                choosePraticeCourse.ShowDialog();
+                if (flag)
+                {
+                    FrameworkElement window = GetParentWindow(p);
+                    var w = window as Window;
+                    if (w != null)
+                    {
+                        w.Close();
+                    }
+                }
+            }
+            else
+            {
+                foreach (Course s in OpenCourseSelect)
+                {
+                    if (s.MaHocPhan == lockCourse.MaHocPhan) continue;
+                    if (Converter.Converter.Compare(lockSelectedChangeItem.TietHoc, s.TietHoc, lockSelectedChangeItem.Thu, s.Thu) == false)
+                    {
+                        MessageBox.Show(lockSelectedChangeItem.TenMon + " - " + lockSelectedChangeItem.MaHocPhan + ": Bị trùng lịch với môn " + s.TenMon + " - " + s.MaHocPhan);
+                        return;
+                    }
+                }
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                var cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + "' where mahocphan = '" + lockCourse.MaHocPhan + "'and masv = '" + MSSV + "'", con);
+                await cmd.ExecuteNonQueryAsync();
+                MessageBox.Show("Đổi thành công");
+                FrameworkElement window = GetParentWindow(p);
+                var w = window as Window;
+                if (w != null)
+                {
+                    w.Close();
+                }
+            }
+        }
+        private bool CheckCoTHkhong()
+        {
+            foreach (Course s in OpenCourseSelect)
+            {
+                if (s.MaHocPhan.Substring(0, 9) == lockCourse.MaHocPhan)
+                    if (s.MaHocPhan.Length != 9) return true;
+            }
+            return false;
+        }
+        public void LoadChoose()
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("SELECT * FROM hocphan, monhoc, giaovien where  hocphan.mamon = monhoc.mamon and  hocphan.magv = giaovien.magv and " +
+                    "tenmon = N'" + lockSelectedChangeItem.TenMon + "' and len(hocphan.mahocphan) = 11 and mahocphan like '" + lockSelectedChangeItem.MaHocPhan + "%'", con);
+            var dr = cmd.ExecuteReader();
+            int i = 0;
+            while (dr.Read())
+            {
+                i++;
+                if (i == 1)
+                {
+                    Mon1 = dr.GetString(0);
+                    Tiet1 = dr.GetString(9);
+                    Thu1 = dr.GetInt32(10).ToString();
+                    GiangVien1 = dr.GetString(18);
+                    SiSo1 = dr.GetInt32(11).ToString();
+                    NgayBatDau1 = dr.GetDateTime(7);
+                    NgayKetThuc1 = dr.GetDateTime(8);
+                }
+                else
+                {
+                    Mon2 = dr.GetString(0);
+                    Tiet2 = dr.GetString(9);
+                    Thu2 = dr.GetInt32(10).ToString();
+                    GiangVien2 = dr.GetString(18);
+                    SiSo2 = dr.GetInt32(11).ToString();
+                    NgayBatDau2 = dr.GetDateTime(7);
+                    NgayKetThuc2 = dr.GetDateTime(8);
+                }
+            }
+            dr.Close();
+        }
+        private async Task ChangeCourseTH(FrameworkElement p)
+        {
+            lockSelectedChangeItem = SelectedChangeItem;
+            foreach (Course s in OpenCourseSelect)
+            {
+                if (s.MaHocPhan == lockCourse.MaHocPhan) continue;
+                
+                if (Converter.Converter.Compare(lockSelectedChangeItem.TietHoc, s.TietHoc, lockSelectedChangeItem.Thu, s.Thu) == false)
+                {
+                    MessageBox.Show(lockSelectedChangeItem.TenMon + " - " + lockSelectedChangeItem.MaHocPhan + ": Bị trùng lịch với môn " + s.TenMon + " - " + s.MaHocPhan);
+                    return;
+                }
+            }
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + "' where mahocphan = '" + lockCourse.MaHocPhan + "'and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            MessageBox.Show("Đổi thành công");
+            FrameworkElement window = GetParentWindow(p);
+            var w = window as Window;
+            if (w != null)
+            {
+                w.Close();
+            }
+        }
+        FrameworkElement GetParentWindow(FrameworkElement p)
+        {
+            FrameworkElement parent = p;
 
+            while (parent.Parent != null)
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+            return parent;
+        }
+        [RelayCommand]
+        private async Task DangKi1(FrameworkElement p)
+        {
+            foreach (Course s in OpenCourseSelect)
+            {
+                if (s.MaHocPhan == lockCourse.MaHocPhan) continue; 
+                if (s.MaHocPhan == (lockCourse.MaHocPhan + ".1")) continue;
+                if (s.MaHocPhan == (lockCourse.MaHocPhan + ".2")) continue;
+                if (Converter.Converter.Compare(lockSelectedChangeItem.TietHoc, s.TietHoc, lockSelectedChangeItem.Thu, s.Thu) == false)
+                {
+                    MessageBox.Show(lockSelectedChangeItem.TenMon + " - " + lockSelectedChangeItem.MaHocPhan + ": Bị trùng lịch với môn " + s.TenMon + " - " + s.MaHocPhan);
+                    return;
+                }
+            }
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + "' where mahocphan = '" + lockCourse.MaHocPhan + "' and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + ".1' where mahocphan = '" + lockCourse.MaHocPhan + ".1' and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + ".1' where mahocphan = '" + lockCourse.MaHocPhan + ".2' and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            MessageBox.Show("Đổi thành công");
+            flag = true;
+            FrameworkElement window = GetParentWindow(p);
+            var w = window as Window;
+            if (w != null)
+            {
+                w.Close();
+            }
+        }
+        [RelayCommand]
+        private async Task DangKi2(FrameworkElement p)
+        {
+            foreach (Course s in OpenCourseSelect)
+            {
+                if (s.MaHocPhan == lockCourse.MaHocPhan) continue;
+                if (s.MaHocPhan == (lockCourse.MaHocPhan + ".1")) continue;
+                if (s.MaHocPhan == (lockCourse.MaHocPhan + ".2")) continue;
+                if (Converter.Converter.Compare(lockSelectedChangeItem.TietHoc, s.TietHoc, lockSelectedChangeItem.Thu, s.Thu) == false)
+                {
+                    MessageBox.Show(lockSelectedChangeItem.TenMon + " - " + lockSelectedChangeItem.MaHocPhan + ": Bị trùng lịch với môn " + s.TenMon + " - " + s.MaHocPhan);
+                    return;
+                }
+            }
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            var cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + "' where mahocphan = '" + lockCourse.MaHocPhan + "' and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + ".2' where mahocphan = '" + lockCourse.MaHocPhan + ".1' and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            cmd = new SqlCommand("Update lophocphansinhvien set Mahocphan = '" + lockSelectedChangeItem.MaHocPhan + ".2' where mahocphan = '" + lockCourse.MaHocPhan + ".2' and masv = '" + MSSV + "'", con);
+            await cmd.ExecuteNonQueryAsync();
+            MessageBox.Show("Đổi thành công");
+            flag = true;
+            FrameworkElement window = GetParentWindow(p);
+            var w = window as Window;
+            if (w != null)
+            {
+                w.Close();
+            }
+            
+        }
     }
 }

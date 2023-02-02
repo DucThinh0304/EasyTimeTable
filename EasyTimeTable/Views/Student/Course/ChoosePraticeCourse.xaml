@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Width="900"
         Height="400"
-        DataContext="{StaticResource StudentOpenCourseVM}"
+        DataContext="{StaticResource OpenCourseVM}"
         AllowsTransparency="True"
         WindowStyle="None"
         Background="Transparent"
@@ -91,7 +91,7 @@
                             <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding SiSo1, StringFormat=Sỉ số: {0}}"></TextBlock>
                             <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayBatDau1, StringFormat=Ngày bắt đầu: {0:dd/MM/yy}}"></TextBlock>
                             <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayKetThuc1, StringFormat=Ngày kết thúc: {0:dd/MM/yy}}"></TextBlock>
-                            <Button Content="Đăng kí" Margin="50 25 50 25" FontSize="20" Height="40" Command="{Binding DangKi1}"  CommandParameter="{Binding ElementName=ChooseWindow}"></Button>
+                            <Button Content="Đăng kí" Margin="50 25 50 25" FontSize="20" Height="40" Command="{Binding DangKi1Command}"  CommandParameter="{Binding ElementName=ChooseWindow}"></Button>
                         </StackPanel>
                     </Border>
 
@@ -108,7 +108,7 @@
                             <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding SiSo2, StringFormat=Sỉ số: {0}}"></TextBlock>
                             <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayBatDau2, StringFormat=Ngày bắt đầu: {0:dd/MM/yy}}"></TextBlock>
                             <TextBlock FontSize="15" Margin="20 5 20 5" Text="{Binding NgayKetThuc2, StringFormat=Ngày kết thúc: {0:dd/MM/yy}}"></TextBlock>
-                            <Button Content="Đăng kí" Margin="50 25 50 25" FontSize="20" Height="40" Command="{Binding DangKi2}" CommandParameter="{Binding ElementName=ChooseWindow}"></Button>
+                            <Button Content="Đăng kí" Margin="50 25 50 25" FontSize="20" Height="40" Command="{Binding DangKi2Command}" CommandParameter="{Binding ElementName=ChooseWindow}"></Button>
                         </StackPanel>
                     </Border>
                 </Grid>

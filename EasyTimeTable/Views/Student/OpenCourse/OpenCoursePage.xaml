@@ -125,14 +125,30 @@
                     <DataGrid Height="600" FontSize="20" 
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
+                          SelectedItem="{Binding SelectedItem}"
                           Background="Transparent"
+                          x:Name="DataGridHuy"
                           ItemsSource="{Binding FilteredOpenCourseSelect}">
                         <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Chọn" 
                                                 ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                                 EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
                                                 Binding="{Binding IsSignUp, Mode=TwoWay}" />
-                        <DataGridTextColumn Header="Mã học phần" Binding="{Binding MaHocPhan}" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Đổi">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button>
+                                            <materialDesign:PackIcon Kind="SwapHorizontal" />
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <i:InvokeCommandAction Command="{Binding ElementName=DataGridHuy, Path=DataContext.SwapCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Mã học phần" Binding="{Binding MaHocPhan}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Tên giáo viên" Binding="{Binding TenGV}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Số tín chỉ" Binding="{Binding SoTinChi}" IsReadOnly="True"/>

@@ -7,12 +7,27 @@
         DataContext="{StaticResource OpenCourseVM}"
         Background="Transparent"
         ResizeMode="NoResize"
+        Name="YesNo"
         WindowStartupLocation="CenterScreen"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyTimeTable.Views.Student.OpenCourse"
         mc:Ignorable="d"
         Title="DangKiThanhCongDialog" Height="400" Width="700">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="YesNo"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3" />
+
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Border BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="10">
